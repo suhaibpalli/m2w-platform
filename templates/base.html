@@ -38,14 +38,14 @@
                         <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                             Dashboard
                         </a>
-                        <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2">
+                        <a href="{% url 'accounts:logout' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
                             Logout
                         </a>
                     {% else %}
-                        <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2">
+                        <a href="{% url 'accounts:login' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
                             Login
                         </a>
-                        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        <a href="{% url 'accounts:register' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                             Register
                         </a>
                     {% endif %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Your Account - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <!-- Progress Bar Section -->
+        <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                <div class="flex flex-col gap-3 p-4">
+                    <div class="flex gap-6 justify-between">
+                        <p class="text-[#121416] text-base font-medium leading-normal">Company Details</p>
+                    </div>
+                    <div class="rounded bg-[#dde1e3]">
+                        <div class="h-2 rounded bg-[#121416]" style="width: 50%;"></div>
+                    </div>
+                    <p class="text-[#6a7681] text-sm font-normal leading-normal">Payment</p>
+                </div>
+                
+                <h1 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 text-center pb-3 pt-5">
+                    Create Your Account
+                </h1>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Company Name -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Company Name</p>
+                            {{ form.company_name }}
+                            {% if form.company_name.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.company_name.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Email</p>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Password</p>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Confirm Password</p>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Industry Selection -->
+                    <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
+                        Select Your Industry
+                    </h3>
+                    <div class="px-4">
+                        {% for choice in form.industries %}
+                            <label class="flex gap-x-3 py-3 flex-row">
+                                {{ choice.tag }}
+                                <p class="text-[#121416] text-base font-normal leading-normal">{{ choice.choice_label }}</p>
+                            </label>
+                        {% endfor %}
+                        {% if form.industries.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.industries.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Other Industry -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Other Industry</p>
+                            {{ form.other_industry }}
+                            {% if form.other_industry.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.other_industry.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Terms & Conditions -->
+                    <div class="px-4">
+                        <label class="flex gap-x-3 py-3 flex-row">
+                            {{ form.terms_accepted }}
+                            <p class="text-[#121416] text-base font-normal leading-normal">
+                                I agree to the Terms & Conditions
+                            </p>
+                        </label>
+                        {% if form.terms_accepted.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.terms_accepted.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="flex px-4 py-3">
+                        <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#dce8f3] text-[#121416] text-base font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">Continue to Payment</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

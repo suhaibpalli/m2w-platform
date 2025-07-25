@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                <h2 class="text-[#121416] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
+                    M2W Platform
+                </h2>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Email -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.password.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Remember Me -->
+                    <div class="flex items-center gap-4 bg-white px-4 min-h-14 justify-between">
+                        <p class="text-[#121416] text-base font-normal leading-normal flex-1 truncate">Remember me</p>
+                        <div class="shrink-0">
+                            <div class="flex size-7 items-center justify-center">
+                                {{ form.remember_me }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Login Button -->
+                    <div class="flex px-4 py-3">
+                        <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#dce8f3] text-[#121416] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">Login</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Additional Links -->
+                    <p class="text-[#6a7681] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline">
+                        <a href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+                    </p>
+                    <p class="text-[#6a7681] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline">
+                        <a href="{% url 'accounts:register' %}">Don't have an account? Register</a>
+                    </p>
+                    
+                    <!-- Platform Description -->
+                    <p class="text-[#121416] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
+                        Connect with leading suppliers and buyers across diverse industries. Streamline your sourcing and sales processes with our intuitive platform. Join a network of trusted businesses and expand your market reach.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
