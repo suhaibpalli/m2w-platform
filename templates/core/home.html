@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - M2W Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Connect in Metal, Wood, Plastic, Machineries, Technology
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-blue-100">
+            Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.
+        </p>
+        <div class="space-x-4">
+            <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                Get Started
+            </a>
+            <a href="{% url 'core:about' %}" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+                Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Value Propositions -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Value Propositions</h2>
+            <p class="text-xl text-gray-600">M2W Platform offers a comprehensive platform for B2B trading, connecting companies across various industries</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-lg transition">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Verified Listings</h3>
+                <p class="text-gray-600">Access a network of trusted suppliers with verified listings.</p>
+            </div>
+            <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-lg transition">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Flat Fee 
+                    {% if site_settings %}${{ site_settings.annual_fee }}{% else %}$999{% endif %}/year</h3>
+                <p class="text-gray-600">Enjoy transparent pricing with a flat annual fee.</p>
+            </div>
+            <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-lg transition">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Industry Focused</h3>
+                <p class="text-gray-600">Connect with businesses in your specific industry.</p>
+            </div>
+            <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-lg transition">
+                <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+                <p class="text-gray-600">Ensure secure transactions with our payment system.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p class="text-xl text-gray-600">Simple steps to start trading</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                <h3 class="text-xl font-semibold mb-2">Quick Signup & Payment</h3>
+                <p class="text-gray-600">Sign up and set up your payment method in minutes.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                <h3 class="text-xl font-semibold mb-2">List Products</h3>
+                <p class="text-gray-600">Showcase your products to a wide audience of potential buyers.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                <h3 class="text-xl font-semibold mb-2">Connect & Trade</h3>
+                <p class="text-gray-600">Connect with other businesses and start trading.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Industries Showcase -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Industries Showcase</h2>
+            <p class="text-xl text-gray-600">Specialized marketplace for key industrial sectors</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {% for industry in industries %}
+            <div class="text-center p-6 rounded-lg border hover:shadow-lg transition">
+                <div class="text-4xl mb-3">🏭</div>
+                <h3 class="font-semibold">{{ industry.name }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ industry.description|truncatechars:50 }}</p>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center text-gray-500">
+                No industries available
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Testimonials</h2>
+            <p class="text-xl text-gray-600">What our clients say about us</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600 mb-4">"M2W Platform has revolutionized our sourcing process. We've found reliable suppliers and expanded our network significantly."</p>
+                <p class="text-sm text-gray-500">- Sarah Chen, CEO of Company A</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600 mb-4">"The platform's industry focus and secure payment system have made trading much more efficient and trustworthy."</p>
+                <p class="text-sm text-gray-500">- David Lee, Procurement Manager at Company B</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600 mb-4">"We appreciate the transparent pricing and the ability to connect with verified businesses in our industry."</p>
+                <p class="text-sm text-gray-500">- Emily Wong, Founder of Company C</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-blue-600 text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Start Trading?</h2>
+        <p class="text-xl mb-8">Join thousands of companies already using M2W Platform</p>
+        <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+            Start Your Membership Today
+        </a>
+    </div>
+</section>
+{% endblock %}

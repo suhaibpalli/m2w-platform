@@ -50,3 +50,6 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+code_dump.txt
+code_dump_script.py

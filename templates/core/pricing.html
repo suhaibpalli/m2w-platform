@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Pricing - M2W Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Pricing Plans</h1>
+        <p class="text-xl text-blue-100">Choose the plan that best fits your business needs and start connecting with suppliers and buyers today.</p>
+    </div>
+</section>
+
+<!-- Pricing Card -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Business Plan</h2>
+                <div class="text-5xl font-bold text-blue-600 mb-2">
+                    ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}499{% endif %}
+                </div>
+                <div class="text-gray-600">/year</div>
+            </div>
+            
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Access to all industry categories</span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Unlimited supplier and buyer connections</span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Advanced search and filtering</span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Dedicated account manager</span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Priority customer support</span>
+                </div>
+            </div>
+            
+            <button class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Start Your Membership
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        
+        <div class="space-y-4">
+            <details class="bg-gray-50 rounded-lg p-4">
+                <summary class="font-semibold cursor-pointer flex justify-between items-center">
+                    What industries does M2W Platform support?
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-gray-600">
+                    We support Metal, Wood, Plastic, Machineries, Technology, and other industries. Our platform is designed to connect businesses across diverse industrial sectors.
+                </div>
+            </details>
+            
+            <details class="bg-gray-50 rounded-lg p-4">
+                <summary class="font-semibold cursor-pointer flex justify-between items-center">
+                    How does M2W Platform help my business grow?
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-gray-600">
+                    Our platform helps you find reliable suppliers, expand your network, access new markets, and streamline your procurement processes through our verified business network.
+                </div>
+            </details>
+            
+            <details class="bg-gray-50 rounded-lg p-4">
+                <summary class="font-semibold cursor-pointer flex justify-between items-center">
+                    What are the benefits of a paid membership?
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </summary>
+                <div class="mt-4 text-gray-600">
+                    Paid members get access to verified listings, unlimited connections, advanced search features, dedicated support, and priority access to new features and opportunities.
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Comparison Table</h2>
+        
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left font-semibold">Feature</th>
+                        <th class="px-6 py-4 text-left font-semibold">M2W Platform</th>
+                        <th class="px-6 py-4 text-left font-semibold">Traditional Methods</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4">Industry Access</td>
+                        <td class="px-6 py-4 text-green-600">All industries</td>
+                        <td class="px-6 py-4 text-gray-500">Limited</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4">Connections</td>
+                        <td class="px-6 py-4 text-green-600">Unlimited</td>
+                        <td class="px-6 py-4 text-gray-500">Limited</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4">Search & Filtering</td>
+                        <td class="px-6 py-4 text-green-600">Advanced</td>
+                        <td class="px-6 py-4 text-gray-500">Basic</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4">Support</td>
+                        <td class="px-6 py-4 text-green-600">Dedicated manager</td>
+                        <td class="px-6 py-4 text-gray-500">General support</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
