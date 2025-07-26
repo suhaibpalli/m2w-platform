@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit Product{% else %}Add Product{% endif %} - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight min-w-72">
+                        {% if object %}Edit Product Listing{% else %}Create New Product Listing{% endif %}
+                    </p>
+                </div>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Product Name -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Product Name</p>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Category -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Category</p>
+                            {{ form.category }}
+                            {% if form.category.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.category.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Description</p>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.description.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- Price and Currency -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Price</p>
+                            <div class="flex gap-2">
+                                {{ form.price }}
+                                {{ form.currency }}
+                            </div>
+                            {% if form.price.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.price.errors.0 }}</div>
+                            {% endif %}
+                        </label>
+                    </div>
+                    
+                    <!-- MOQ and Lead Time -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Minimum Order Quantity</p>
+                            {{ form.minimum_order_quantity }}
+                        </label>
+                    </div>
+                    
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Lead Time</p>
+                            {{ form.lead_time }}
+                        </label>
+                    </div>
+                    
+                    <!-- Image Upload -->
+                    <div class="flex flex-col p-4">
+                        <div class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-[#dbe1e6] px-6 py-14">
+                            <div class="flex max-w-[480px] flex-col items-center gap-2">
+                                <p class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">Upload Images</p>
+                                <p class="text-[#111518] text-sm font-normal leading-normal max-w-[480px] text-center">Drag and drop images here, or click to browse (max 3 images)</p>
+                            </div>
+                            <label for="id_images" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#f0f2f5] text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Browse Files</span>
+                            </label>
+                            {{ form.images }}
+                        </div>
+                    </div>
+                    
+                    <!-- Tags -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#111518] text-base font-medium leading-normal pb-2">Tags/Keywords</p>
+                            {{ form.tags }}
+                        </label>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex justify-stretch">
+                        <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
+                            <button type="submit" name="save_draft" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#f0f2f5] text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Save Draft</span>
+                            </button>
+                            <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#0b80ee] text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Publish</span>
+                            </button>
+                            <a href="{% url 'products:my_products' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-transparent text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Cancel</span>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Preview Section -->
+            <div class="layout-content-container flex flex-col w-[360px]">
+                <h2 class="text-[#111518] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Listing Preview</h2>
+                <div class="p-4">
+                    <div class="flex flex-col items-stretch justify-start rounded-xl">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-500">Product Image Preview</span>
+                        </div>
+                        <div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 py-4">
+                            <p class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em]">Product Name Placeholder</p>
+                            <div class="flex items-end gap-3 justify-between">
+                                <div class="flex flex-col gap-1">
+                                    <p class="text-[#60768a] text-base font-normal leading-normal">Category Placeholder</p>
+                                    <p class="text-[#60768a] text-base font-normal leading-normal">
+                                        This is a preview of how your listing will appear to potential buyers. Make sure all information is accurate and appealing.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -35,8 +35,8 @@
                 <!-- Auth Buttons -->
                 <div class="flex space-x-4">
                     {% if user.is_authenticated %}
-                        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                            Dashboard
+                        <a href="{% url 'products:my_products' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                            My Products
                         </a>
                         <a href="{% url 'accounts:logout' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
                             Logout

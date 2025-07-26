@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - M2W Platform{% endblock %}
+
+{% block extra_head %}
+<script>
+function changeMainImage(imageUrl, thumbnailElement) {
+    // Update main image
+    document.getElementById('main-image').style.backgroundImage = `url('${imageUrl}')`;
+    
+    // Update thumbnail borders
+    const thumbnails = document.querySelectorAll('.flex.flex-col.gap-2.w-24.p-2.bg-gray-50 > div');
+    thumbnails.forEach(thumb => {
+        thumb.classList.remove('border-blue-500');
+        thumb.classList.add('border-transparent');
+    });
+    
+    // Add border to clicked thumbnail
+    thumbnailElement.classList.remove('border-transparent');
+    thumbnailElement.classList.add('border-blue-500');
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap gap-2 p-4">
+                    <a class="text-[#617689] text-base font-medium leading-normal" href="{% url 'products:list' %}">Products</a>
+                    <span class="text-[#617689] text-base font-medium leading-normal">/</span>
+                    <a class="text-[#617689] text-base font-medium leading-normal" href="#">{{ product.category.industry.name }}</a>
+                    <span class="text-[#617689] text-base font-medium leading-normal">/</span>
+                    <span class="text-[#111518] text-base font-medium leading-normal">{{ product.category.name }}</span>
+                </div>
+                
+                <!-- Product Header -->
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <div class="flex min-w-72 flex-col gap-3">
+                        <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight">{{ product.name }}</p>
+                        <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+                
+                <!-- Product Images -->
+                <div class="flex w-full grow bg-white p-4">
+                    <div class="w-full gap-1 overflow-hidden bg-white aspect-[3/2] rounded-lg flex">
+                        {% if product.images %}
+                            <!-- Main Image Display -->
+                            <div class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1" id="main-image" style="background-image: url('{{ product.main_image }}');"></div>
+                            
+                            <!-- Image Thumbnails (if multiple images) -->
+                            {% if product.images|length > 1 %}
+                            <div class="flex flex-col gap-2 w-24 p-2 bg-gray-50">
+                                {% for image in product.images %}
+                                <div class="w-full aspect-square bg-center bg-no-repeat bg-cover rounded cursor-pointer border-2 {% if forloop.first %}border-blue-500{% else %}border-transparent{% endif %}" 
+                                     style="background-image: url('{{ image }}');"
+                                     onclick="changeMainImage('{{ image }}', this)">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="w-full bg-gray-200 aspect-auto rounded-none flex-1 flex items-center justify-center text-gray-400">No Image Available</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Product Details -->
+                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Product Details</h3>
+                <p class="text-[#111518] text-base font-normal leading-normal pb-3 pt-1 px-4">{{ product.description }}</p>
+                
+                <!-- Specifications -->
+                <div class="p-4">
+                    <div class="flex justify-between gap-x-6 py-2">
+                        <p class="text-[#617689] text-sm font-normal leading-normal">Price</p>
+                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">${{ product.price }} {{ product.currency }}</p>
+                    </div>
+                    {% if product.minimum_order_quantity %}
+                    <div class="flex justify-between gap-x-6 py-2">
+                        <p class="text-[#617689] text-sm font-normal leading-normal">Minimum Order Quantity</p>
+                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">{{ product.minimum_order_quantity }}</p>
+                    </div>
+                    {% endif %}
+                    {% if product.lead_time %}
+                    <div class="flex justify-between gap-x-6 py-2">
+                        <p class="text-[#617689] text-sm font-normal leading-normal">Lead Time</p>
+                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">{{ product.lead_time }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Company Information -->
+                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Company Information</h3>
+                <div class="p-4">
+                    <div class="flex items-stretch justify-between gap-4 rounded-lg">
+                        <div class="flex flex-col gap-1 flex-[2_2_0px]">
+                            <p class="text-[#617689] text-sm font-normal leading-normal">{% if product.company.is_verified %}Verified Supplier{% else %}Supplier{% endif %}</p>
+                            <p class="text-[#111518] text-base font-bold leading-tight">{{ product.company.company_name }}</p>
+                            <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.company.description|default:"Professional supplier" }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex justify-stretch">
+                    <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
+                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#3494ee] text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">Request Quote</span>
+                        </button>
+                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f2f4] text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">Contact Supplier</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Share and Save -->
+                <div class="gap-2 px-4 flex flex-wrap justify-start">
+                    <div class="flex flex-col items-center gap-2 bg-white py-2.5 text-center w-20">
+                        <div class="rounded-full bg-[#f0f2f4] p-2.5 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                <path d="M229.66,109.66l-48,48a8,8,0,0,1-11.32-11.32L204.69,112H165a88,88,0,0,0-85.23,66,8,8,0,0,1-15.5-4A103.94,103.94,0,0,1,165,96h39.71L170.34,61.66a8,8,0,0,1,11.32-11.32l48,48A8,8,0,0,1,229.66,109.66ZM192,208H40V88a8,8,0,0,0-16,0V208a16,16,0,0,0,16,16H192a8,8,0,0,0,0-16Z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-[#111518] text-sm font-medium leading-normal">Share</p>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 bg-white py-2.5 text-center w-20">
+                        <div class="rounded-full bg-[#f0f2f4] p-2.5 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,16V161.57l-51.77-32.35a8,8,0,0,0-8.48,0L72,161.56V48ZM132.23,177.22a8,8,0,0,0-8.48,0L72,209.57V180.43l56-35,56,35v29.14Z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-[#111518] text-sm font-medium leading-normal">Save</p>
+                    </div>
+                </div>
+                
+                <!-- Related Products -->
+                {% if related_products %}
+                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Related Products</h3>
+                <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div class="flex items-stretch p-4 gap-3">
+                        {% for related_product in related_products %}
+                        <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40">
+                            <a href="{% url 'products:detail' related_product.pk %}">
+                                {% if related_product.main_image %}
+                                <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style="background-image: url('{{ related_product.main_image }}');"></div>
+                                {% else %}
+                                <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                                {% endif %}
+                            </a>
+                            <div>
+                                <p class="text-[#111518] text-base font-medium leading-normal">
+                                    <a href="{% url 'products:detail' related_product.pk %}" class="hover:text-blue-600">{{ related_product.name }}</a>
+                                </p>
+                                <p class="text-[#617689] text-sm font-normal leading-normal">${{ related_product.price }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

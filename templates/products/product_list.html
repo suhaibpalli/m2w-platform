@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+            <!-- Filters Sidebar -->
+            <div class="layout-content-container flex flex-col w-80">
+                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Filters</h3>
+                
+                <form method="get" class="space-y-4">
+                    <!-- Category Filter -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            {{ search_form.category }}
+                        </label>
+                    </div>
+                    
+                    <!-- Industry Filter -->
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            {{ search_form.industry }}
+                        </label>
+                    </div>
+                    
+                    <!-- Price Range -->
+                    <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Price Range</h3>
+                    <div class="flex gap-2 px-4">
+                        {{ search_form.min_price }}
+                        {{ search_form.max_price }}
+                    </div>
+                    
+                    <div class="px-4">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                            Apply Filters
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">{{ products|length }} Results</h3>
+                
+                <!-- Search Form -->
+                <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                    <form method="get" class="flex-1">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            {{ search_form.query }}
+                        </label>
+                    </form>
+                </div>
+                
+                <!-- Products Grid -->
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+                    {% for product in products %}
+                    <div class="flex flex-col gap-3 pb-3">
+                        <a href="{% url 'products:detail' product.pk %}">
+                            {% if product.main_image %}
+                            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg relative" style="background-image: url('{{ product.main_image }}');">
+                                {% if product.images|length > 1 %}
+                                <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                    +{{ product.images|length|add:"-1" }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                            {% endif %}
+                        </a>
+                        <div>
+                            <p class="text-[#111518] text-base font-medium leading-normal">
+                                <a href="{% url 'products:detail' product.pk %}" class="hover:text-blue-600">{{ product.name }}</a>
+                            </p>
+                            <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.company.company_name }}</p>
+                            <p class="text-[#111518] text-sm font-semibold">${{ product.price }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-500 text-xl">No products found matching your criteria.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="flex items-center justify-center p-4">
+                    {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="flex size-10 items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                        </svg>
+                    </a>
+                    {% endif %}
+                    
+                    <span class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-[#111518] rounded-full bg-[#f0f2f5]">{{ page_obj.number }}</span>
+                    
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="flex size-10 items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
