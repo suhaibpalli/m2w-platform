@@ -31,8 +31,8 @@ staticfiles/
 # Migrations (optional – include if auto-generated and should not be versioned)
 **/migrations/*.pyc
 **/migrations/__pycache__/
-**/migrations/*.py
-!**/migrations/__init__.py
+# **/migrations/*.py
+# !**/migrations/__init__.py
 
 # Coverage and test files
 htmlcov/
