@@ -13,13 +13,23 @@ class RegisterView(CreateView):
     form_class = CompanyRegistrationForm
     template_name = 'accounts/register.html'
     success_url = '/payments/checkout/'  # Will redirect to payment after registration
-    
+
     def form_valid(self, form):
         user = form.save()
-        # Login the user immediately after registration
         login(self.request, user)
-        messages.success(self.request, 'Registration successful! Please complete your payment to activate your account.')
-        return redirect(self.success_url)
+        role = user.company.role
+        if role == 'vendor':
+            messages.success(
+                self.request,
+                'Registration successful! Please complete your payment to activate your vendor account.'
+            )
+            return redirect('/payments/checkout/')
+        else:
+            messages.success(
+                self.request,
+                'Registration successful! Welcome aboard. You can now browse the marketplace.'
+            )
+            return redirect('accounts:profile')
     
     def form_invalid(self, form):
         messages.error(self.request, 'Please correct the errors below.')
@@ -44,20 +54,21 @@ class CustomLoginView(LoginView):
         context['hide_header'] = True  # Hide main navigation on login page
         return context
 
-# class CustomLogoutView(LogoutView):
-#     next_page = '/'
-#     
-#     def dispatch(self, request, *args, **kwargs):
-#         messages.success(request, 'You have been logged out successfully.')
-#         return super().dispatch(request, *args, **kwargs)
-
 class CustomLogoutView(LogoutView):
     next_page = '/'
-    http_method_names = ['get', 'post']  # Allow both GET and POST
+    http_method_names = ['get', 'post']
 
-    def dispatch(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        from django.contrib.auth import logout
+        logout(request)
         messages.success(request, 'You have been logged out successfully.')
-        return super().dispatch(request, *args, **kwargs)
+        return redirect(self.next_page)
+
+    def post(self, request, *args, **kwargs):
+        from django.contrib.auth import logout
+        logout(request)
+        messages.success(request, 'You have been logged out successfully.')
+        return redirect(self.next_page)
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset.html'

@@ -6,9 +6,33 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 from .models import Product, Category
 from .forms import ProductForm, ProductSearchForm
 from core.models import Industry
+
+# ─── Insert these two right here ──────────────────────────────
+class BusinessBuyerRequiredMixin:
+    """Only allow business‑buyer users."""
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.company.role != 'business_buyer':
+            raise PermissionDenied("Only business buyers may access this page.")
+        return super().dispatch(request, *args, **kwargs)
+
+class SubscriptionRequiredMixin:
+    """Only allow users whose Company.subscription_status == 'active'."""
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.company.is_subscription_active:
+            messages.error(request, "Your subscription is not active. Please renew to continue.")
+            return redirect('core:pricing')
+        return super().dispatch(request, *args, **kwargs)
+# ───────────────────────────────────────────────────────────────
+
+class VendorRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.company.role != 'vendor':
+            raise PermissionDenied("Only vendors may manage products.")
+        return super().dispatch(request, *args, **kwargs)
 
 class ProductListView(ListView):
     """Public product listing with search and filters"""
@@ -87,7 +111,12 @@ class ProductDetailView(DetailView):
         
         return context
 
-class MyProductsView(LoginRequiredMixin, ListView):
+class MyProductsView(
+    VendorRequiredMixin,
+    SubscriptionRequiredMixin,
+    LoginRequiredMixin,
+    ListView
+):
     """Dashboard view for user's products"""
     model = Product
     template_name = 'products/my_products.html'
@@ -109,7 +138,12 @@ class MyProductsView(LoginRequiredMixin, ListView):
             
         return queryset
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(
+    VendorRequiredMixin,
+    SubscriptionRequiredMixin,
+    LoginRequiredMixin,
+    CreateView
+):
     """Create new product"""
     model = Product
     form_class = ProductForm
@@ -138,7 +172,12 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('products:my_products')
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(
+    VendorRequiredMixin,
+    SubscriptionRequiredMixin,
+    LoginRequiredMixin,
+    UpdateView
+):
     """Edit existing product"""
     model = Product
     form_class = ProductForm
@@ -169,7 +208,12 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('products:my_products')
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(
+    VendorRequiredMixin,
+    SubscriptionRequiredMixin,
+    LoginRequiredMixin,
+    DeleteView
+):
     """Delete product"""
     model = Product
     template_name = 'products/product_confirm_delete.html'

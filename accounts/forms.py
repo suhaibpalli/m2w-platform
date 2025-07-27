@@ -5,6 +5,12 @@ from .models import Company
 from core.models import Industry
 
 class CompanyRegistrationForm(UserCreationForm):
+    role = forms.ChoiceField(
+        choices=Company.ROLE_CHOICES,
+        widget=forms.RadioSelect,
+        initial='vendor',
+        label="Account Type"
+    )
     company_name = forms.CharField(
         max_length=200,
         widget=forms.TextInput(attrs={
@@ -46,7 +52,11 @@ class CompanyRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'company_name', 'password1', 'password2', 'industries', 'other_industry', 'terms_accepted')
+        fields = (
+            'role', 'email', 'company_name',
+            'password1', 'password2',
+            'industries', 'other_industry', 'terms_accepted'
+        )
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -72,13 +82,23 @@ class CompanyRegistrationForm(UserCreationForm):
             user.save()
             # Update company details
             company = user.company
+            # set role
+            company.role = self.cleaned_data['role']
             company.company_name = self.cleaned_data['company_name']
             company.other_industry = self.cleaned_data.get('other_industry', '')
-            company.save()
             
             # Set industries
             if self.cleaned_data['industries']:
                 company.industries.set(self.cleaned_data['industries'])
+
+            # For buyers, skip subscription
+            if company.role != 'vendor':
+                from django.utils import timezone
+                company.subscription_status = 'active'
+                company.subscription_start_date = timezone.now()
+                company.subscription_end_date = None
+
+            company.save()
         
         return user
 

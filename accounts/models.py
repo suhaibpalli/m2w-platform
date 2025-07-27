@@ -6,6 +6,17 @@ from core.models import Industry
 
 class Company(models.Model):
     """Company profile linked to User"""
+    ROLE_CHOICES = [
+        ('vendor', 'Vendor'),
+        ('business_buyer', 'Business Buyer'),
+        ('consumer_buyer', 'Consumer Buyer'),
+    ]
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='vendor',
+        help_text="Are you registering as a vendor or buyer?"
+    )
     SUBSCRIPTION_STATUS_CHOICES = [
         ('active', 'Active'),
         ('expired', 'Expired'),

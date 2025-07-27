@@ -26,6 +26,7 @@
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex space-x-8">
                     <a href="{% url 'core:home' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'home' %}text-blue-600 font-semibold{% endif %}">Home</a>
+                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'list' %}text-blue-600 font-semibold{% endif %}">Products</a>
                     <a href="{% url 'core:about' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'about' %}text-blue-600 font-semibold{% endif %}">About</a>
                     <a href="{% url 'core:industries' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'industries' %}text-blue-600 font-semibold{% endif %}">Industries</a>
                     <a href="{% url 'core:pricing' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'pricing' %}text-blue-600 font-semibold{% endif %}">Pricing</a>
@@ -35,9 +36,15 @@
                 <!-- Auth Buttons -->
                 <div class="flex space-x-4">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'products:my_products' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                            My Products
-                        </a>
+                        {% if user.company.role == 'vendor' %}
+                            <a href="{% url 'products:my_products' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                My Products
+                            </a>
+                        {% elif user.company.role == 'business_buyer' %}
+                            <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                My Quotes
+                            </a>
+                        {% endif %}
                         <a href="{% url 'accounts:logout' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
                             Logout
                         </a>
@@ -66,6 +73,7 @@
         <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="{% url 'core:home' %}" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                <a href="{% url 'products:list' %}" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Products</a>
                 <a href="{% url 'core:about' %}" class="block px-3 py-2 text-gray-700 hover:text-blue-600">About</a>
                 <a href="{% url 'core:industries' %}" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Industries</a>
                 <a href="{% url 'core:pricing' %}" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Pricing</a>
@@ -102,6 +110,7 @@
                 <div>
                     <h4 class="font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
+                        <li><a href="{% url 'products:list' %}" class="text-gray-300 hover:text-white">Products</a></li>
                         <li><a href="{% url 'core:about' %}" class="text-gray-300 hover:text-white">About</a></li>
                         <li><a href="{% url 'core:industries' %}" class="text-gray-300 hover:text-white">Industries</a></li>
                         <li><a href="{% url 'core:pricing' %}" class="text-gray-300 hover:text-white">Pricing</a></li>
