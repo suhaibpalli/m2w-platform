@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                
+                <!-- Welcome Banner -->
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <div class="flex min-w-72 flex-col gap-3">
+                        <p class="text-[#121417] tracking-light text-[32px] font-bold leading-tight">
+                            Welcome back, {{ company.company_name }}!
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <span class="flex items-center justify-center rounded-full h-8 px-4 
+                                {% if company.subscription_status == 'active' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %} 
+                                text-sm font-medium leading-normal">
+                                {% if company.subscription_status == 'active' %}✓ Active Subscription{% else %}⚠ {{ company.get_subscription_status_display }}{% endif %}
+                            </span>
+                            {% if company.subscription_end_date %}
+                            <span class="text-[#687682] text-sm">
+                                {% if company.subscription_status == 'active' %}
+                                    Expires: {{ company.subscription_end_date|date:"M d, Y" }}
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Cards -->
+                <div class="flex flex-wrap gap-4 p-4">
+                    {% if is_vendor %}
+                    <a href="{% url 'products:add' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#c2d9ee] hover:bg-[#b0ccdf] transition cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-600 text-white p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                    <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#121417] text-base font-bold">Add New Product</p>
+                                <p class="text-[#687682] text-sm">List a new product</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="{% url 'products:my_products' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4] hover:bg-[#e8eaed] transition cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-gray-600 text-white p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                    <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#121417] text-base font-bold">My Products</p>
+                                <p class="text-[#687682] text-sm">Manage your listings</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'products:list' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#c2d9ee] hover:bg-[#b0ccdf] transition cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-600 text-white p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                    <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#121417] text-base font-bold">Browse Products</p>
+                                <p class="text-[#687682] text-sm">Find suppliers</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <div class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-gray-600 text-white p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                    <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,144H32V64H224V192ZM176,88a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,88Zm0,32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,120Zm0,32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,152Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[#121417] text-base font-bold">My Quotes</p>
+                                <p class="text-[#687682] text-sm">View quote requests</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="flex flex-wrap gap-4 p-4">
+                    {% if is_vendor %}
+                    <!-- Vendor Stats -->
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Total Products</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_products }}</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Active Listings</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ active_products }}</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Draft Products</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ draft_products }}</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Total Views</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_views }}</p>
+                    </div>
+                    {% else %}
+                    <!-- Buyer Stats -->
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Available Products</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_marketplace_products }}</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Industries</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ available_industries }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recent Activity Section -->
+                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Recent Activity</h2>
+                <div class="px-4 py-3">
+                    <div class="flex overflow-hidden rounded-xl border border-[#dde1e4] bg-white">
+                        <table class="flex-1">
+                            <thead>
+                                <tr class="bg-white">
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Activity</th>
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Details</th>
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in recent_activity %}
+                                <tr class="border-t border-t-[#dde1e4]">
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#121417] text-sm font-normal leading-normal">
+                                        {{ activity.type|title }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
+                                        {{ activity.description }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
+                                        {{ activity.timestamp|date:"M d, Y g:i A" }}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr class="border-t border-t-[#dde1e4]">
+                                    <td colspan="3" class="h-[72px] px-4 py-2 text-center text-[#687682] text-sm font-normal leading-normal">
+                                        No recent activity
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if is_vendor and recent_products %}
+                <!-- Recent Products Section (Vendors only) -->
+                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your Recent Products</h2>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 p-4">
+                    {% for product in recent_products %}
+                    <div class="flex flex-col gap-3 pb-3">
+                        <a href="{% url 'products:detail' product.pk %}">
+                            {% if product.main_image %}
+                            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style="background-image: url('{{ product.main_image }}');"></div>
+                            {% else %}
+                            <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
+                            {% endif %}
+                        </a>
+                        <div>
+                            <p class="text-[#121417] text-base font-medium leading-normal">
+                                <a href="{% url 'products:detail' product.pk %}" class="hover:text-blue-600">{{ product.name }}</a>
+                            </p>
+                            <p class="text-[#687682] text-sm font-normal leading-normal">${{ product.price }}</p>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                                {% if product.status == 'active' %}bg-green-100 text-green-800{% elif product.status == 'draft' %}bg-yellow-100 text-yellow-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ product.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

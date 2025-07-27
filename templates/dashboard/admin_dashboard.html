@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                
+                <!-- Header -->
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <p class="text-[#121417] tracking-light text-[32px] font-bold leading-tight min-w-72">Analytics Dashboard</p>
+                </div>
+                
+                <!-- Key Metrics Cards -->
+                <div class="flex flex-wrap gap-4 p-4">
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Users</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_users }}</p>
+                        <p class="text-[#078838] text-base font-medium leading-normal">+{{ user_growth_rate|floatformat:0 }}%</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Products</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_products }}</p>
+                        <p class="text-[#078838] text-base font-medium leading-normal">+{{ product_growth_rate|floatformat:0 }}%</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Companies</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_companies }}</p>
+                        <p class="text-[#078838] text-base font-medium leading-normal">+15%</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Active Subscriptions</p>
+                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ active_subscriptions }}</p>
+                        <p class="text-[#078838] text-base font-medium leading-normal">+8%</p>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="flex flex-wrap gap-4 px-4 py-6">
+                    <!-- Product Category Distribution -->
+                    <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-xl border border-[#dde1e4] p-6">
+                        <p class="text-[#121417] text-base font-medium leading-normal">Product Category Distribution</p>
+                        <p class="text-[#121417] tracking-light text-[32px] font-bold leading-tight truncate">+15%</p>
+                        <div class="flex gap-1">
+                            <p class="text-[#687682] text-base font-normal leading-normal">Last 30 Days</p>
+                            <p class="text-[#078838] text-base font-medium leading-normal">+15%</p>
+                        </div>
+                        <div class="grid min-h-[180px] gap-x-4 gap-y-6 grid-cols-[auto_1fr] items-center py-3">
+                            {% for industry in industry_stats %}
+                            <p class="text-[#687682] text-[13px] font-bold leading-normal tracking-[0.015em]">{{ industry.name }}</p>
+                            <div class="h-full flex-1">
+                                <div class="border-[#687682] bg-[#f1f2f4] border-r-2 h-full" style="width: {{ industry.percentage|floatformat:0 }}%;"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Recent Activity</h2>
+                <div class="px-4 py-3">
+                    <div class="flex overflow-hidden rounded-xl border border-[#dde1e4] bg-white">
+                        <table class="flex-1">
+                            <thead>
+                                <tr class="bg-white">
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Activity</th>
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Details</th>
+                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in recent_activity %}
+                                <tr class="border-t border-t-[#dde1e4]">
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#121417] text-sm font-normal leading-normal">
+                                        {{ activity.type }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
+                                        {{ activity.description }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
+                                        {{ activity.timestamp|date:"M d, Y g:i A" }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Quick Actions</h2>
+                <div class="flex justify-stretch">
+                    <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
+                        <a href="/admin/" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#c2d9ee] text-[#121417] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">User Management</span>
+                        </a>
+                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f1f2f4] text-[#121417] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">Content Moderation</span>
+                        </button>
+                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f1f2f4] text-[#121417] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate">System Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

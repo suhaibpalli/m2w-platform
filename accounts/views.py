@@ -29,7 +29,7 @@ class RegisterView(CreateView):
                 self.request,
                 'Registration successful! Welcome aboard. You can now browse the marketplace.'
             )
-            return redirect('accounts:profile')
+            return redirect('dashboard:home')  # ← Changed this line
     
     def form_invalid(self, form):
         messages.error(self.request, 'Please correct the errors below.')

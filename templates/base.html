@@ -32,22 +32,56 @@
                     <a href="{% url 'core:pricing' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'pricing' %}text-blue-600 font-semibold{% endif %}">Pricing</a>
                     <a href="{% url 'core:contact' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 {% if request.resolver_match.url_name == 'contact' %}text-blue-600 font-semibold{% endif %}">Contact</a>
                 </div>
-                
+
                 <!-- Auth Buttons -->
                 <div class="flex space-x-4">
                     {% if user.is_authenticated %}
-                        {% if user.company.role == 'vendor' %}
-                            <a href="{% url 'products:my_products' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                                My Products
-                            </a>
-                        {% elif user.company.role == 'business_buyer' %}
-                            <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                                My Quotes
+                        <a href="{% url 'dashboard:home' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                            Dashboard
+                        </a>
+                        {% if user.company.subscription_status == 'active' %}
+                            {% if user.company.role == 'vendor' %}
+                                <a href="{% url 'products:my_products' %}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                                    My Products
+                                </a>
+                            {% elif user.company.role == 'business_buyer' %}
+                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                                    My Quotes
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'accounts:profile' %}" class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700">
+                                Complete Payment
                             </a>
                         {% endif %}
-                        <a href="{% url 'accounts:logout' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
-                            Logout
+                        {% if user.is_staff %}
+                        <a href="{% url 'dashboard:admin' %}" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+                            Admin
                         </a>
+                        {% endif %}
+                        <div class="relative group">
+                            <button class="text-gray-700 hover:text-blue-600 px-3 py-2 flex items-center">
+                                {{ user.company.company_name }}
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
+                                <div class="px-4 py-2 text-sm text-gray-700 border-b">
+                                    <div class="font-semibold">{{ user.company.company_name }}</div>
+                                    <div class="text-xs text-gray-500">{{ user.company.get_role_display }}</div>
+                                    <div class="text-xs {% if user.company.subscription_status == 'active' %}text-green-600{% elif user.company.subscription_status == 'pending' %}text-orange-600{% else %}text-red-600{% endif %}">
+                                        Status: {{ user.company.get_subscription_status_display }}
+                                    </div>
+                                </div>
+                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Profile Settings
+                                </a>
+                                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
                     {% else %}
                         <a href="{% url 'accounts:login' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2">
                             Login
