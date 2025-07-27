@@ -32,3 +32,7 @@ urllib3==2.5.0
 uv==0.7.19
 xlsxwriter==3.2.5
 yarl==1.20.1
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary

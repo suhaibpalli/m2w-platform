@@ -53,3 +53,6 @@ yarn-error.log*
 
 code_dump.txt
 code_dump_script.py
+env.*
+.env.*
+.env
