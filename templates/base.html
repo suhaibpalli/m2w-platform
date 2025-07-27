@@ -39,13 +39,20 @@
                         <a href="{% url 'dashboard:home' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                             Dashboard
                         </a>
+                        
+                        <!-- Messages Link with Badge -->
+                        <a href="{% url 'messaging:messages' %}" class="relative bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                            Messages
+                            <span id="message-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                        </a>
+                        
                         {% if user.company.subscription_status == 'active' %}
                             {% if user.company.role == 'vendor' %}
-                                <a href="{% url 'products:my_products' %}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                                <a href="{% url 'products:my_products' %}" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
                                     My Products
                                 </a>
                             {% elif user.company.role == 'business_buyer' %}
-                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                                <a href="{% url 'messaging:quotes_sent' %}" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
                                     My Quotes
                                 </a>
                             {% endif %}
@@ -54,11 +61,13 @@
                                 Complete Payment
                             </a>
                         {% endif %}
+                        
                         {% if user.is_staff %}
                         <a href="{% url 'dashboard:admin' %}" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
                             Admin
                         </a>
                         {% endif %}
+                        
                         <div class="relative group">
                             <button class="text-gray-700 hover:text-blue-600 px-3 py-2 flex items-center">
                                 {{ user.company.company_name }}
@@ -74,6 +83,9 @@
                                         Status: {{ user.company.get_subscription_status_display }}
                                     </div>
                                 </div>
+                                <a href="{% url 'messaging:notifications' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Notifications
+                                </a>
                                 <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     Profile Settings
                                 </a>
@@ -176,6 +188,30 @@
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         });
+    </script>
+
+    <script>
+    {% if user.is_authenticated %}
+    // Update unread message count
+    function updateMessageBadge() {
+        fetch('{% url "messaging:unread_count" %}')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('message-badge');
+                if (data.total > 0) {
+                    badge.textContent = data.total;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            })
+            .catch(error => console.log('Error fetching unread count:', error));
+    }
+
+    // Update badge on page load and every 30 seconds
+    updateMessageBadge();
+    setInterval(updateMessageBadge, 30000);
+    {% endif %}
     </script>
     
     {% block extra_js %}{% endblock %}

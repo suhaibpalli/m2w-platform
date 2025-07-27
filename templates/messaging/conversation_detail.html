@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversation - {{ conversation.quote_request.product.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <div class="bg-white rounded-lg shadow-md">
+        <!-- Header -->
+        <div class="p-6 border-b">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-xl font-bold">{{ conversation.quote_request.product.name }}</h1>
+                    <p class="text-gray-600">Conversation with {{ other_participant.company_name }}</p>
+                </div>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                    {% if conversation.quote_request.status == 'pending' %}bg-yellow-100 text-yellow-800
+                    {% elif conversation.quote_request.status == 'responded' %}bg-blue-100 text-blue-800
+                    {% elif conversation.quote_request.status == 'accepted' %}bg-green-100 text-green-800
+                    {% elif conversation.quote_request.status == 'declined' %}bg-red-100 text-red-800
+                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ conversation.quote_request.get_status_display }}
+                </span>
+            </div>
+        </div>
+        
+        <!-- Quote Details -->
+        <div class="p-6 bg-gray-50 border-b">
+            <h3 class="font-semibold mb-3">Quote Request Details</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><strong>Quantity:</strong> {{ conversation.quote_request.quantity }}</div>
+                <div><strong>Target Price:</strong> ${{ conversation.quote_request.target_price|default:"Not specified" }}</div>
+                <div><strong>Delivery Location:</strong> {{ conversation.quote_request.delivery_location }}</div>
+                <div><strong>Expected Delivery:</strong> {{ conversation.quote_request.expected_delivery }}</div>
+            </div>
+            <div class="mt-3">
+                <strong>Original Message:</strong>
+                <p class="mt-1">{{ conversation.quote_request.message }}</p>
+            </div>
+        </div>
+        
+        <!-- Messages -->
+        <div class="p-6" style="max-height: 400px; overflow-y: auto;">
+            {% for message in messages %}
+            <div class="mb-4 {% if message.sender == user.company %}text-right{% endif %}">
+                <div class="inline-block max-w-xs lg:max-w-md px-4 py-2 rounded-lg 
+                    {% if message.sender == user.company %}bg-blue-600 text-white{% else %}bg-gray-200 text-gray-800{% endif %}">
+                    <p>{{ message.content }}</p>
+                    <p class="text-xs mt-1 {% if message.sender == user.company %}text-blue-100{% else %}text-gray-500{% endif %}">
+                        {{ message.created_at|date:"M d, g:i A" }}
+                    </p>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">
+                    {% if message.sender != user.company %}{{ message.sender.company_name }}{% else %}You{% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Message Form -->
+        <div class="p-6 border-t">
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex space-x-4">
+                    {{ message_form.content }}
+                    <button type="submit" name="send_message" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Quote Response (for suppliers) -->
+        {% if user.company == conversation.quote_request.supplier and conversation.quote_request.status == 'pending' %}
+        <div class="p-6 border-t bg-yellow-50">
+            <h3 class="font-semibold mb-3">Respond to Quote Request</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Your Response</label>
+                        <textarea name="response_message" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Provide your quote details, pricing, delivery terms, etc."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Update Status</label>
+                        {{ quote_response_form.status }}
+                    </div>
+                    <button type="submit" name="respond_quote" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                        Send Response
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -107,14 +107,73 @@ function changeMainImage(imageUrl, thumbnailElement) {
                 <!-- Action Buttons -->
                 <div class="flex justify-stretch">
                     <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
-                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#3494ee] text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                            <span class="truncate">Request Quote</span>
-                        </button>
+                        {% if user.is_authenticated and user.company != product.company %}
+                            <button onclick="openQuoteModal()" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#3494ee] text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate">Request Quote</span>
+                            </button>
+                        {% endif %}
                         <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f2f4] text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate">Contact Supplier</span>
                         </button>
                     </div>
                 </div>
+
+                <!-- Quote Request Modal -->
+                <div id="quoteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+                    <div class="flex items-center justify-center min-h-screen">
+                        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold">Request Quote</h3>
+                                <button onclick="closeQuoteModal()" class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="flex items-center space-x-3">
+                                    {% if product.main_image %}
+                                    <div class="w-12 h-12 bg-center bg-no-repeat bg-cover rounded" style="background-image: url('{{ product.main_image }}');"></div>
+                                    {% endif %}
+                                    <div>
+                                        <h4 class="font-semibold">{{ product.name }}</h4>
+                                        <p class="text-sm text-gray-600">{{ product.company.company_name }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <p class="text-gray-600 mb-4">To request a quote, you'll be redirected to our secure quote request form.</p>
+                                <div class="flex space-x-3">
+                                    <button onclick="closeQuoteModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400">
+                                        Cancel
+                                    </button>
+                                    <a href="{% url 'messaging:request_quote' product.pk %}" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-center">
+                                        Continue
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                function openQuoteModal() {
+                    document.getElementById('quoteModal').classList.remove('hidden');
+                }
+
+                function closeQuoteModal() {
+                    document.getElementById('quoteModal').classList.add('hidden');
+                }
+
+                // Close modal when clicking outside
+                document.getElementById('quoteModal').addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeQuoteModal();
+                    }
+                });
+                </script>
                 
                 <!-- Share and Save -->
                 <div class="gap-2 px-4 flex flex-wrap justify-start">

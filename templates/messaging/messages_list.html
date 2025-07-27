@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Messages - M2W Platform{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-8 px-4">
+    <div class="flex gap-6">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white rounded-lg shadow-md p-4">
+            <h2 class="font-bold text-lg mb-4">Messages</h2>
+            <nav class="space-y-2">
+                <a href="{% url 'messaging:messages' %}" class="block px-3 py-2 rounded bg-blue-100 text-blue-700">
+                    All Conversations
+                </a>
+                {% if user.company.role == 'vendor' %}
+                <a href="{% url 'messaging:quotes_received' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
+                    Quotes Received
+                </a>
+                {% else %}
+                <a href="{% url 'messaging:quotes_sent' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
+                    Quotes Sent
+                </a>
+                {% endif %}
+                <a href="{% url 'messaging:notifications' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
+                    Notifications
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Conversations List -->
+        <div class="flex-1 bg-white rounded-lg shadow-md">
+            <div class="p-6 border-b">
+                <h1 class="text-2xl font-bold">Your Conversations</h1>
+            </div>
+            
+            <div class="divide-y">
+                {% for conversation in conversations %}
+                <div class="p-4 hover:bg-gray-50">
+                    <a href="{% url 'messaging:conversation' conversation.pk %}" class="block">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                {% if conversation.quote_request.product.main_image %}
+                                <div class="w-12 h-12 bg-center bg-no-repeat bg-cover rounded" style="background-image: url('{{ conversation.quote_request.product.main_image }}');"></div>
+                                {% endif %}
+                                <div>
+                                    <h3 class="font-semibold">{{ conversation.quote_request.product.name }}</h3>
+                                    <p class="text-sm text-gray-600">
+                                        {% if user.company == conversation.quote_request.requester %}
+                                            with {{ conversation.quote_request.supplier.company_name }}
+                                        {% else %}
+                                            from {{ conversation.quote_request.requester.company_name }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ conversation.updated_at|date:"M d, Y g:i A" }}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                                    {% if conversation.quote_request.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif conversation.quote_request.status == 'responded' %}bg-blue-100 text-blue-800
+                                    {% elif conversation.quote_request.status == 'accepted' %}bg-green-100 text-green-800
+                                    {% elif conversation.quote_request.status == 'declined' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ conversation.quote_request.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="p-8 text-center text-gray-500">
+                    <p>No conversations yet.</p>
+                    <a href="{% url 'products:list' %}" class="text-blue-600 hover:underline">Browse products to start conversations</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
