@@ -34,6 +34,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -178,3 +179,33 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = 'DENY'
+
+# Jazzmin config
+JAZZMIN_SETTINGS = {
+
+    ### Branding ###
+    "site_title":    "M2W Admin Panel",        # <title>
+    "site_header":   "M2W Platform Admin",     # top left
+    "site_brand":    "M2W Platform",           # sidebar logo text
+    "site_logo":     None,                     # you can point to your own SVG/PNG
+    "show_developer": False,                   # hide “Powered by Django” link
+    "copyright":     "© 2025 M2W Platform",    # your own footer
+                                           
+    ### Theme ###
+    "theme":        "darkly",                 # choose any Bootswatch theme
+    "dark_mode_theme": "cyborg",               # optional dark theme
+    "show_ui_builder": True,                   # live-theme editor (disable in prod)
+
+    ### Layout ###
+    "topmenu_links": [                         # add/remove top‑bar links
+        {"name": "Home",  "url": "/", "permissions": ["auth.view_user"]},
+    ],
+    "order_with_respect_to": ["auth", "core"], # menu ordering
+    "custom_css":  None,                       # if you have extra CSS
+    "custom_js":   None,                       # or JS
+
+    # …and dozens more. See full list: 
+    # https://github.com/farridav/django-jazzmin#settings
+}
+
+JAZZMIN_SETTINGS["show_ui_builder"] = True
