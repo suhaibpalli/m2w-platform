@@ -7,6 +7,7 @@ class Industry(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
     icon = models.CharField(max_length=50, blank=True)  # CSS class for icon
+    image = models.TextField(blank=True, help_text="Base64 encoded industry image")  # Add this line
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -21,6 +22,18 @@ class Industry(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def add_image_from_file(self, image_file):
+        """Convert uploaded file to base64"""
+        import base64
+        
+        # Reset file pointer to beginning
+        image_file.seek(0)
+        
+        encoded = base64.b64encode(image_file.read()).decode('utf-8')
+        mime_type = image_file.content_type
+        self.image = f"data:{mime_type};base64,{encoded}"
+
 
 class ContactInquiry(models.Model):
     """Contact form submissions"""

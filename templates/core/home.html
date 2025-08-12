@@ -180,7 +180,6 @@
             </div>
         </div>
     </div>
-
     <!-- Industries Showcase -->
     <div class="relative bg-gradient-to-b from-white to-gray-50 py-20">
         <div class="px-4 lg:px-10 flex flex-1 justify-center">
@@ -192,8 +191,14 @@
                 
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 fade-in-section" data-delay="200">
                     {% for industry in industries %}
-                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-blue-50 industry-card" data-delay="{{ forloop.counter0|add:0|floatformat:0|add:0 }}">
-                        <div class="w-12 h-12 text-2xl group-hover:scale-110 transition-transform duration-300 group-hover:animate-bounce">🏭</div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-blue-50 industry-card overflow-hidden" data-delay="{{ forloop.counter0|add:0|floatformat:0|add:0 }}">
+                        {% if industry.image %}
+                            <div class="w-16 h-16 rounded-lg overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                                <img src="{{ industry.image }}" alt="{{ industry.name }}" class="w-full h-full object-cover">
+                            </div>
+                        {% else %}
+                            <div class="w-12 h-12 text-2xl group-hover:scale-110 transition-transform duration-300 group-hover:animate-bounce">🏭</div>
+                        {% endif %}
                         <h3 class="text-[#111418] font-semibold text-sm group-hover:text-blue-600 transition-colors duration-300">{{ industry.name }}</h3>
                     </div>
                     {% empty %}

@@ -17,13 +17,16 @@
                         </p>
                     </div>
                 </div>
-
                 <!-- Industries Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 mb-8">
                     {% for industry in industries %}
-                    <div class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-video hover:shadow-lg transition-all duration-200 cursor-pointer"
-                         style='background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url("https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&h=300&fit=crop&auto=format");'>
-                        <p class="text-white text-base font-bold leading-tight">{{ industry.name }}</p>
+                    <div class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-video hover:shadow-lg transition-all duration-200 cursor-pointer relative overflow-hidden"
+                         {% if industry.image %}
+                         style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url('{{ industry.image }}') center/cover;"
+                         {% else %}
+                         style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url('https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&h=300&fit=crop&auto=format') center/cover;"
+                         {% endif %}>
+                        <p class="text-white text-base font-bold leading-tight relative z-10">{{ industry.name }}</p>
                     </div>
                     {% empty %}
                     <!-- Default Industries -->
