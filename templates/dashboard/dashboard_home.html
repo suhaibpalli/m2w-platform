@@ -1,197 +1,293 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard - M2W Platform{% endblock %}
+{% block title %}Dashboard - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<div class="relative flex size-full min-h-screen flex-col bg-white">
-    <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                
-                <!-- Welcome Banner -->
-                <div class="flex flex-wrap justify-between gap-3 p-4">
-                    <div class="flex min-w-72 flex-col gap-3">
-                        <p class="text-[#121417] tracking-light text-[32px] font-bold leading-tight">
-                            Welcome back, {{ company.company_name }}!
-                        </p>
-                        <div class="flex items-center gap-4">
-                            <span class="flex items-center justify-center rounded-full h-8 px-4 
-                                {% if company.subscription_status == 'active' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %} 
-                                text-sm font-medium leading-normal">
-                                {% if company.subscription_status == 'active' %}✓ Active Subscription{% else %}⚠ {{ company.get_subscription_status_display }}{% endif %}
-                            </span>
-                            {% if company.subscription_end_date %}
-                            <span class="text-[#687682] text-sm">
-                                {% if company.subscription_status == 'active' %}
-                                    Expires: {{ company.subscription_end_date|date:"M d, Y" }}
-                                {% endif %}
-                            </span>
-                            {% endif %}
-                        </div>
-                    </div>
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                <div class="mb-6 lg:mb-0">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome back, {{ company.company_name }}!</h1>
+                    <p class="text-gray-600">Here's what's happening with your business today.</p>
                 </div>
-
-                <!-- Quick Action Cards -->
-                <div class="flex flex-wrap gap-4 p-4">
-                    {% if is_vendor %}
-                    <a href="{% url 'products:add' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#c2d9ee] hover:bg-[#b0ccdf] transition cursor-pointer">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-600 text-white p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                    <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-[#121417] text-base font-bold">Add New Product</p>
-                                <p class="text-[#687682] text-sm">List a new product</p>
-                            </div>
-                        </div>
-                    </a>
-                    
-                    <a href="{% url 'products:my_products' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4] hover:bg-[#e8eaed] transition cursor-pointer">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-gray-600 text-white p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                    <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-[#121417] text-base font-bold">My Products</p>
-                                <p class="text-[#687682] text-sm">Manage your listings</p>
-                            </div>
-                        </div>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'products:list' %}" class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#c2d9ee] hover:bg-[#b0ccdf] transition cursor-pointer">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-600 text-white p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                    <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-[#121417] text-base font-bold">Browse Products</p>
-                                <p class="text-[#687682] text-sm">Find suppliers</p>
-                            </div>
-                        </div>
-                    </a>
-                    
-                    <div class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-gray-600 text-white p-2 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                    <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,144H32V64H224V192ZM176,88a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,88Zm0,32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,120Zm0,32a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,152Z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-[#121417] text-base font-bold">My Quotes</p>
-                                <p class="text-[#687682] text-sm">View quote requests</p>
-                            </div>
-                        </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium
+                        {% if company.subscription_status == 'active' %}bg-green-50 text-green-700 border border-green-200{% else %}bg-amber-50 text-amber-700 border border-amber-200{% endif %}">
+                        <div class="w-2 h-2 rounded-full mr-2 
+                            {% if company.subscription_status == 'active' %}bg-green-400{% else %}bg-amber-400{% endif %}"></div>
+                        {% if company.subscription_status == 'active' %}Active Subscription{% else %}{{ company.get_subscription_status_display }}{% endif %}
+                    </div>
+                    {% if company.subscription_end_date and company.subscription_status == 'active' %}
+                    <div class="text-sm text-gray-500 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Expires: {{ company.subscription_end_date|date:"M d, Y" }}
                     </div>
                     {% endif %}
                 </div>
+            </div>
+        </div>
 
-                <!-- Dashboard Stats -->
-                <div class="flex flex-wrap gap-4 p-4">
-                    {% if is_vendor %}
-                    <!-- Vendor Stats -->
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Total Products</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_products }}</p>
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {% if is_vendor %}
+            <a href="{% url 'products:add' %}" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 hover:border-blue-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
                     </div>
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Active Listings</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ active_products }}</p>
-                    </div>
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Draft Products</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ draft_products }}</p>
-                    </div>
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Total Views</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_views }}</p>
-                    </div>
-                    {% else %}
-                    <!-- Buyer Stats -->
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Available Products</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ total_marketplace_products }}</p>
-                    </div>
-                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-[#f1f2f4]">
-                        <p class="text-[#121417] text-base font-medium leading-normal">Industries</p>
-                        <p class="text-[#121417] tracking-light text-2xl font-bold leading-tight">{{ available_industries }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- Recent Activity Section -->
-                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Recent Activity</h2>
-                <div class="px-4 py-3">
-                    <div class="flex overflow-hidden rounded-xl border border-[#dde1e4] bg-white">
-                        <table class="flex-1">
-                            <thead>
-                                <tr class="bg-white">
-                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Activity</th>
-                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Details</th>
-                                    <th class="px-4 py-3 text-left text-[#121417] w-[400px] text-sm font-medium leading-normal">Timestamp</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for activity in recent_activity %}
-                                <tr class="border-t border-t-[#dde1e4]">
-                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#121417] text-sm font-normal leading-normal">
-                                        {{ activity.type|title }}
-                                    </td>
-                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
-                                        {{ activity.description }}
-                                    </td>
-                                    <td class="h-[72px] px-4 py-2 w-[400px] text-[#687682] text-sm font-normal leading-normal">
-                                        {{ activity.timestamp|date:"M d, Y g:i A" }}
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr class="border-t border-t-[#dde1e4]">
-                                    <td colspan="3" class="h-[72px] px-4 py-2 text-center text-[#687682] text-sm font-normal leading-normal">
-                                        No recent activity
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
                     </div>
                 </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Add Product</h3>
+                <p class="text-gray-600 text-sm">Create a new product listing</p>
+            </a>
 
-                {% if is_vendor and recent_products %}
-                <!-- Recent Products Section (Vendors only) -->
-                <h2 class="text-[#121417] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your Recent Products</h2>
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 p-4">
+            <a href="{% url 'products:my_products' %}" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 hover:border-green-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center group-hover:bg-green-100 transition-colors">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div class="text-green-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">My Products</h3>
+                <p class="text-gray-600 text-sm">Manage your listings</p>
+            </a>
+            {% else %}
+            <a href="{% url 'products:list' %}" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 hover:border-blue-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Browse Products</h3>
+                <p class="text-gray-600 text-sm">Find suppliers</p>
+            </a>
+
+            <a href="{% url 'messaging:quotes_sent' %}" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 hover:border-purple-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">My Quotes</h3>
+                <p class="text-gray-600 text-sm">View quote requests</p>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'messaging:messages' %}" class="group bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-200 hover:border-orange-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <div class="text-orange-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Messages</h3>
+                <p class="text-gray-600 text-sm">View conversations</p>
+            </a>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {% if is_vendor %}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Products</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_products }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Active Listings</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ active_products }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Draft Products</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ draft_products }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Views</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_views }}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Buyer Stats -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Available Products</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ total_marketplace_products }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Industries</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ available_industries }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
+            </div>
+            
+            {% if recent_activity %}
+            <div class="divide-y divide-gray-200">
+                {% for activity in recent_activity %}
+                <div class="px-6 py-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ activity.type|title }}</p>
+                                <p class="text-sm text-gray-600">{{ activity.description }}</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            {{ activity.timestamp|date:"M d, g:i A" }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="px-6 py-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No recent activity</h3>
+                <p class="mt-1 text-sm text-gray-500">Get started by creating your first product listing.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if is_vendor and recent_products %}
+        <!-- Recent Products Section -->
+        <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900">Your Recent Products</h2>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {% for product in recent_products %}
-                    <div class="flex flex-col gap-3 pb-3">
-                        <a href="{% url 'products:detail' product.pk %}">
-                            {% if product.main_image %}
-                            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style="background-image: url('{{ product.main_image }}');"></div>
-                            {% else %}
-                            <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
-                            {% endif %}
-                        </a>
-                        <div>
-                            <p class="text-[#121417] text-base font-medium leading-normal">
-                                <a href="{% url 'products:detail' product.pk %}" class="hover:text-blue-600">{{ product.name }}</a>
-                            </p>
-                            <p class="text-[#687682] text-sm font-normal leading-normal">${{ product.price }}</p>
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                    <div class="group">
+                        <a href="{% url 'products:detail' product.pk %}" class="block">
+                            <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75 transition-opacity">
+                                {% if product.main_image %}
+                                <img src="{{ product.main_image }}" alt="{{ product.name }}" class="h-full w-full object-cover object-center">
+                                {% else %}
+                                <div class="h-full w-full flex items-center justify-center bg-gray-100">
+                                    <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <h3 class="mt-4 text-sm font-medium text-gray-900">{{ product.name }}</h3>
+                            <p class="mt-1 text-lg font-medium text-gray-900">${{ product.price }}</p>
+                            <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                 {% if product.status == 'active' %}bg-green-100 text-green-800{% elif product.status == 'draft' %}bg-yellow-100 text-yellow-800{% else %}bg-gray-100 text-gray-800{% endif %}">
                                 {{ product.get_status_display }}
                             </span>
-                        </div>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
-                {% endif %}
-
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

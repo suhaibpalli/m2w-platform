@@ -47,10 +47,10 @@ class Migration(migrations.Migration):
             name='SiteSettings',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('site_name', models.CharField(default='M2W Platform', max_length=100)),
+                ('site_name', models.CharField(default='MWPUAE Platform', max_length=100)),
                 ('annual_fee', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
                 ('currency', models.CharField(default='USD', max_length=3)),
-                ('contact_email', models.EmailField(default='info@m2wplatform.com', max_length=254)),
+                ('contact_email', models.EmailField(default='info@mwpuaeplatform.com', max_length=254)),
                 ('contact_phone', models.CharField(blank=True, max_length=20)),
                 ('address', models.TextField(blank=True)),
             ],

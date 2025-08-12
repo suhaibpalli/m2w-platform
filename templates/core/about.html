@@ -1,119 +1,154 @@
 {% extends 'base.html' %}
 
-{% block title %}About Us - M2W Platform{% endblock %}
+{% block title %}About Us - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-600 to-gray-800 text-white py-16">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-        <h1 class="text-4xl font-bold mb-4">About Us</h1>
-        <p class="text-xl text-gray-200">Learn more about our mission and the team behind M2W Platform</p>
-    </div>
-</section>
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-4 lg:px-10 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                
+                <!-- Hero Section -->
+                <div class="@container">
+                    <div class="@[480px]:p-4">
+                        <div class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-white @[480px]:rounded-xl min-h-[280px]"
+                             style='background: linear-gradient(135deg, rgba(12, 127, 242, 0.9) 0%, rgba(11, 114, 217, 0.95) 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'>
+                            <div class="flex p-4">
+                                <h1 class="text-white tracking-light text-[28px] font-bold leading-tight">About MWPUAE Platform</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Our Story -->
-<section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <p class="text-lg text-gray-600 mb-6">
-                    M2W Platform was founded in 2018 with a vision to revolutionize the B2B trading landscape. We recognized the challenges faced by businesses in sourcing and connecting with reliable suppliers across diverse industries.
-                </p>
-                <p class="text-lg text-gray-600">
-                    Our platform was built to bridge this gap, providing a seamless and efficient marketplace for companies in Metal, Wood, Plastic, Machineries, Technology, and other sectors.
-                </p>
-            </div>
-            <div class="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-                <span class="text-gray-500">Company Image Placeholder</span>
-            </div>
-        </div>
-    </div>
-</section>
+                <!-- Our Story -->
+                <div class="flex flex-col gap-10 px-4 py-10">
+                    <div class="flex flex-col gap-4">
+                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em]">Our Story</h2>
+                        <p class="text-[#111418] text-base font-normal leading-relaxed max-w-[720px]">
+                            MWPUAE Platform was founded in 2018 with a vision to revolutionize the B2B trading landscape. We recognized the challenges faced by businesses in sourcing and connecting with reliable suppliers across diverse industries. Our platform was built to bridge this gap, providing a seamless and efficient marketplace for companies in Metal, Wood, Plastic, Machineries, Technology, and other sectors.
+                        </p>
+                    </div>
 
-<!-- Mission & Vision -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-12">Mission & Vision</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <h3 class="text-2xl font-bold text-blue-600 mb-4">Our Mission</h3>
-                <p class="text-lg text-gray-600">
-                    To empower businesses with the tools and connections they need to thrive in the global marketplace.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-md">
-                <h3 class="text-2xl font-bold text-blue-600 mb-4">Our Vision</h3>
-                <p class="text-lg text-gray-600">
-                    We envision a future where B2B trading is transparent, efficient, and accessible to all.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+                    <!-- Company Image -->
+                    <div class="w-full">
+                        <div class="w-full aspect-[3/2] bg-gray-200 rounded-xl flex items-center justify-center">
+                            <span class="text-gray-500 text-lg">Company Image</span>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Our Team -->
-<section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Team</h2>
-            <p class="text-xl text-gray-600">Meet the people behind M2W Platform</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Ethan Carter</h3>
-                <p class="text-gray-600">CEO</p>
-            </div>
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Olivia Bennett</h3>
-                <p class="text-gray-600">Head of Sales</p>
-            </div>
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Noah Thompson</h3>
-                <p class="text-gray-600">CTO</p>
-            </div>
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Ava Harper</h3>
-                <p class="text-gray-600">Head of Marketing</p>
-            </div>
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Liam Foster</h3>
-                <p class="text-gray-600">Head of Operations</p>
-            </div>
-            <div class="text-center">
-                <div class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4"></div>
-                <h3 class="text-xl font-semibold mb-2">Isabella Hayes</h3>
-                <p class="text-gray-600">Head of Customer Success</p>
-            </div>
-        </div>
-    </div>
-</section>
+                <!-- Mission & Vision -->
+                <div class="px-4 py-8 bg-gray-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] text-center mb-8">Mission & Vision</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-primary-500 mb-4">Our Mission</h3>
+                            <p class="text-[#111418] text-base font-normal leading-relaxed">
+                                To empower businesses with the tools and connections they need to thrive in the global marketplace.
+                            </p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold text-primary-500 mb-4">Our Vision</h3>
+                            <p class="text-[#111418] text-base font-normal leading-relaxed">
+                                We envision a future where B2B trading is transparent, efficient, and accessible to all.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Our Achievements -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Achievements</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                <h3 class="text-3xl font-bold text-blue-600 mb-2">5,000+</h3>
-                <p class="text-lg text-gray-600">Registered Businesses</p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                <h3 class="text-3xl font-bold text-blue-600 mb-2">10,000+</h3>
-                <p class="text-lg text-gray-600">Transactions Processed</p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                <h3 class="text-3xl font-bold text-blue-600 mb-2">6</h3>
-                <p class="text-lg text-gray-600">Industries Served</p>
+                <!-- Our Team -->
+                <div class="px-4 py-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Our Team</h2>
+                        <p class="text-[#60758a] text-base font-normal leading-normal">Meet the people behind MWPUAE Platform</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">EC</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Ethan Carter</p>
+                                <p class="text-[#60758a] text-sm font-normal">CEO</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">OB</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Olivia Bennett</p>
+                                <p class="text-[#60758a] text-sm font-normal">Head of Sales</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">NT</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Noah Thompson</p>
+                                <p class="text-[#60758a] text-sm font-normal">CTO</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">AH</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Ava Harper</p>
+                                <p class="text-[#60758a] text-sm font-normal">Head of Marketing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">LF</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Liam Foster</p>
+                                <p class="text-[#60758a] text-sm font-normal">Head of Operations</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 text-center">
+                            <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-primary-500 text-2xl font-bold">IH</span>
+                            </div>
+                            <div>
+                                <p class="text-[#111418] text-base font-semibold">Isabella Hayes</p>
+                                <p class="text-[#60758a] text-sm font-normal">Head of Customer Success</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="px-4 py-8 bg-primary-50 rounded-xl">
+                    <div class="text-center mb-12">
+                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Our Achievements</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-sm text-center">
+                            <h3 class="text-3xl font-bold text-primary-500 mb-2">5,000+</h3>
+                            <p class="text-[#111418] text-base font-medium">Registered Businesses</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm text-center">
+                            <h3 class="text-3xl font-bold text-primary-500 mb-2">10,000+</h3>
+                            <p class="text-[#111418] text-base font-medium">Transactions Processed</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm text-center">
+                            <h3 class="text-3xl font-bold text-primary-500 mb-2">6</h3>
+                            <p class="text-[#111418] text-base font-medium">Industries Served</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}

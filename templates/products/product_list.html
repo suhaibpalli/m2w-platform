@@ -1,114 +1,196 @@
 {% extends 'base.html' %}
 
-{% block title %}Products - M2W Platform{% endblock %}
+{% block title %}Products - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<div class="relative flex size-full min-h-screen flex-col bg-white">
-    <div class="layout-container flex h-full grow flex-col">
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Browse Products</h1>
+            <p class="text-gray-600">Discover quality products from verified suppliers</p>
+        </div>
+
+        <div class="lg:grid lg:grid-cols-5 lg:gap-8">
             <!-- Filters Sidebar -->
-            <div class="layout-content-container flex flex-col w-80">
-                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Filters</h3>
-                
-                <form method="get" class="space-y-4">
-                    <!-- Category Filter -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Filters</h3>
+                    
+                    <form method="get" class="space-y-6">
+                        <!-- Search -->
+                        <div>
+                            <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                {{ search_form.query }}
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                             {{ search_form.category }}
-                        </label>
-                    </div>
-                    
-                    <!-- Industry Filter -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
+                        </div>
+
+                        <!-- Industry Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
                             {{ search_form.industry }}
-                        </label>
-                    </div>
-                    
-                    <!-- Price Range -->
-                    <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Price Range</h3>
-                    <div class="flex gap-2 px-4">
-                        {{ search_form.min_price }}
-                        {{ search_form.max_price }}
-                    </div>
-                    
-                    <div class="px-4">
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                        </div>
+
+                        <!-- Price Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                {{ search_form.min_price }}
+                                {{ search_form.max_price }}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
                             Apply Filters
                         </button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Products Grid -->
-            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">{{ products|length }} Results</h3>
-                
-                <!-- Search Form -->
-                <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                    <form method="get" class="flex-1">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            {{ search_form.query }}
-                        </label>
                     </form>
                 </div>
-                
+            </div>
+
+            <!-- Products Grid -->
+            <div class="lg:col-span-4 mt-8 lg:mt-0">
+                <!-- Results Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                    <p class="text-gray-600">{{ products|length }} products found</p>
+                    <div class="mt-4 sm:mt-0">
+                        <select class="rounded-lg border-gray-300 text-sm">
+                            <option>Sort by: Newest</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Products Grid -->
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+                {% if products %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     {% for product in products %}
-                    <div class="flex flex-col gap-3 pb-3">
-                        <a href="{% url 'products:detail' product.pk %}">
-                            {% if product.main_image %}
-                            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg relative" style="background-image: url('{{ product.main_image }}');">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300">
+                        <a href="{% url 'products:detail' product.pk %}" class="block">
+                            <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                                {% if product.main_image %}
+                                <img src="{{ product.main_image }}" alt="{{ product.name }}" class="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                                {% else %}
+                                <div class="h-48 w-full bg-gray-100 flex items-center justify-center">
+                                    <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                {% endif %}
                                 {% if product.images|length > 1 %}
-                                <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
                                     +{{ product.images|length|add:"-1" }}
                                 </div>
                                 {% endif %}
                             </div>
-                            {% else %}
-                            <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
-                            {% endif %}
+                            
+                            <div class="p-4">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{{ product.name }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">{{ product.company.company_name }}</p>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xl font-bold text-gray-900">${{ product.price }}</p>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        In Stock
+                                    </span>
+                                </div>
+                            </div>
                         </a>
-                        <div>
-                            <p class="text-[#111518] text-base font-medium leading-normal">
-                                <a href="{% url 'products:detail' product.pk %}" class="hover:text-blue-600">{{ product.name }}</a>
-                            </p>
-                            <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.company.company_name }}</p>
-                            <p class="text-[#111518] text-sm font-semibold">${{ product.price }}</p>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 text-xl">No products found matching your criteria.</p>
                     </div>
                     {% endfor %}
                 </div>
-                
+
                 <!-- Pagination -->
                 {% if is_paginated %}
-                <div class="flex items-center justify-center p-4">
-                    {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}" class="flex size-10 items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                            <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
-                        </svg>
-                    </a>
-                    {% endif %}
-                    
-                    <span class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-[#111518] rounded-full bg-[#f0f2f5]">{{ page_obj.number }}</span>
-                    
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" class="flex size-10 items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                        </svg>
-                    </a>
-                    {% endif %}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-4 py-3 flex items-center justify-between">
+                    <div class="flex flex-1 justify-between sm:hidden">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </a>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Showing page <span class="font-medium">{{ page_obj.number }}</span> of <span class="font-medium">{{ page_obj.paginator.num_pages }}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                                    {{ page_obj.number }}
+                                </span>
+                                {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% else %}
+                <!-- Empty State -->
+                <div class="text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No products found</h3>
+                    <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+<style>
+input, select, textarea {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+}
+
+input[name="query"] {
+    @apply pl-10;
+}
+
+input[name="min_price"], input[name="max_price"] {
+    @apply text-sm;
+}
+
+input[name="min_price"]::placeholder {
+    content: "Min";
+}
+
+input[name="max_price"]::placeholder {
+    content: "Max";
+}
+</style>
 {% endblock %}

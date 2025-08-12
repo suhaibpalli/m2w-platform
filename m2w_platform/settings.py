@@ -184,12 +184,12 @@ if not DEBUG:
 JAZZMIN_SETTINGS = {
 
     ### Branding ###
-    "site_title":    "M2W Admin Panel",        # <title>
-    "site_header":   "M2W Platform Admin",     # top left
-    "site_brand":    "M2W Platform",           # sidebar logo text
+    "site_title":    "MWPUAE Admin Panel",        # <title>
+    "site_header":   "MWPUAE Platform Admin",     # top left
+    "site_brand":    "MWPUAE Platform",           # sidebar logo text
     "site_logo":     None,                     # you can point to your own SVG/PNG
     "show_developer": False,                   # hide “Powered by Django” link
-    "copyright":     "© 2025 M2W Platform",    # your own footer
+    "copyright":     "© 2025 MWPUAE Platform",    # your own footer
                                            
     ### Theme ###
     "theme":        "darkly",                 # choose any Bootswatch theme

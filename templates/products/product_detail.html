@@ -1,227 +1,285 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ product.name }} - M2W Platform{% endblock %}
+{% block title %}{{ product.name }} - MWPUAE Platform{% endblock %}
 
 {% block extra_head %}
 <script>
 function changeMainImage(imageUrl, thumbnailElement) {
-    // Update main image
-    document.getElementById('main-image').style.backgroundImage = `url('${imageUrl}')`;
+    document.getElementById('main-image').src = imageUrl;
     
-    // Update thumbnail borders
-    const thumbnails = document.querySelectorAll('.flex.flex-col.gap-2.w-24.p-2.bg-gray-50 > div');
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
     thumbnails.forEach(thumb => {
-        thumb.classList.remove('border-blue-500');
-        thumb.classList.add('border-transparent');
+        thumb.classList.remove('ring-2', 'ring-blue-500');
+        thumb.classList.add('ring-1', 'ring-gray-300');
     });
     
-    // Add border to clicked thumbnail
-    thumbnailElement.classList.remove('border-transparent');
-    thumbnailElement.classList.add('border-blue-500');
+    thumbnailElement.classList.remove('ring-1', 'ring-gray-300');
+    thumbnailElement.classList.add('ring-2', 'ring-blue-500');
 }
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="relative flex size-full min-h-screen flex-col bg-white">
-    <div class="layout-container flex h-full grow flex-col">
-        <div class="px-40 flex flex-1 justify-center py-5">
-            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                <!-- Breadcrumbs -->
-                <div class="flex flex-wrap gap-2 p-4">
-                    <a class="text-[#617689] text-base font-medium leading-normal" href="{% url 'products:list' %}">Products</a>
-                    <span class="text-[#617689] text-base font-medium leading-normal">/</span>
-                    <a class="text-[#617689] text-base font-medium leading-normal" href="#">{{ product.category.industry.name }}</a>
-                    <span class="text-[#617689] text-base font-medium leading-normal">/</span>
-                    <span class="text-[#111518] text-base font-medium leading-normal">{{ product.category.name }}</span>
-                </div>
-                
-                <!-- Product Header -->
-                <div class="flex flex-wrap justify-between gap-3 p-4">
-                    <div class="flex min-w-72 flex-col gap-3">
-                        <p class="text-[#111518] tracking-light text-[32px] font-bold leading-tight">{{ product.name }}</p>
-                        <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.description|truncatewords:20 }}</p>
-                    </div>
-                </div>
-                
-                <!-- Product Images -->
-                <div class="flex w-full grow bg-white p-4">
-                    <div class="w-full gap-1 overflow-hidden bg-white aspect-[3/2] rounded-lg flex">
-                        {% if product.images %}
-                            <!-- Main Image Display -->
-                            <div class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1" id="main-image" style="background-image: url('{{ product.main_image }}');"></div>
-                            
-                            <!-- Image Thumbnails (if multiple images) -->
-                            {% if product.images|length > 1 %}
-                            <div class="flex flex-col gap-2 w-24 p-2 bg-gray-50">
-                                {% for image in product.images %}
-                                <div class="w-full aspect-square bg-center bg-no-repeat bg-cover rounded cursor-pointer border-2 {% if forloop.first %}border-blue-500{% else %}border-transparent{% endif %}" 
-                                     style="background-image: url('{{ image }}');"
-                                     onclick="changeMainImage('{{ image }}', this)">
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        {% else %}
-                            <div class="w-full bg-gray-200 aspect-auto rounded-none flex-1 flex items-center justify-center text-gray-400">No Image Available</div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <!-- Product Details -->
-                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Product Details</h3>
-                <p class="text-[#111518] text-base font-normal leading-normal pb-3 pt-1 px-4">{{ product.description }}</p>
-                
-                <!-- Specifications -->
-                <div class="p-4">
-                    <div class="flex justify-between gap-x-6 py-2">
-                        <p class="text-[#617689] text-sm font-normal leading-normal">Price</p>
-                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">${{ product.price }} {{ product.currency }}</p>
-                    </div>
-                    {% if product.minimum_order_quantity %}
-                    <div class="flex justify-between gap-x-6 py-2">
-                        <p class="text-[#617689] text-sm font-normal leading-normal">Minimum Order Quantity</p>
-                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">{{ product.minimum_order_quantity }}</p>
-                    </div>
-                    {% endif %}
-                    {% if product.lead_time %}
-                    <div class="flex justify-between gap-x-6 py-2">
-                        <p class="text-[#617689] text-sm font-normal leading-normal">Lead Time</p>
-                        <p class="text-[#111518] text-sm font-normal leading-normal text-right">{{ product.lead_time }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Company Information -->
-                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Company Information</h3>
-                <div class="p-4">
-                    <div class="flex items-stretch justify-between gap-4 rounded-lg">
-                        <div class="flex flex-col gap-1 flex-[2_2_0px]">
-                            <p class="text-[#617689] text-sm font-normal leading-normal">{% if product.company.is_verified %}Verified Supplier{% else %}Supplier{% endif %}</p>
-                            <p class="text-[#111518] text-base font-bold leading-tight">{{ product.company.company_name }}</p>
-                            <p class="text-[#617689] text-sm font-normal leading-normal">{{ product.company.description|default:"Professional supplier" }}</p>
+<div class="min-h-screen bg-white">
+    <!-- Breadcrumbs -->
+    <div class="border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center space-x-2 py-4 text-sm">
+                <a href="{% url 'products:list' %}" class="text-gray-500 hover:text-gray-700">Products</a>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <a href="#" class="text-gray-500 hover:text-gray-700">{{ product.category.industry.name }}</a>
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span class="text-gray-900 font-medium">{{ product.category.name }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            <!-- Product Images -->
+            <div class="space-y-4">
+                <!-- Main Image -->
+                <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-2xl bg-gray-100 border border-gray-200">
+                    {% if product.main_image %}
+                        <img id="main-image" src="{{ product.main_image }}" alt="{{ product.name }}" 
+                             class="w-full h-full object-cover object-center">
+                    {% else %}
+                        <div class="flex items-center justify-center w-full h-full">
+                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
                 
-                <!-- Action Buttons -->
-                <div class="flex justify-stretch">
-                    <div class="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
-                        {% if user.is_authenticated and user.company != product.company %}
-                            <button onclick="openQuoteModal()" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#3494ee] text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                                <span class="truncate">Request Quote</span>
-                            </button>
-                        {% endif %}
-                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f2f4] text-[#111518] text-sm font-bold leading-normal tracking-[0.015em]">
-                            <span class="truncate">Contact Supplier</span>
+                <!-- Thumbnail Images -->
+                {% if product.images|length > 1 %}
+                <div class="grid grid-cols-4 gap-3">
+                    {% for image in product.images %}
+                        <button onclick="changeMainImage('{{ image }}', this)" 
+                                class="thumbnail-image aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 border {% if forloop.first %}ring-2 ring-blue-500{% else %}ring-1 ring-gray-300{% endif %} hover:ring-2 hover:ring-blue-400 transition-all">
+                            <img src="{{ image }}" alt="{{ product.name }}" 
+                                 class="w-full h-full object-cover object-center">
                         </button>
-                    </div>
-                </div>
-
-                <!-- Quote Request Modal -->
-                <div id="quoteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
-                    <div class="flex items-center justify-center min-h-screen">
-                        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-bold">Request Quote</h3>
-                                <button onclick="closeQuoteModal()" class="text-gray-400 hover:text-gray-600">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="flex items-center space-x-3">
-                                    {% if product.main_image %}
-                                    <div class="w-12 h-12 bg-center bg-no-repeat bg-cover rounded" style="background-image: url('{{ product.main_image }}');"></div>
-                                    {% endif %}
-                                    <div>
-                                        <h4 class="font-semibold">{{ product.name }}</h4>
-                                        <p class="text-sm text-gray-600">{{ product.company.company_name }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="text-center">
-                                <p class="text-gray-600 mb-4">To request a quote, you'll be redirected to our secure quote request form.</p>
-                                <div class="flex space-x-3">
-                                    <button onclick="closeQuoteModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400">
-                                        Cancel
-                                    </button>
-                                    <a href="{% url 'messaging:request_quote' product.pk %}" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-center">
-                                        Continue
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                function openQuoteModal() {
-                    document.getElementById('quoteModal').classList.remove('hidden');
-                }
-
-                function closeQuoteModal() {
-                    document.getElementById('quoteModal').classList.add('hidden');
-                }
-
-                // Close modal when clicking outside
-                document.getElementById('quoteModal').addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeQuoteModal();
-                    }
-                });
-                </script>
-                
-                <!-- Share and Save -->
-                <div class="gap-2 px-4 flex flex-wrap justify-start">
-                    <div class="flex flex-col items-center gap-2 bg-white py-2.5 text-center w-20">
-                        <div class="rounded-full bg-[#f0f2f4] p-2.5 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                <path d="M229.66,109.66l-48,48a8,8,0,0,1-11.32-11.32L204.69,112H165a88,88,0,0,0-85.23,66,8,8,0,0,1-15.5-4A103.94,103.94,0,0,1,165,96h39.71L170.34,61.66a8,8,0,0,1,11.32-11.32l48,48A8,8,0,0,1,229.66,109.66ZM192,208H40V88a8,8,0,0,0-16,0V208a16,16,0,0,0,16,16H192a8,8,0,0,0,0-16Z"></path>
-                            </svg>
-                        </div>
-                        <p class="text-[#111518] text-sm font-medium leading-normal">Share</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-2 bg-white py-2.5 text-center w-20">
-                        <div class="rounded-full bg-[#f0f2f4] p-2.5 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                                <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,16V161.57l-51.77-32.35a8,8,0,0,0-8.48,0L72,161.56V48ZM132.23,177.22a8,8,0,0,0-8.48,0L72,209.57V180.43l56-35,56,35v29.14Z"></path>
-                            </svg>
-                        </div>
-                        <p class="text-[#111518] text-sm font-medium leading-normal">Save</p>
-                    </div>
-                </div>
-                
-                <!-- Related Products -->
-                {% if related_products %}
-                <h3 class="text-[#111518] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Related Products</h3>
-                <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                    <div class="flex items-stretch p-4 gap-3">
-                        {% for related_product in related_products %}
-                        <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40">
-                            <a href="{% url 'products:detail' related_product.pk %}">
-                                {% if related_product.main_image %}
-                                <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style="background-image: url('{{ related_product.main_image }}');"></div>
-                                {% else %}
-                                <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">No Image</div>
-                                {% endif %}
-                            </a>
-                            <div>
-                                <p class="text-[#111518] text-base font-medium leading-normal">
-                                    <a href="{% url 'products:detail' related_product.pk %}" class="hover:text-blue-600">{{ related_product.name }}</a>
-                                </p>
-                                <p class="text-[#617689] text-sm font-normal leading-normal">${{ related_product.price }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
                 {% endif %}
+            </div>
+            
+            <!-- Product Information -->
+            <div class="space-y-8">
+                
+                <!-- Header -->
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.name }}</h1>
+                    <p class="text-xl text-gray-600 leading-relaxed">{{ product.description|truncatewords:30 }}</p>
+                </div>
+
+                <!-- Price and Key Info -->
+                <div class="bg-gray-50 rounded-xl p-6 space-y-4">
+                    <div class="text-3xl font-bold text-gray-900">${{ product.price }} {{ product.currency }}</div>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        {% if product.minimum_order_quantity %}
+                        <div>
+                            <span class="text-gray-500">Min. Order:</span>
+                            <span class="font-medium text-gray-900">{{ product.minimum_order_quantity }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if product.lead_time %}
+                        <div>
+                            <span class="text-gray-500">Lead Time:</span>
+                            <span class="font-medium text-gray-900">{{ product.lead_time }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-4">
+                    {% if user.is_authenticated and user.company != product.company %}
+                        <button onclick="openQuoteModal()" 
+                                class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl">
+                            Request Quote
+                        </button>
+                        
+                        <button class="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                            Contact Supplier
+                        </button>
+                    {% elif not user.is_authenticated %}
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                            <p class="text-blue-800 text-center">
+                                <a href="{% url 'accounts:login' %}" class="font-semibold hover:underline">Sign in</a> 
+                                or 
+                                <a href="{% url 'accounts:register' %}" class="font-semibold hover:underline">create an account</a> 
+                                to request quotes
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Company Information -->
+                <div class="border-t pt-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Supplier Information</h3>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-lg">{{ product.company.company_name.0 }}</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h4 class="text-lg font-semibold text-gray-900">{{ product.company.company_name }}</h4>
+                                    {% if product.company.is_verified %}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Verified
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <p class="text-gray-600">{{ product.company.description|default:"Professional supplier on MWPUAE Platform" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save and Share -->
+                <div class="flex items-center space-x-4 pt-4">
+                    <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span class="text-sm font-medium">Save</span>
+                    </button>
+                    
+                    <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                        </svg>
+                        <span class="text-sm font-medium">Share</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Tabs -->
+        <div class="mt-16">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button class="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600" id="tab-description">
+                        Description
+                    </button>
+                    <button class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" id="tab-specifications">
+                        Specifications
+                    </button>
+                    <button class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" id="tab-supplier">
+                        Supplier Info
+                    </button>
+                </nav>
+            </div>
+            
+            <div class="py-8">
+                <div class="prose max-w-none">
+                    <p class="text-gray-700 leading-relaxed text-lg">{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related_products %}
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Products</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for related_product in related_products %}
+                <div class="group">
+                    <a href="{% url 'products:detail' related_product.pk %}" class="block">
+                        <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75 transition-opacity">
+                            {% if related_product.main_image %}
+                                <img src="{{ related_product.main_image }}" alt="{{ related_product.name }}" 
+                                     class="w-full h-full object-cover object-center">
+                            {% else %}
+                                <div class="flex items-center justify-center w-full h-full">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <h3 class="mt-4 text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                            {{ related_product.name }}
+                        </h3>
+                        <p class="mt-1 text-lg font-medium text-gray-900">${{ related_product.price }}</p>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quote Request Modal -->
+<div id="quoteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-semibold text-gray-900">Request Quote</h3>
+            <button onclick="closeQuoteModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <div class="flex items-center space-x-3">
+                {% if product.main_image %}
+                    <img src="{{ product.main_image }}" alt="{{ product.name }}" 
+                         class="w-12 h-12 object-cover rounded-lg border border-gray-200">
+                {% endif %}
+                <div>
+                    <h4 class="font-semibold text-gray-900">{{ product.name }}</h4>
+                    <p class="text-sm text-gray-600">{{ product.company.company_name }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <p class="text-gray-600 mb-6">You'll be redirected to our secure quote request form to provide your requirements.</p>
+            <div class="flex space-x-3">
+                <button onclick="closeQuoteModal()" 
+                        class="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                    Cancel
+                </button>
+                <a href="{% url 'messaging:request_quote' product.pk %}" 
+                   class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-center">
+                    Continue
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function openQuoteModal() {
+    document.getElementById('quoteModal').classList.remove('hidden');
+}
+
+function closeQuoteModal() {
+    document.getElementById('quoteModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('quoteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeQuoteModal();
+    }
+});
+</script>
 {% endblock %}

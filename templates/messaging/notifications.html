@@ -1,30 +1,166 @@
 {% extends 'base.html' %}
 
-{% block title %}Notifications - M2W Platform{% endblock %}
+{% block title %}Notifications - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto py-8 px-4">
-    <h1 class="text-2xl font-bold mb-6">Notifications</h1>
-    
-    <div class="bg-white rounded-lg shadow-md">
-        <div class="divide-y">
-            {% for notification in notifications %}
-            <div class="p-4 {% if not notification.is_read %}bg-blue-50{% endif %}">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-semibold">{{ notification.title }}</h3>
-                        <p class="text-gray-600 mt-1">{{ notification.message }}</p>
-                        <p class="text-sm text-gray-500 mt-2">{{ notification.created_at|date:"M d, Y g:i A" }}</p>
-                    </div>
-                    <span class="text-xs text-gray-500">{{ notification.get_notification_type_display }}</span>
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Notifications</h1>
+            <p class="mt-2 text-gray-600">Stay updated with your business activities</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            
+            <!-- Header with Actions -->
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Notifications</h2>
+                    {% if notifications %}
+                    <button onclick="markAllAsRead()" 
+                            class="text-sm text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                        Mark all as read
+                    </button>
+                    {% endif %}
                 </div>
             </div>
-            {% empty %}
-            <div class="p-8 text-center text-gray-500">
-                <p>No notifications yet.</p>
+            
+            {% if notifications %}
+            <div class="divide-y divide-gray-200">
+                {% for notification in notifications %}
+                <div class="p-6 hover:bg-gray-50 transition-colors {% if not notification.is_read %}bg-blue-50{% endif %}">
+                    <div class="flex items-start space-x-4">
+                        
+                        <!-- Icon -->
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center
+                                {% if notification.notification_type == 'quote_request' %}bg-blue-100
+                                {% elif notification.notification_type == 'quote_response' %}bg-green-100
+                                {% elif notification.notification_type == 'message' %}bg-purple-100
+                                {% elif notification.notification_type == 'order_update' %}bg-orange-100
+                                {% else %}bg-gray-100{% endif %}">
+                                
+                                {% if notification.notification_type == 'quote_request' %}
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                {% elif notification.notification_type == 'quote_response' %}
+                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                {% elif notification.notification_type == 'message' %}
+                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                    </svg>
+                                {% elif notification.notification_type == 'order_update' %}
+                                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293H10.414a1 1 0 01-.707-.293L7.293 13.293A1 1 0 006.586 13H4"/>
+                                    </svg>
+                                {% else %}
+                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 17h6m-6-8h10M4 5h14"/>
+                                    </svg>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-sm font-semibold text-gray-900 mb-1">
+                                        {{ notification.title }}
+                                        {% if not notification.is_read %}
+                                            <span class="inline-block w-2 h-2 bg-blue-500 rounded-full ml-2"></span>
+                                        {% endif %}
+                                    </h3>
+                                    <p class="text-sm text-gray-600 leading-relaxed">{{ notification.message }}</p>
+                                    
+                                    <div class="flex items-center justify-between mt-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                {{ notification.get_notification_type_display }}
+                                            </span>
+                                            <span class="text-xs text-gray-500">{{ notification.created_at|date:"M d, Y g:i A" }}</span>
+                                        </div>
+                                        
+                                        {% if not notification.is_read %}
+                                        <button onclick="markAsRead({{ notification.id }})" 
+                                                class="text-xs text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                                            Mark as read
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            
+            <!-- Pagination would go here if needed -->
+            
+            {% else %}
+            <!-- Empty State -->
+            <div class="p-12 text-center">
+                <div class="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 17h6m-6-8h10M4 5h14"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No notifications yet</h3>
+                <p class="text-gray-600 mb-6">You'll see notifications about quote requests, messages, and business updates here.</p>
+                <a href="{% url 'products:list' %}" 
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                    Browse Products
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+function markAsRead(notificationId) {
+    // Add AJAX call to mark notification as read
+    fetch(`/messaging/notifications/${notificationId}/mark-read/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function markAllAsRead() {
+    // Add AJAX call to mark all notifications as read
+    fetch('/messaging/notifications/mark-all-read/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+<!-- Hidden CSRF token for AJAX requests -->
+{% csrf_token %}
 {% endblock %}

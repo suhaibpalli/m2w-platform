@@ -89,7 +89,7 @@ class QuoteRequestCreateView(LoginRequiredMixin, CreateView):
             Please log in to your dashboard to respond: {self.request.build_absolute_uri(reverse('dashboard:home'))}
             
             Best regards,
-            M2W Platform Team
+            MWPUAE Platform Team
             """
             
             send_mail(

@@ -1,132 +1,182 @@
 {% extends 'base.html' %}
 
-{% block title %}Create Your Account - M2W Platform{% endblock %}
+{% block title %}Create Account - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<div class="relative flex size-full min-h-screen flex-col bg-white">
-    <div class="layout-container flex h-full grow flex-col">
-        <!-- Progress Bar Section -->
-        <div class="px-40 flex flex-1 justify-center py-5">
-            <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
-                <div class="flex flex-col gap-3 p-4">
-                    <div class="flex gap-6 justify-between">
-                        <p class="text-[#121416] text-base font-medium leading-normal">Company Details</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Progress Indicator -->
+        <div class="mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">1</span>
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-blue-600">Account Details</span>
                     </div>
-                    <div class="rounded bg-[#dde1e3]">
-                        <div class="h-2 rounded bg-[#121416]" style="width: 50%;"></div>
+                    <div class="w-16 h-0.5 bg-gray-300"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span class="text-gray-500 text-sm font-medium">2</span>
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-gray-500">Verification</span>
                     </div>
-                    <p class="text-[#6a7681] text-sm font-normal leading-normal">Payment</p>
                 </div>
-                
-                <h1 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 text-center pb-3 pt-5">
-                    Create Your Account
-                </h1>
-                
-                <form method="post">
-                    {% csrf_token %}
+            </div>
+        </div>
 
-                    <!-- Account Type -->
-                    <div class="px-4 py-3">
-                        <p class="text-gray-700 mb-2">I am registering as:</p>
-                        {{ form.role }}
-                        {% if form.role.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.role.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    
-                    <!-- Company Name -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Company Name</p>
-                            {{ form.company_name }}
-                            {% if form.company_name.errors %}
-                                <div class="text-red-600 text-sm mt-1">{{ form.company_name.errors.0 }}</div>
-                            {% endif %}
-                        </label>
-                    </div>
-                    
-                    <!-- Email -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Email</p>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</div>
-                            {% endif %}
-                        </label>
-                    </div>
-                    
-                    <!-- Password -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Password</p>
-                            {{ form.password1 }}
-                            {% if form.password1.errors %}
-                                <div class="text-red-600 text-sm mt-1">{{ form.password1.errors.0 }}</div>
-                            {% endif %}
-                        </label>
-                    </div>
-                    
-                    <!-- Confirm Password -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Confirm Password</p>
-                            {{ form.password2 }}
-                            {% if form.password2.errors %}
-                                <div class="text-red-600 text-sm mt-1">{{ form.password2.errors.0 }}</div>
-                            {% endif %}
-                        </label>
-                    </div>
-                    
-                    <!-- Industry Selection -->
-                    <h3 class="text-[#121416] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
-                        Select Your Industry
-                    </h3>
-                    <div class="px-4">
-                        {% for choice in form.industries %}
-                            <label class="flex gap-x-3 py-3 flex-row">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
+            <p class="text-gray-600">Join thousands of businesses on MWPUAE Platform</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Account Type Selection -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">I am registering as:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for choice in form.role %}
+                            <label class="relative flex cursor-pointer rounded-xl border border-gray-300 p-4 hover:border-blue-500 transition-colors focus-within:ring-2 focus-within:ring-blue-500">
                                 {{ choice.tag }}
-                                <p class="text-[#121416] text-base font-normal leading-normal">{{ choice.choice_label }}</p>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-medium text-gray-900">{{ choice.choice_label }}</span>
+                                    <span class="block text-sm text-gray-500">
+                                        {% if choice.choice_label == 'Vendor/Supplier' %}
+                                            Sell products and services
+                                        {% else %}
+                                            Purchase products and services
+                                        {% endif %}
+                                    </span>
+                                </div>
                             </label>
                         {% endfor %}
-                        {% if form.industries.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.industries.errors.0 }}</div>
-                        {% endif %}
                     </div>
+                    {% if form.role.errors %}
+                        <p class="text-sm text-red-600">{{ form.role.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Company Information -->
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-gray-900 border-t pt-6">Company Information</h3>
                     
-                    <!-- Other Industry -->
-                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                        <label class="flex flex-col min-w-40 flex-1">
-                            <p class="text-[#121416] text-base font-medium leading-normal pb-2">Other Industry</p>
-                            {{ form.other_industry }}
-                            {% if form.other_industry.errors %}
-                                <div class="text-red-600 text-sm mt-1">{{ form.other_industry.errors.0 }}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.company_name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Company Name
+                            </label>
+                            {{ form.company_name }}
+                            {% if form.company_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.company_name.errors.0 }}</p>
                             {% endif %}
-                        </label>
+                        </div>
+
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Business Email
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                    
-                    <!-- Terms & Conditions -->
-                    <div class="px-4">
-                        <label class="flex gap-x-3 py-3 flex-row">
-                            {{ form.terms_accepted }}
-                            <p class="text-[#121416] text-base font-normal leading-normal">
-                                I agree to the Terms & Conditions
-                            </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Password
+                            </label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.password1.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Confirm Password
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.password2.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Industry Selection -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900 border-t pt-6">Select Your Industries</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {% for choice in form.industries %}
+                            <label class="relative flex items-center p-3 rounded-lg border border-gray-300 cursor-pointer hover:border-blue-500 transition-colors">
+                                {{ choice.tag }}
+                                <span class="ml-2 text-sm font-medium text-gray-900">{{ choice.choice_label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    {% if form.industries.errors %}
+                        <p class="text-sm text-red-600">{{ form.industries.errors.0 }}</p>
+                    {% endif %}
+
+                    <!-- Other Industry -->
+                    <div>
+                        <label for="{{ form.other_industry.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Other Industry (if not listed above)
                         </label>
-                        {% if form.terms_accepted.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.terms_accepted.errors.0 }}</div>
+                        {{ form.other_industry }}
+                        {% if form.other_industry.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.other_industry.errors.0 }}</p>
                         {% endif %}
                     </div>
-                    
-                    <!-- Submit Button -->
-                    <div class="flex px-4 py-3">
-                        <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#dce8f3] text-[#121416] text-base font-bold leading-normal tracking-[0.015em]">
-                            <span class="truncate">Continue to Payment</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="border-t pt-6">
+                    <label class="flex items-start">
+                        {{ form.terms_accepted }}
+                        <span class="ml-2 text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms & Conditions</a> and <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                        </span>
+                    </label>
+                    {% if form.terms_accepted.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.terms_accepted.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-6">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl">
+                        Create Account & Continue
+                    </button>
+                </div>
+
+                <!-- Sign In Link -->
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="{% url 'accounts:login' %}" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
+                    </p>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<style>
+input[type="text"], input[type="email"], input[type="password"], textarea, select {
+    @apply block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    @apply h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
+}
+</style>
 {% endblock %}

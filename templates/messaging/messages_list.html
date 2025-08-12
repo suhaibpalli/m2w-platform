@@ -1,78 +1,154 @@
 {% extends 'base.html' %}
 
-{% block title %}Messages - M2W Platform{% endblock %}
+{% block title %}Messages - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto py-8 px-4">
-    <div class="flex gap-6">
-        <!-- Sidebar -->
-        <div class="w-64 bg-white rounded-lg shadow-md p-4">
-            <h2 class="font-bold text-lg mb-4">Messages</h2>
-            <nav class="space-y-2">
-                <a href="{% url 'messaging:messages' %}" class="block px-3 py-2 rounded bg-blue-100 text-blue-700">
-                    All Conversations
-                </a>
-                {% if user.company.role == 'vendor' %}
-                <a href="{% url 'messaging:quotes_received' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
-                    Quotes Received
-                </a>
-                {% else %}
-                <a href="{% url 'messaging:quotes_sent' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
-                    Quotes Sent
-                </a>
-                {% endif %}
-                <a href="{% url 'messaging:notifications' %}" class="block px-3 py-2 rounded hover:bg-gray-100">
-                    Notifications
-                </a>
-            </nav>
-        </div>
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <!-- Conversations List -->
-        <div class="flex-1 bg-white rounded-lg shadow-md">
-            <div class="p-6 border-b">
-                <h1 class="text-2xl font-bold">Your Conversations</h1>
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Messages</h1>
+            <p class="mt-2 text-gray-600">Manage your conversations and quote requests</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Sidebar Navigation -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900">Message Center</h2>
+                    </div>
+                    <nav class="p-4 space-y-2">
+                        <a href="{% url 'messaging:messages' %}" 
+                           class="flex items-center px-4 py-3 text-sm font-medium rounded-lg bg-blue-50 text-blue-700 border border-blue-200">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                            All Conversations
+                        </a>
+                        
+                        {% if user.company.role == 'vendor' %}
+                        <a href="{% url 'messaging:quotes_received' %}" 
+                           class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Quotes Received
+                        </a>
+                        {% else %}
+                        <a href="{% url 'messaging:quotes_sent' %}" 
+                           class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                            Quotes Sent
+                        </a>
+                        {% endif %}
+                        
+                        <a href="{% url 'messaging:notifications' %}" 
+                           class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 17h6m-6-8h10M4 5h14"/>
+                            </svg>
+                            Notifications
+                        </a>
+                    </nav>
+                </div>
             </div>
             
-            <div class="divide-y">
-                {% for conversation in conversations %}
-                <div class="p-4 hover:bg-gray-50">
-                    <a href="{% url 'messaging:conversation' conversation.pk %}" class="block">
+            <!-- Conversations List -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 border-b border-gray-200">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                {% if conversation.quote_request.product.main_image %}
-                                <div class="w-12 h-12 bg-center bg-no-repeat bg-cover rounded" style="background-image: url('{{ conversation.quote_request.product.main_image }}');"></div>
-                                {% endif %}
-                                <div>
-                                    <h3 class="font-semibold">{{ conversation.quote_request.product.name }}</h3>
-                                    <p class="text-sm text-gray-600">
-                                        {% if user.company == conversation.quote_request.requester %}
-                                            with {{ conversation.quote_request.supplier.company_name }}
-                                        {% else %}
-                                            from {{ conversation.quote_request.requester.company_name }}
-                                        {% endif %}
-                                    </p>
-                                    <p class="text-xs text-gray-500">{{ conversation.updated_at|date:"M d, Y g:i A" }}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
-                                    {% if conversation.quote_request.status == 'pending' %}bg-yellow-100 text-yellow-800
-                                    {% elif conversation.quote_request.status == 'responded' %}bg-blue-100 text-blue-800
-                                    {% elif conversation.quote_request.status == 'accepted' %}bg-green-100 text-green-800
-                                    {% elif conversation.quote_request.status == 'declined' %}bg-red-100 text-red-800
-                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
-                                    {{ conversation.quote_request.get_status_display }}
-                                </span>
+                            <h2 class="text-lg font-semibold text-gray-900">Your Conversations</h2>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-500">{{ conversations|length }} conversation{{ conversations|length|pluralize }}</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    
+                    {% if conversations %}
+                        <div class="divide-y divide-gray-200">
+                            {% for conversation in conversations %}
+                            <div class="p-6 hover:bg-gray-50 transition-colors">
+                                <a href="{% url 'messaging:conversation' conversation.pk %}" class="block">
+                                    <div class="flex items-start space-x-4">
+                                        <!-- Product Image -->
+                                        <div class="flex-shrink-0">
+                                            {% if conversation.quote_request.product.main_image %}
+                                                <img src="{{ conversation.quote_request.product.main_image }}" 
+                                                     alt="{{ conversation.quote_request.product.name }}" 
+                                                     class="w-16 h-16 rounded-lg object-cover border border-gray-200">
+                                            {% else %}
+                                                <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
+                                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                    </svg>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <!-- Conversation Info -->
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center justify-between">
+                                                <h3 class="text-lg font-semibold text-gray-900 truncate">
+                                                    {{ conversation.quote_request.product.name }}
+                                                </h3>
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                                                    {% if conversation.quote_request.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                                    {% elif conversation.quote_request.status == 'responded' %}bg-blue-100 text-blue-800
+                                                    {% elif conversation.quote_request.status == 'accepted' %}bg-green-100 text-green-800
+                                                    {% elif conversation.quote_request.status == 'declined' %}bg-red-100 text-red-800
+                                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                                    {{ conversation.quote_request.get_status_display }}
+                                                </span>
+                                            </div>
+                                            
+                                            <p class="text-sm text-gray-600 mt-1">
+                                                {% if user.company == conversation.quote_request.requester %}
+                                                    with {{ conversation.quote_request.supplier.company_name }}
+                                                {% else %}
+                                                    from {{ conversation.quote_request.requester.company_name }}
+                                                {% endif %}
+                                            </p>
+                                            
+                                            <div class="flex items-center justify-between mt-3">
+                                                <span class="text-xs text-gray-500">
+                                                    {{ conversation.updated_at|date:"M d, Y g:i A" }}
+                                                </span>
+                                                <div class="flex items-center text-blue-600">
+                                                    <span class="text-sm font-medium">View Details</span>
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <!-- Empty State -->
+                        <div class="p-12 text-center">
+                            <div class="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">No conversations yet</h3>
+                            <p class="text-gray-600 mb-6">Start connecting with suppliers and buyers by browsing products</p>
+                            <a href="{% url 'products:list' %}" 
+                               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                                Browse Products
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
-                {% empty %}
-                <div class="p-8 text-center text-gray-500">
-                    <p>No conversations yet.</p>
-                    <a href="{% url 'products:list' %}" class="text-blue-600 hover:underline">Browse products to start conversations</a>
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>

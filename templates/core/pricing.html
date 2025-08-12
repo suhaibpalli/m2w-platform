@@ -1,151 +1,181 @@
 {% extends 'base.html' %}
 
-{% block title %}Pricing - M2W Platform{% endblock %}
+{% block title %}Pricing - MWPUAE Platform{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-        <h1 class="text-4xl font-bold mb-4">Pricing Plans</h1>
-        <p class="text-xl text-blue-100">Choose the plan that best fits your business needs and start connecting with suppliers and buyers today.</p>
-    </div>
-</section>
-
-<!-- Pricing Card -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4">
-        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Business Plan</h2>
-                <div class="text-5xl font-bold text-blue-600 mb-2">
-                    ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}499{% endif %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-4 lg:px-10 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                
+                <!-- Hero Section -->
+                <div class="@container">
+                    <div class="@[480px]:p-4">
+                        <div class="flex min-h-[400px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-8"
+                             style='background: linear-gradient(135deg, rgba(12, 127, 242, 0.9) 0%, rgba(11, 114, 217, 0.95) 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'>
+                            
+                            <div class="flex flex-col gap-2 text-center">
+                                <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+                                    Simple, Transparent Pricing
+                                </h1>
+                                <h2 class="text-white/90 text-lg font-normal leading-normal @[480px]:text-xl">
+                                    Choose the plan that best fits your business needs and start connecting with suppliers and buyers today.
+                                </h2>
+                            </div>
+                            
+                            <button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-200 shadow-lg">
+                                <span class="truncate">Get Started</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-gray-600">/year</div>
+
+                <!-- Pricing Card -->
+                <div class="flex justify-center px-4 py-12">
+                    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 max-w-md w-full">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-4">Business Plan</h2>
+                            <div class="flex items-baseline justify-center gap-1">
+                                <span class="text-5xl font-black text-primary-500">
+                                    ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}999{% endif %}
+                                </span>
+                                <span class="text-lg font-semibold text-gray-600">/year</span>
+                            </div>
+                            <p class="text-gray-500 mt-2">Everything you need to grow your business</p>
+                        </div>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">Access to all industry categories</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">Unlimited supplier and buyer connections</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">Advanced search and filtering</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">Dedicated account manager</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">Priority customer support</span>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-primary-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-600 transition-all duration-200 shadow-lg">
+                            Start Your Membership
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="px-4 py-12">
+                    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+                    
+                    <div class="space-y-4 max-w-3xl mx-auto">
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                What industries does MWPUAE Platform support?
+                                <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                We support Metal, Wood, Plastic, Machineries, Technology, and other industries. Our platform is designed to connect businesses across diverse industrial sectors.
+                            </div>
+                        </details>
+                        
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                How does MWPUAE Platform help my business grow?
+                                <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                Our platform helps you find reliable suppliers, expand your network, access new markets, and streamline your procurement processes through our verified business network.
+                            </div>
+                        </details>
+                        
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                What are the benefits of a paid membership?
+                                <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                Paid members get access to verified listings, unlimited connections, advanced search features, dedicated support, and priority access to new features and opportunities.
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="px-4 py-12 bg-gray-50 rounded-2xl">
+                    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Why Choose MWPUAE Platform?</h2>
+                    
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left font-semibold text-gray-900">Feature</th>
+                                    <th class="px-6 py-4 text-left font-semibold text-primary-500">MWPUAE Platform</th>
+                                    <th class="px-6 py-4 text-left font-semibold text-gray-900">Traditional Methods</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-gray-900">Industry Access</td>
+                                    <td class="px-6 py-4 text-green-600 font-semibold">All industries</td>
+                                    <td class="px-6 py-4 text-gray-500">Limited</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-gray-900">Connections</td>
+                                    <td class="px-6 py-4 text-green-600 font-semibold">Unlimited</td>
+                                    <td class="px-6 py-4 text-gray-500">Limited</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-gray-900">Search & Filtering</td>
+                                    <td class="px-6 py-4 text-green-600 font-semibold">Advanced</td>
+                                    <td class="px-6 py-4 text-gray-500">Basic</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-gray-900">Support</td>
+                                    <td class="px-6 py-4 text-green-600 font-semibold">Dedicated manager</td>
+                                    <td class="px-6 py-4 text-gray-500">General support</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
-            <div class="space-y-4 mb-8">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Access to all industry categories</span>
-                </div>
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Unlimited supplier and buyer connections</span>
-                </div>
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Advanced search and filtering</span>
-                </div>
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Dedicated account manager</span>
-                </div>
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Priority customer support</span>
-                </div>
-            </div>
-            
-            <button class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition">
-                Start Your Membership
-            </button>
         </div>
     </div>
-</section>
-
-<!-- FAQ Section -->
-<section class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
-        
-        <div class="space-y-4">
-            <details class="bg-gray-50 rounded-lg p-4">
-                <summary class="font-semibold cursor-pointer flex justify-between items-center">
-                    What industries does M2W Platform support?
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </summary>
-                <div class="mt-4 text-gray-600">
-                    We support Metal, Wood, Plastic, Machineries, Technology, and other industries. Our platform is designed to connect businesses across diverse industrial sectors.
-                </div>
-            </details>
-            
-            <details class="bg-gray-50 rounded-lg p-4">
-                <summary class="font-semibold cursor-pointer flex justify-between items-center">
-                    How does M2W Platform help my business grow?
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </summary>
-                <div class="mt-4 text-gray-600">
-                    Our platform helps you find reliable suppliers, expand your network, access new markets, and streamline your procurement processes through our verified business network.
-                </div>
-            </details>
-            
-            <details class="bg-gray-50 rounded-lg p-4">
-                <summary class="font-semibold cursor-pointer flex justify-between items-center">
-                    What are the benefits of a paid membership?
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </summary>
-                <div class="mt-4 text-gray-600">
-                    Paid members get access to verified listings, unlimited connections, advanced search features, dedicated support, and priority access to new features and opportunities.
-                </div>
-            </details>
-        </div>
-    </div>
-</section>
-
-<!-- Comparison Table -->
-<section class="py-16 bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Comparison Table</h2>
-        
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-4 text-left font-semibold">Feature</th>
-                        <th class="px-6 py-4 text-left font-semibold">M2W Platform</th>
-                        <th class="px-6 py-4 text-left font-semibold">Traditional Methods</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <tr>
-                        <td class="px-6 py-4">Industry Access</td>
-                        <td class="px-6 py-4 text-green-600">All industries</td>
-                        <td class="px-6 py-4 text-gray-500">Limited</td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">Connections</td>
-                        <td class="px-6 py-4 text-green-600">Unlimited</td>
-                        <td class="px-6 py-4 text-gray-500">Limited</td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">Search & Filtering</td>
-                        <td class="px-6 py-4 text-green-600">Advanced</td>
-                        <td class="px-6 py-4 text-gray-500">Basic</td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">Support</td>
-                        <td class="px-6 py-4 text-green-600">Dedicated manager</td>
-                        <td class="px-6 py-4 text-gray-500">General support</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+</div>
 {% endblock %}

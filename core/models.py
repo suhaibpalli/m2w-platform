@@ -40,10 +40,10 @@ class ContactInquiry(models.Model):
 
 class SiteSettings(models.Model):
     """Site-wide settings"""
-    site_name = models.CharField(max_length=100, default="M2W Platform")
+    site_name = models.CharField(max_length=100, default="MWPUAE Platform")
     annual_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     currency = models.CharField(max_length=3, default="USD")
-    contact_email = models.EmailField(default="info@m2wplatform.com")
+    contact_email = models.EmailField(default="info@mwpuaeplatform.com")
     contact_phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
     
