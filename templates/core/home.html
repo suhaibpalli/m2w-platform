@@ -4,349 +4,482 @@
 
 {% block content %}
 <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden">
-    <!-- Hero Section with Carousel (Full Width, No Blue Overlay) -->
+    <!-- Hero Section with Carousel (Full Width, Enhanced) -->
     <div class="relative flex w-full min-h-[100vh] items-center justify-center overflow-hidden">
         {% if hero_images %}
             {% for image in hero_images %}
-                <div class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
+                <div class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 {% if forloop.first %}opacity-100 scale-100{% else %}opacity-0 scale-110{% endif %}"
                      style="background-image: url('{{ image.image }}');">
                 </div>
             {% endfor %}
         {% else %}
             <!-- Fallback background if no images -->
-            <div class="absolute inset-0 bg-gray-800 bg-cover bg-center bg-no-repeat"
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 bg-cover bg-center bg-no-repeat"
                  style='background-image: url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'>
             </div>
         {% endif %}
-        <!-- Optional: Subtle dark overlay for text readability -->
-        <div class="absolute inset-0 bg-black/30"></div>
+        
+        <!-- Animated overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
+        
+        <!-- Floating particles animation -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="particle absolute w-2 h-2 bg-white/20 rounded-full animate-float-1"></div>
+            <div class="particle absolute w-1 h-1 bg-white/30 rounded-full animate-float-2"></div>
+            <div class="particle absolute w-3 h-3 bg-white/10 rounded-full animate-float-3"></div>
+        </div>
+        
         <!-- Content (above background) -->
-        <div class="relative z-10 flex flex-col gap-4 text-center w-full items-center px-4">
-            <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-lg max-w-4xl mx-auto">
+        <div class="relative z-10 flex flex-col gap-4 text-center w-full items-center px-4 animate-hero-content">
+            <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
                 Connect in Metal, Wood, Plastic, Machineries, Technology
             </h1>
-            <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-md">
+            <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
                 Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.
             </h2>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4 transform transition-all duration-1000 delay-500 animate-slide-up">
                 <a href="{% url 'products:list' %}" 
-                   class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-200 shadow-lg">
-                    <span class="truncate">Browse Products</span>
+                   class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                    <span class="truncate group-hover:animate-pulse">Browse Products</span>
                 </a>
                 <a href="{% url 'core:about' %}" 
-                   class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-200">
-                    <span class="truncate">Learn More</span>
+                   class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
+                    <span class="truncate group-hover:animate-pulse">Learn More</span>
                 </a>
             </div>
         </div>
-        <!-- Carousel Indicators -->
+        
+        <!-- Enhanced Carousel Indicators -->
         {% if hero_images|length > 1 %}
         <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
             {% for image in hero_images %}
-            <button class="carousel-indicator w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-colors {% if forloop.first %}bg-white{% endif %}" 
+            <button class="carousel-indicator w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 transform hover:scale-125 {% if forloop.first %}bg-white scale-110{% endif %}" 
                     data-slide="{{ forloop.counter0 }}"></button>
             {% endfor %}
         </div>
         {% endif %}
     </div>
 
-        <!-- Value Propositions Section -->
-        <div class="px-4 lg:px-10 flex flex-1 justify-center py-16">
+    <!-- Value Propositions Section -->
+    <div class="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-purple-50/50"></div>
+        <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 -translate-x-32 -translate-y-32"></div>
+        <div class="absolute bottom-0 right-0 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 translate-x-32 translate-y-32"></div>
+        
+        <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
             <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
                 <div class="flex flex-col gap-10 @container">
-                    <div class="flex flex-col gap-4 text-center">
-                        <h1 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] max-w-[720px] mx-auto">
+                    <div class="flex flex-col gap-4 text-center fade-in-section" data-delay="0">
+                        <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] max-w-[720px] mx-auto">
                             Why Choose MWPUAE Platform?
-                        </h1>
+                        </h2>
                         <p class="text-[#60758a] text-base lg:text-lg font-normal leading-relaxed max-w-[600px] mx-auto">
                             MWPUAE Platform offers a comprehensive solution for B2B trading, connecting companies across various industries with verified suppliers, transparent pricing, and secure payment solutions.
                         </p>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-lg transition-all duration-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in-section" data-delay="200">
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-green-50 hover:to-emerald-50 card-animate" data-delay="0">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-green-600">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 group-hover:bg-green-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-green-600 group-hover:text-green-700">
                                         <path d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-[#111418] text-lg font-bold leading-tight">Verified Listings</h2>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-green-800 transition-colors duration-300">Verified Listings</h3>
                             </div>
-                            <p class="text-[#60758a] text-sm font-normal leading-relaxed">Access a network of trusted suppliers with verified business listings and credentials.</p>
+                            <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Access a network of trusted suppliers with verified business listings and credentials.</p>
                         </div>
                         
-                        <div class="flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-lg transition-all duration-200">
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 card-animate" data-delay="100">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-blue-600">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 group-hover:bg-blue-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-blue-600 group-hover:text-blue-700">
                                         <path d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-[#111418] text-lg font-bold leading-tight">Flat Fee ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}999{% endif %}/year</h2>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-blue-800 transition-colors duration-300">Flat Fee ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}999{% endif %}/year</h3>
                             </div>
-                            <p class="text-[#60758a] text-sm font-normal leading-relaxed">Enjoy transparent pricing with a simple flat annual fee structure - no hidden costs or commissions.</p>
+                            <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Enjoy transparent pricing with a simple flat annual fee structure - no hidden costs or commissions.</p>
                         </div>
                         
-                        <div class="flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-lg transition-all duration-200">
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-purple-50 hover:to-violet-50 card-animate" data-delay="200">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-purple-600">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 group-hover:bg-purple-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-purple-600 group-hover:text-purple-700">
                                         <path d="M116,176a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h28A8,8,0,0,1,116,176Zm60-8H148a8,8,0,0,0,0,16h28a8,8,0,0,0,0-16Zm72,48a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H32V88a8,8,0,0,1,12.8-6.4L96,120V88a8,8,0,0,1,12.8-6.4l38.74,29.05L159.1,29.74A16.08,16.08,0,0,1,174.94,16h18.12A16.08,16.08,0,0,1,208.9,29.74l15,105.13s.08.78.08,1.13v72h16A8,8,0,0,1,248,216Zm-85.86-94.4,8.53,6.4h36.11L193.06,32H174.94ZM48,208H208V144H168a8,8,0,0,1-4.8-1.6l-14.4-10.8,0,0L112,104v32a8,8,0,0,1-12.8,6.4L48,104Z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-[#111418] text-lg font-bold leading-tight">Industry Focused</h2>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-purple-800 transition-colors duration-300">Industry Focused</h3>
                             </div>
-                            <p class="text-[#60758a] text-sm font-normal leading-relaxed">Connect with businesses in your specific industry with specialized categories and features.</p>
+                            <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Connect with businesses in your specific industry with specialized categories and features.</p>
                         </div>
                         
-                        <div class="flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-lg transition-all duration-200">
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 card-animate" data-delay="300">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-orange-600">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100 group-hover:bg-orange-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-orange-600 group-hover:text-orange-700">
                                         <path d="M208,40H48A16,16,0,0,0,32,56v58.77c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56l160,0Z"/>
                                     </svg>
                                 </div>
-                                <h2 class="text-[#111418] text-lg font-bold leading-tight">Secure Trading</h2>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-orange-800 transition-colors duration-300">Secure Trading</h3>
                             </div>
-                            <p class="text-[#60758a] text-sm font-normal leading-relaxed">Ensure secure transactions with our advanced payment protection and verification systems.</p>
+                            <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Ensure secure transactions with our advanced payment protection and verification systems.</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- How It Works Section -->
-        <div class="bg-gray-50 py-16">
-            <div class="px-4 lg:px-10 flex flex-1 justify-center">
-                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                    <div class="text-center mb-12">
-                        <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">How It Works</h2>
-                        <p class="text-[#60758a] text-lg font-normal leading-relaxed max-w-2xl mx-auto">Get started with MWPUAE Platform in three simple steps</p>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-                        <div class="text-center">
-                            <div class="flex items-center justify-center w-16 h-16 bg-primary-500 text-white rounded-full text-2xl font-bold mx-auto mb-6">1</div>
-                            <h3 class="text-[#111418] text-xl font-bold leading-tight mb-3">Quick Signup & Payment</h3>
-                            <p class="text-[#60758a] text-base font-normal leading-relaxed">Sign up and set up your payment method in minutes. Get instant access to our platform.</p>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="flex items-center justify-center w-16 h-16 bg-primary-500 text-white rounded-full text-2xl font-bold mx-auto mb-6">2</div>
-                            <h3 class="text-[#111418] text-xl font-bold leading-tight mb-3">List Products</h3>
-                            <p class="text-[#60758a] text-base font-normal leading-relaxed">Showcase your products to a wide audience of potential buyers across multiple industries.</p>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="flex items-center justify-center w-16 h-16 bg-primary-500 text-white rounded-full text-2xl font-bold mx-auto mb-6">3</div>
-                            <h3 class="text-[#111418] text-xl font-bold leading-tight mb-3">Connect & Trade</h3>
-                            <p class="text-[#60758a] text-base font-normal leading-relaxed">Connect with other businesses and start trading with our secure messaging system.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Industries Showcase -->
-        <div class="py-16">
-            <div class="px-4 lg:px-10 flex flex-1 justify-center">
-                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                    <div class="text-center mb-12">
-                        <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">Industries We Serve</h2>
-                        <p class="text-[#60758a] text-lg font-normal leading-relaxed">Specialized marketplace for key industrial sectors</p>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        {% for industry in industries %}
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 text-2xl">🏭</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">{{ industry.name }}</h3>
-                        </div>
-                        {% empty %}
-                        <!-- Default Industries -->
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600">
-                                    <path d="M224,48H32A8,8,0,0,0,24,56V200a8,8,0,0,0,8,8H224a8,8,0,0,0,8-8V56A8,8,0,0,0,224,48ZM40,192V64H216V192Z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Metal</h3>
-                        </div>
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">🌿</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Wood</h3>
-                        </div>
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">♻️</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Plastic</h3>
-                        </div>
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">⚙️</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Machinery</h3>
-                        </div>
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">💻</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Technology</h3>
-                        </div>
-                        <div class="flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-md transition-all duration-200">
-                            <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">📦</div>
-                            <h3 class="text-[#111418] font-semibold text-sm">Other</h3>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Testimonials -->
-        <div class="bg-gray-50 py-16">
-            <div class="px-4 lg:px-10 flex flex-1 justify-center">
-                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                    <div class="text-center mb-12">
-                        <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">What Our Clients Say</h2>
-                        <p class="text-[#60758a] text-lg font-normal leading-relaxed">Hear from businesses that have transformed their trading experience</p>
-                    </div>
-                    
-                    <!-- Testimonials Carousel Container -->
-                    <div class="relative">
-                        {% if testimonials %}
-                            <div class="testimonial-carousel-container overflow-hidden">
-                                <div class="testimonial-carousel-track flex transition-transform duration-500 ease-in-out">
-                                    {% for testimonial in testimonials %}
-                                    <div class="testimonial-slide flex-none w-full md:w-1/2 lg:w-1/3 px-4">
-                                        <div class="flex flex-col gap-4 rounded-xl bg-white p-6 shadow-sm h-full">
-                                            <div class="flex text-yellow-400 mb-2">
-                                                {{ testimonial.get_star_display }}
-                                            </div>
-                                            <p class="text-[#111418] text-base font-normal leading-relaxed flex-grow">
-                                                "{{ testimonial.testimonial_text }}"
-                                            </p>
-                                            <div class="border-t pt-4 mt-auto">
-                                                <p class="text-[#111418] text-sm font-semibold">{{ testimonial.client_name }}</p>
-                                                <p class="text-[#60758a] text-sm">{{ testimonial.client_title }}</p>
-                                                <p class="text-[#60758a] text-sm">{{ testimonial.company_name }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            
-                            <!-- Navigation Buttons -->
-                            {% if testimonials|length > 3 %}
-                            <button class="testimonial-prev absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 z-10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600">
-                                    <path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>
-                                </svg>
-                            </button>
-                            <button class="testimonial-next absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 z-10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600">
-                                    <path d="M96,216a12,12,0,0,1-8.49-20.49L159,128,87.51,60.49a12,12,0,0,1,17-17l80,80a12,12,0,0,1,0,17l-80,80A12,12,0,0,1,96,216Z"/>
-                                </svg>
-                            </button>
-                            {% endif %}
-                            
-                            <!-- Dots Indicators -->
-                            {% if testimonials|length > 3 %}
-                            <div class="flex justify-center mt-8 space-x-2">
-                                {% for testimonial in testimonials %}
-                                    {% if forloop.counter0|divisibleby:3 %}
-                                    <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors {% if forloop.first %}bg-primary-500{% endif %}" 
-                                            data-slide="{{ forloop.counter0|floatformat:0 }}"></button>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                            
-                        {% else %}
-                            <!-- Fallback content if no testimonials -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div class="flex flex-col gap-4 rounded-xl bg-white p-6 shadow-sm">
-                                    <div class="flex text-yellow-400 mb-2">⭐⭐⭐⭐⭐</div>
-                                    <p class="text-[#111418] text-base font-normal leading-relaxed">
-                                        "MWPUAE Platform has revolutionized our sourcing process. We've found reliable suppliers and expanded our network significantly."
-                                    </p>
-                                    <p class="text-[#60758a] text-sm font-medium">- Sarah Chen, CEO of TechCorp Industries</p>
-                                </div>
-                                
-                                <div class="flex flex-col gap-4 rounded-xl bg-white p-6 shadow-sm">
-                                    <div class="flex text-yellow-400 mb-2">⭐⭐⭐⭐⭐</div>
-                                    <p class="text-[#111418] text-base font-normal leading-relaxed">
-                                        "The platform's industry focus and secure payment system have made trading much more efficient and trustworthy."
-                                    </p>
-                                    <p class="text-[#60758a] text-sm font-medium">- David Lee, Procurement Manager at Global Materials</p>
-                                </div>
-                                
-                                <div class="flex flex-col gap-4 rounded-xl bg-white p-6 shadow-sm">
-                                    <div class="flex text-yellow-400 mb-2">⭐⭐⭐⭐⭐</div>
-                                    <p class="text-[#111418] text-base font-normal leading-relaxed">
-                                        "We appreciate the transparent pricing and the ability to connect with verified businesses in our industry."
-                                    </p>
-                                    <p class="text-[#60758a] text-sm font-medium">- Emily Wong, Founder of WoodCraft Solutions</p>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA Section -->
-        <div class="py-16 bg-gradient-to-r from-primary-500 to-primary-600">
-            <div class="px-4 lg:px-10 flex flex-1 justify-center">
-                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                    <div class="text-center">
-                        <h2 class="text-white text-3xl lg:text-4xl font-black leading-tight mb-4">Ready to Start Trading?</h2>
-                        <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">Join thousands of companies already using MWPUAE Platform to streamline their B2B trading operations.</p>
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'dashboard:home' %}" 
-                               class="inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-200 shadow-lg">
-                                Go to Dashboard
-                            </a>
-                        {% else %}
-                            <a href="{% url 'accounts:register' %}" 
-                               class="inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-200 shadow-lg">
-                                Start Your Membership Today
-                            </a>
-                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- How It Works Section -->
+    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 py-20 overflow-hidden">
+        <!-- Background animations -->
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+            <div class="absolute top-1/3 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+            <div class="absolute bottom-1/4 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+        </div>
+        
+        <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="text-center mb-12 fade-in-section" data-delay="0">
+                    <h2 class="text-white text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">How It Works</h2>
+                    <p class="text-white/80 text-lg font-normal leading-relaxed max-w-2xl mx-auto">Get started with MWPUAE Platform in three simple steps</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 fade-in-section" data-delay="200">
+                    <div class="text-center group step-animate" data-delay="0">
+                        <div class="relative inline-block mb-6">
+                            <div class="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full text-2xl font-bold mx-auto transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-blue-500/50">1</div>
+                            <div class="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-500 blur"></div>
+                        </div>
+                        <h3 class="text-white text-xl font-bold leading-tight mb-3 group-hover:text-blue-200 transition-colors duration-300">Quick Signup & Payment</h3>
+                        <p class="text-white/70 text-base font-normal leading-relaxed group-hover:text-white/90 transition-colors duration-300">Sign up and set up your payment method in minutes. Get instant access to our platform.</p>
+                    </div>
+                    
+                    <div class="text-center group step-animate" data-delay="100">
+                        <div class="relative inline-block mb-6">
+                            <div class="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-2xl font-bold mx-auto transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-purple-500/50">2</div>
+                            <div class="absolute -inset-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-500 blur"></div>
+                        </div>
+                        <h3 class="text-white text-xl font-bold leading-tight mb-3 group-hover:text-purple-200 transition-colors duration-300">List Products</h3>
+                        <p class="text-white/70 text-base font-normal leading-relaxed group-hover:text-white/90 transition-colors duration-300">Showcase your products to a wide audience of potential buyers across multiple industries.</p>
+                    </div>
+                    
+                    <div class="text-center group step-animate" data-delay="200">
+                        <div class="relative inline-block mb-6">
+                            <div class="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full text-2xl font-bold mx-auto transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-pink-500/50">3</div>
+                            <div class="absolute -inset-2 bg-gradient-to-r from-pink-500 to-red-500 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-500 blur"></div>
+                        </div>
+                        <h3 class="text-white text-xl font-bold leading-tight mb-3 group-hover:text-pink-200 transition-colors duration-300">Connect & Trade</h3>
+                        <p class="text-white/70 text-base font-normal leading-relaxed group-hover:text-white/90 transition-colors duration-300">Connect with other businesses and start trading with our secure messaging system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Industries Showcase -->
+    <div class="relative bg-gradient-to-b from-white to-gray-50 py-20">
+        <div class="px-4 lg:px-10 flex flex-1 justify-center">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="text-center mb-12 fade-in-section" data-delay="0">
+                    <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">Industries We Serve</h2>
+                    <p class="text-[#60758a] text-lg font-normal leading-relaxed">Specialized marketplace for key industrial sectors</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 fade-in-section" data-delay="200">
+                    {% for industry in industries %}
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-blue-50 industry-card" data-delay="{{ forloop.counter0|add:0|floatformat:0|add:0 }}">
+                        <div class="w-12 h-12 text-2xl group-hover:scale-110 transition-transform duration-300 group-hover:animate-bounce">🏭</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-blue-600 transition-colors duration-300">{{ industry.name }}</h3>
+                    </div>
+                    {% empty %}
+                    <!-- Default Industries -->
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-blue-50 industry-card" data-delay="0">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-blue-100 group-hover:scale-110 transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600">
+                                <path d="M224,48H32A8,8,0,0,0,24,56V200a8,8,0,0,0,8,8H224a8,8,0,0,0,8-8V56A8,8,0,0,0,224,48ZM40,192V64H216V192Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-blue-600 transition-colors duration-300">Metal</h3>
+                    </div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-green-50 industry-card" data-delay="50">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-green-100 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">🌿</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-green-600 transition-colors duration-300">Wood</h3>
+                    </div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-purple-50 industry-card" data-delay="100">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-purple-100 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">♻️</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-purple-600 transition-colors duration-300">Plastic</h3>
+                    </div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-orange-50 industry-card" data-delay="150">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-orange-100 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">⚙️</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-orange-600 transition-colors duration-300">Machinery</h3>
+                    </div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-indigo-50 industry-card" data-delay="200">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-indigo-100 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">💻</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-indigo-600 transition-colors duration-300">Technology</h3>
+                    </div>
+                    <div class="group flex flex-col items-center gap-3 rounded-xl border border-[#dbe0e6] bg-white p-6 text-center hover:shadow-lg transition-all duration-500 transform hover:-translate-y-1 hover:bg-gradient-to-b hover:from-white hover:to-gray-50 industry-card" data-delay="250">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-gray-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">📦</div>
+                        <h3 class="text-[#111418] font-semibold text-sm group-hover:text-gray-600 transition-colors duration-300">Other</h3>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="relative bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-20 overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full mix-blend-multiply filter blur-2xl -translate-x-48 -translate-y-48"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-indigo-200/30 to-pink-200/30 rounded-full mix-blend-multiply filter blur-2xl translate-x-48 translate-y-48"></div>
+        </div>
+        
+        <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="text-center mb-12 fade-in-section" data-delay="0">
+                    <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">What Our Clients Say</h2>
+                    <p class="text-[#60758a] text-lg font-normal leading-relaxed">Hear from businesses that have transformed their trading experience</p>
+                </div>
+                
+                <!-- Testimonials Carousel Container -->
+                <div class="relative fade-in-section" data-delay="200">
+                    {% if testimonials %}
+                        <div class="testimonial-carousel-container overflow-hidden">
+                            <div class="testimonial-carousel-track flex transition-transform duration-500 ease-in-out">
+                                {% for testimonial in testimonials %}
+                                <div class="testimonial-slide flex-none w-full md:w-1/2 lg:w-1/3 px-4">
+                                    <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-white">
+                                        <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">
+                                            {{ testimonial.get_star_display }}
+                                        </div>
+                                        <p class="text-[#111418] text-base font-normal leading-relaxed flex-grow group-hover:text-gray-800 transition-colors duration-300">
+                                            "{{ testimonial.testimonial_text }}"
+                                        </p>
+                                        <div class="border-t pt-4 mt-auto group-hover:border-blue-200 transition-colors duration-300">
+                                            <p class="text-[#111418] text-sm font-semibold group-hover:text-blue-800 transition-colors duration-300">{{ testimonial.client_name }}</p>
+                                            <p class="text-[#60758a] text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.client_title }}</p>
+                                            <p class="text-[#60758a] text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.company_name }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Enhanced Navigation Buttons -->
+                        {% if testimonials|length > 3 %}
+                        <button class="testimonial-prev absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                                <path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>
+                            </svg>
+                        </button>
+                        <button class="testimonial-next absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                                <path d="M96,216a12,12,0,0,1-8.49-20.49L159,128,87.51,60.49a12,12,0,0,1,17-17l80,80a12,12,0,0,1,0,17l-80,80A12,12,0,0,1,96,216Z"/>
+                            </svg>
+                        </button>
+                        {% endif %}
+                        
+                        <!-- Enhanced Dots Indicators -->
+                        {% if testimonials|length > 3 %}
+                        <div class="flex justify-center mt-8 space-x-2">
+                            {% for testimonial in testimonials %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                <button class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-400 transition-all duration-300 transform hover:scale-125 {% if forloop.first %}bg-blue-500 scale-110{% endif %}" 
+                                        data-slide="{{ forloop.counter0|floatformat:0 }}"></button>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                    {% else %}
+                        <!-- Enhanced Fallback content -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                                    "MWPUAE Platform has revolutionized our sourcing process. We've found reliable suppliers and expanded our network significantly."
+                                </p>
+                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Sarah Chen, CEO of TechCorp Industries</p>
+                            </div>
+                            
+                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                                    "The platform's industry focus and secure payment system have made trading much more efficient and trustworthy."
+                                </p>
+                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- David Lee, Procurement Manager at Global Materials</p>
+                            </div>
+                            
+                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                                    "We appreciate the transparent pricing and the ability to connect with verified businesses in our industry."
+                                </p>
+                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Emily Wong, Founder of WoodCraft Solutions</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced CTA Section -->
+    <div class="relative py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
+        <!-- Animated background -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient-x"></div>
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow animation-delay-2000"></div>
+        </div>
+        
+        <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="text-center fade-in-section" data-delay="0">
+                    <h2 class="text-white text-3xl lg:text-4xl font-black leading-tight mb-4 animate-text-glow">Ready to Start Trading?</h2>
+                    <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">Join thousands of companies already using MWPUAE Platform to streamline their B2B trading operations.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard:home' %}" 
+                           class="group inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-blue-600 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                            <span class="group-hover:animate-pulse">Go to Dashboard</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:register' %}" 
+                           class="group inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-blue-600 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                            <span class="group-hover:animate-pulse">Start Your Membership Today</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Enhanced CSS Animations -->
+<style>
+@keyframes float-1 {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    25% { transform: translateY(-20px) translateX(10px); }
+    50% { transform: translateY(0px) translateX(20px); }
+    75% { transform: translateY(20px) translateX(10px); }
+}
+
+@keyframes float-2 {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    33% { transform: translateY(-15px) translateX(-10px); }
+    66% { transform: translateY(15px) translateX(-20px); }
+}
+
+@keyframes float-3 {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-25px) translateX(15px); }
+}
+
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes slide-up {
+    from { 
+        opacity: 0; 
+        transform: translateY(50px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes hero-content {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes text-glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+    50% { text-shadow: 0 0 30px rgba(255,255,255,0.5); }
+}
+
+.animate-float-1 { animation: float-1 6s ease-in-out infinite; }
+.animate-float-2 { animation: float-2 8s ease-in-out infinite; }
+.animate-float-3 { animation: float-3 7s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 10s ease-in-out infinite; }
+.animate-blob { animation: blob 7s infinite; }
+.animate-gradient-x { animation: gradient-x 15s ease infinite; background-size: 400% 400%; }
+.animate-slide-up { animation: slide-up 0.8s ease-out; }
+.animate-hero-content { animation: hero-content 1s ease-out; }
+.animate-text-glow { animation: text-glow 3s ease-in-out infinite; }
+
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }
+
+.particle:nth-child(1) { top: 20%; left: 10%; }
+.particle:nth-child(2) { top: 60%; right: 15%; }
+.particle:nth-child(3) { bottom: 30%; left: 70%; }
+</style>
+
 <script>
+// Enhanced Hero Carousel
 document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.hero-slide');
     const indicators = document.querySelectorAll('.carousel-indicator');
     let currentSlide = 0;
     
     if (slides.length > 1) {
-        // Auto-advance slides every 5 seconds
+        // Auto-advance slides every 6 seconds
         const slideInterval = setInterval(function() {
             nextSlide();
-        }, 5000);
+        }, 6000);
         
         function showSlide(index) {
-            // Hide all slides
-            slides.forEach(slide => slide.classList.remove('opacity-100'));
-            slides.forEach(slide => slide.classList.add('opacity-0'));
+            // Enhanced slide transitions
+            slides.forEach((slide, i) => {
+                slide.classList.remove('opacity-100', 'scale-100');
+                slide.classList.add('opacity-0', 'scale-110');
+            });
             
-            // Update indicators
-            indicators.forEach(indicator => indicator.classList.remove('bg-white'));
-            indicators.forEach(indicator => indicator.classList.add('bg-white/50'));
+            // Update indicators with enhanced animation
+            indicators.forEach((indicator, i) => {
+                indicator.classList.remove('bg-white', 'scale-110');
+                indicator.classList.add('bg-white/50', 'scale-100');
+            });
             
-            // Show current slide
+            // Show current slide with enhanced animation
             if (slides[index]) {
-                slides[index].classList.remove('opacity-0');
-                slides[index].classList.add('opacity-100');
+                slides[index].classList.remove('opacity-0', 'scale-110');
+                slides[index].classList.add('opacity-100', 'scale-100');
             }
             
             // Update current indicator
             if (indicators[index]) {
-                indicators[index].classList.remove('bg-white/50');
-                indicators[index].classList.add('bg-white');
+                indicators[index].classList.remove('bg-white/50', 'scale-100');
+                indicators[index].classList.add('bg-white', 'scale-110');
             }
         }
         
@@ -355,17 +488,83 @@ document.addEventListener('DOMContentLoaded', function() {
             showSlide(currentSlide);
         }
         
-        // Click handlers for indicators
+        // Enhanced click handlers
         indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', function() {
                 currentSlide = index;
                 showSlide(currentSlide);
+                // Add ripple effect
+                indicator.classList.add('animate-ping');
+                setTimeout(() => indicator.classList.remove('animate-ping'), 600);
             });
         });
     }
+    
+    // Scroll-triggered animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = parseInt(entry.target.dataset.delay) || 0;
+                setTimeout(() => {
+                    entry.target.classList.add('animate-slide-up');
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, delay);
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements with fade-in-section class
+    document.querySelectorAll('.fade-in-section').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.8s ease-out';
+        observer.observe(el);
+    });
+    
+    // Staggered card animations
+    document.querySelectorAll('.card-animate').forEach((card, index) => {
+        const delay = parseInt(card.dataset.delay) || 0;
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease-out';
+        
+        setTimeout(() => {
+            observer.observe(card);
+        }, delay);
+    });
+    
+    // Industry cards staggered animation
+    document.querySelectorAll('.industry-card').forEach((card, index) => {
+        const delay = parseInt(card.dataset.delay) || 0;
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px) scale(0.9)';
+        card.style.transition = 'all 0.5s ease-out';
+        
+        setTimeout(() => {
+            observer.observe(card);
+        }, delay);
+    });
+    
+    // Step animations
+    document.querySelectorAll('.step-animate').forEach((step, index) => {
+        const delay = parseInt(step.dataset.delay) || 0;
+        step.style.opacity = '0';
+        step.style.transform = 'translateY(30px)';
+        step.style.transition = 'all 0.8s ease-out';
+        
+        setTimeout(() => {
+            observer.observe(step);
+        }, delay + 200);
+    });
 });
 
-// Testimonials Carousel
+// Enhanced Testimonials Carousel (keeping the existing functionality)
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.querySelector('.testimonial-carousel-track');
     const slides = document.querySelectorAll('.testimonial-slide');
@@ -380,9 +579,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let maxIndex = Math.max(0, slides.length - slidesToShow);
 
     function getSlidesToShow() {
-        if (window.innerWidth >= 1024) return 3; // lg
-        if (window.innerWidth >= 768) return 2;  // md
-        return 1; // sm
+        if (window.innerWidth >= 1024) return 3;
+        if (window.innerWidth >= 768) return 2;
+        return 1;
     }
     
     function updateCarousel() {
@@ -393,15 +592,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const offset = currentIndex * slideWidth;
         track.style.transform = `translateX(-${offset}px)`;
         
-        // Update dots
+        // Enhanced dots animation
         dots.forEach((dot, index) => {
-            dot.classList.toggle('bg-primary-500', index === Math.floor(currentIndex / slidesToShow));
-            dot.classList.toggle('bg-gray-300', index !== Math.floor(currentIndex / slidesToShow));
+            const isActive = index === Math.floor(currentIndex / slidesToShow);
+            dot.classList.toggle('bg-blue-500', isActive);
+            dot.classList.toggle('scale-110', isActive);
+            dot.classList.toggle('bg-gray-300', !isActive);
+            dot.classList.toggle('scale-100', !isActive);
         });
         
-        // Update button states
-        if (prevBtn) prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-        if (nextBtn) nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+        // Enhanced button states
+        if (prevBtn) {
+            prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+            prevBtn.style.transform = currentIndex === 0 ? 'translateX(-4px) scale(0.95)' : 'translateX(-4px) scale(1)';
+        }
+        if (nextBtn) {
+            nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+            nextBtn.style.transform = currentIndex >= maxIndex ? 'translateX(4px) scale(0.95)' : 'translateX(4px) scale(1)';
+        }
     }
     
     function nextSlide() {
@@ -414,18 +622,33 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCarousel();
     }
     
-    // Event listeners
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    // Enhanced event listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            nextBtn.classList.add('animate-pulse');
+            setTimeout(() => nextBtn.classList.remove('animate-pulse'), 300);
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            prevBtn.classList.add('animate-pulse');
+            setTimeout(() => prevBtn.classList.remove('animate-pulse'), 300);
+        });
+    }
     
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             currentIndex = index * slidesToShow;
             updateCarousel();
+            dot.classList.add('animate-ping');
+            setTimeout(() => dot.classList.remove('animate-ping'), 400);
         });
     });
     
-    // Auto-scroll every 6 seconds
+    // Auto-scroll with enhanced timing
     setInterval(() => {
         if (currentIndex >= maxIndex) {
             currentIndex = 0;
@@ -433,9 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
             nextSlide();
         }
         updateCarousel();
-    }, 6000);
+    }, 7000);
     
-    // Handle window resize
+    // Enhanced resize handler
     window.addEventListener('resize', () => {
         const newSlidesToShow = getSlidesToShow();
         if (newSlidesToShow !== slidesToShow) {
