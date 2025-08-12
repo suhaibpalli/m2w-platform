@@ -53,3 +53,30 @@ class SiteSettings(models.Model):
     
     def __str__(self):
         return self.site_name
+
+class HeroCarouselImage(models.Model):
+    """Hero carousel background images"""
+    title = models.CharField(max_length=200)
+    image = models.TextField(help_text="Base64 encoded image data")
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['order', '-created_at']
+        verbose_name = "Hero Carousel Image"
+        verbose_name_plural = "Hero Carousel Images"
+    
+    def __str__(self):
+        return self.title
+    
+    def add_image_from_file(self, image_file):
+        """Convert uploaded file to base64"""
+        import base64
+
+        # Reset file pointer to beginning
+        image_file.seek(0)
+
+        encoded = base64.b64encode(image_file.read()).decode('utf-8')
+        mime_type = image_file.content_type
+        self.image = f"data:{mime_type};base64,{encoded}"

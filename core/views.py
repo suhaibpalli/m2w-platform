@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib import messages
-from .models import Industry, ContactInquiry, SiteSettings
+from .models import Industry, ContactInquiry, SiteSettings, HeroCarouselImage
 from .forms import ContactForm
 
 class HomeView(TemplateView):
@@ -10,6 +10,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['industries'] = Industry.objects.filter(is_active=True)
+        context['hero_images'] = HeroCarouselImage.objects.filter(is_active=True)
         try:
             context['site_settings'] = SiteSettings.objects.first()
         except SiteSettings.DoesNotExist:
