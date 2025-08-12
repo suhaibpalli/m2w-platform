@@ -11,11 +11,8 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['industries'] = Industry.objects.filter(is_active=True)
         context['hero_images'] = HeroCarouselImage.objects.filter(is_active=True)
-        context['testimonials'] = TestimonialCarousel.objects.filter(is_active=True)  # Add this line
-        try:
-            context['site_settings'] = SiteSettings.objects.first()
-        except SiteSettings.DoesNotExist:
-            context['site_settings'] = None
+        context['testimonials'] = TestimonialCarousel.objects.filter(is_active=True)
+        # site_settings is now global, so we don't set it here
         return context
 
 class AboutView(TemplateView):
@@ -34,10 +31,7 @@ class PricingView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            context['site_settings'] = SiteSettings.objects.first()
-        except SiteSettings.DoesNotExist:
-            context['site_settings'] = None
+        # site_settings is now global, so we don't set it here
         return context
 
 class ContactView(TemplateView):

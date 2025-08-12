@@ -59,6 +59,8 @@ class SiteSettings(models.Model):
     contact_email = models.EmailField(default="info@mwpuaeplatform.com")
     contact_phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
+    # Add this new field
+    site_logo = models.TextField(blank=True, help_text="Base64 encoded site logo")
     
     class Meta:
         verbose_name = "Site Settings"
@@ -66,6 +68,19 @@ class SiteSettings(models.Model):
     
     def __str__(self):
         return self.site_name
+    
+    # Add this method
+    def add_logo_from_file(self, logo_file):
+        """Convert uploaded file to base64"""
+        import base64
+        
+        # Reset file pointer to beginning
+        logo_file.seek(0)
+        
+        encoded = base64.b64encode(logo_file.read()).decode('utf-8')
+        mime_type = logo_file.content_type
+        self.site_logo = f"data:{mime_type};base64,{encoded}"
+
 
 class HeroCarouselImage(models.Model):
     """Hero carousel background images"""

@@ -74,9 +74,61 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email', 'subject']
     readonly_fields = ['created_at']
 
+class SiteSettingsForm(forms.ModelForm):
+    logo_upload = forms.ImageField(
+        required=False,
+        help_text="Upload site logo (SVG, PNG, JPG). Recommended size: 200x60px"
+    )
+    
+    class Meta:
+        model = SiteSettings
+        fields = ['site_name', 'annual_fee', 'currency', 'contact_email', 'contact_phone', 'address']
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.cleaned_data.get('logo_upload'):
+            instance.add_logo_from_file(self.cleaned_data['logo_upload'])
+        if commit:
+            instance.save()
+        return instance
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
+    form = SiteSettingsForm
     list_display = ['site_name', 'annual_fee', 'currency']
+    readonly_fields = ['logo_preview']
+    
+    def get_fieldsets(self, request, obj=None):
+        if obj:  # editing an existing object
+            return (
+                ('Site Information', {
+                    'fields': ('site_name', 'logo_upload', 'logo_preview')
+                }),
+                ('Financial Settings', {
+                    'fields': ('annual_fee', 'currency')
+                }),
+                ('Contact Information', {
+                    'fields': ('contact_email', 'contact_phone', 'address')
+                }),
+            )
+        else:  # adding a new object
+            return (
+                ('Site Information', {
+                    'fields': ('site_name', 'logo_upload')
+                }),
+                ('Financial Settings', {
+                    'fields': ('annual_fee', 'currency')
+                }),
+                ('Contact Information', {
+                    'fields': ('contact_email', 'contact_phone', 'address')
+                }),
+            )
+    
+    def logo_preview(self, obj):
+        if obj and obj.site_logo:
+            return mark_safe(f'<img src="{obj.site_logo}" style="max-height: 60px; max-width: 200px;" />')
+        return "No logo uploaded"
+    logo_preview.short_description = "Current Logo"
     
     def has_add_permission(self, request):
         # Only allow one SiteSettings instance
