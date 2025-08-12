@@ -80,3 +80,30 @@ class HeroCarouselImage(models.Model):
         encoded = base64.b64encode(image_file.read()).decode('utf-8')
         mime_type = image_file.content_type
         self.image = f"data:{mime_type};base64,{encoded}"
+
+class TestimonialCarousel(models.Model):
+    """Client testimonials carousel"""
+    client_name = models.CharField(max_length=200)
+    client_title = models.CharField(max_length=200, help_text="e.g., CEO, Manager, Founder")
+    company_name = models.CharField(max_length=200)
+    testimonial_text = models.TextField(help_text="The testimonial content")
+    rating = models.PositiveIntegerField(
+        default=5,
+        choices=[(i, f"{i} Star{'s' if i != 1 else ''}") for i in range(1, 6)],
+        help_text="Rating out of 5 stars"
+    )
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['order', '-created_at']
+        verbose_name = "Client Testimonial"
+        verbose_name_plural = "Client Testimonials"
+    
+    def __str__(self):
+        return f"{self.client_name} - {self.company_name}"
+    
+    def get_star_display(self):
+        """Return star emojis for rating"""
+        return "⭐" * self.rating

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.utils.safestring import mark_safe
-from .models import Industry, ContactInquiry, SiteSettings, HeroCarouselImage
+from .models import Industry, ContactInquiry, SiteSettings, HeroCarouselImage, TestimonialCarousel
 
 @admin.register(Industry)
 class IndustryAdmin(admin.ModelAdmin):
@@ -87,3 +87,30 @@ class HeroCarouselImageAdmin(admin.ModelAdmin):
             return ['created_at', 'image_preview']
         else:  # adding a new object
             return ['created_at']
+
+@admin.register(TestimonialCarousel)
+class TestimonialCarouselAdmin(admin.ModelAdmin):
+    list_display = ['client_name', 'company_name', 'rating', 'is_active', 'order', 'created_at']
+    list_filter = ['is_active', 'rating', 'created_at']
+    search_fields = ['client_name', 'company_name', 'testimonial_text']
+    list_editable = ['is_active', 'order', 'rating']
+    readonly_fields = ['created_at']
+    
+    fieldsets = (
+        ('Client Information', {
+            'fields': ('client_name', 'client_title', 'company_name')
+        }),
+        ('Testimonial Content', {
+            'fields': ('testimonial_text', 'rating')
+        }),
+        ('Display Settings', {
+            'fields': ('is_active', 'order')
+        }),
+        ('Metadata', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).order_by('order', '-created_at')
