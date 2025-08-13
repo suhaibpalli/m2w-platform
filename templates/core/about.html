@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}About Us - MWPUAE Platform{% endblock %}
 
 {% block content %}
@@ -11,11 +13,15 @@
                 <!-- Hero Section -->
                 <div class="@container">
                     <div class="@[480px]:p-4">
-                        <div class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-white @[480px]:rounded-xl min-h-[280px]"
-                             style='background: linear-gradient(135deg, rgba(12, 127, 242, 0.9) 0%, rgba(11, 114, 217, 0.95) 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'>
-                            <div class="flex p-4">
-                                <h1 class="text-white tracking-light text-[28px] font-bold leading-tight">About MWPUAE Platform</h1>
+                        <div class="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-white @[480px]:rounded-xl min-h-[280px] relative">
+                            <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC-01.png' %}" alt="Metal Wood Plastic Technology FZC LLC Banner" class="absolute inset-0 w-full h-full object-contain scale-90 opacity-90" />
+                            <div class="flex p-4 relative z-10">
+                                <h1 class="text-white tracking-light text-[28px] font-bold leading-tight drop-shadow-lg">About MWPUAE Platform</h1>
                             </div>
+                            <div class="absolute top-4 right-4 z-20">
+                                <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC_icon.svg' %}" alt="Company Icon" class="w-16 h-16 rounded-full bg-white p-2 shadow-lg" />
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-700/80 to-gray-900/90"></div>
                         </div>
                     </div>
                 </div>
@@ -31,8 +37,11 @@
 
                     <!-- Company Image -->
                     <div class="w-full">
-                        <div class="w-full aspect-[3/2] bg-gray-200 rounded-xl flex items-center justify-center">
-                            <span class="text-gray-500 text-lg">Company Image</span>
+                        <div class="w-full aspect-[3/2] bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
+                            <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC-01.png' %}" alt="Company Banner" class="object-contain w-full h-full" />
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC_icon.svg' %}" alt="Company Icon" class="w-20 h-20 rounded-full bg-white p-2 shadow" />
                         </div>
                     </div>
                 </div>

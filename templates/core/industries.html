@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Industries - MWPUAE Platform{% endblock %}
 
@@ -17,6 +18,7 @@
                         </p>
                     </div>
                 </div>
+
                 <!-- Industries Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 mb-8">
                     {% for industry in industries %}
@@ -29,7 +31,7 @@
                         <p class="text-white text-base font-bold leading-tight relative z-10">{{ industry.name }}</p>
                     </div>
                     {% empty %}
-                    <!-- Default Industries -->
+                    <!-- Default Industries (fallback) -->
                     <div class="bg-cover bg-center flex flex-col gap-3 rounded-xl justify-end p-4 aspect-video hover:shadow-lg transition-all duration-200 cursor-pointer"
                          style='background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url("https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&h=300&fit=crop&auto=format");'>
                         <p class="text-white text-base font-bold leading-tight">Metal</p>
@@ -57,64 +59,63 @@
                     {% endfor %}
                 </div>
 
-                <!-- Metal Industry Detail -->
+                <!-- Dynamic Industry Details -->
+                {% for industry in industries %}
                 <div class="mb-12">
-                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Metal</h2>
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">{{ industry.name }}</h2>
                     <p class="text-[#111418] text-base font-normal leading-normal pb-3 pt-1 px-4">
-                        Explore the metal industry, including steel, aluminum, copper, and more. Find suppliers and buyers for raw materials, processed metals, and finished products.
+                        {% if industry.description %}
+                            {{ industry.description }}
+                        {% else %}
+                            Explore the {{ industry.name|lower }} industry and find suppliers and buyers for various products and services.
+                        {% endif %}
                     </p>
 
-                    <h3 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Subcategories</h3>
+                    {% if industry.slug in industry_categories and industry_categories|lookup:industry.slug %}
+                    <h3 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Categories</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 p-4">
-                        <div class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
+                        {% for category in industry_categories|lookup:industry.slug %}
+                        <a href="{% url 'products:category' category.id %}" class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
                             <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-                                <span class="text-primary-500 text-sm">🔩</span>
+                                <span class="text-primary-500 text-sm">{% if category.icon %}{{ category.icon }}{% else %}📦{% endif %}</span>
                             </div>
-                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">Steel</h4>
-                        </div>
-                        <div class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
-                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-                                <span class="text-primary-500 text-sm">⚙️</span>
-                            </div>
-                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">Aluminum</h4>
-                        </div>
-                        <div class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
-                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-                                <span class="text-primary-500 text-sm">🔶</span>
-                            </div>
-                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">Copper</h4>
-                        </div>
-                        <div class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
-                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-                                <span class="text-primary-500 text-sm">🟨</span>
-                            </div>
-                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">Brass</h4>
-                        </div>
-                        <div class="flex flex-col gap-3 rounded-xl border border-[#dbe0e6] bg-white p-4 items-center hover:shadow-md transition-all duration-200">
-                            <div class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-                                <span class="text-primary-500 text-sm">⚪</span>
-                            </div>
-                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">Other</h4>
-                        </div>
+                            <h4 class="text-[#111418] text-sm font-bold leading-tight text-center">{{ category.name }}</h4>
+                            {% if category.subcategories.exists %}
+                                <p class="text-xs text-gray-500">{{ category.subcategories.count }} subcategories</p>
+                            {% endif %}
+                        </a>
+                        {% endfor %}
                     </div>
+                    {% endif %}
 
                     <!-- Market Statistics -->
                     <h3 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Market Statistics</h3>
                     <div class="flex flex-wrap gap-4 p-4">
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
-                            <p class="text-[#111418] text-base font-medium leading-normal">Total Suppliers</p>
-                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">1,500+</p>
+                            <p class="text-[#111418] text-base font-medium leading-normal">Active Categories</p>
+                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">
+                                {% if industry.slug in industry_categories %}{{ industry_categories|lookup:industry.slug|length }}+{% else %}0{% endif %}
+                            </p>
                         </div>
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
-                            <p class="text-[#111418] text-base font-medium leading-normal">Total Buyers</p>
-                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">2,000+</p>
+                            <p class="text-[#111418] text-base font-medium leading-normal">Total Products</p>
+                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">{{ industry.categories.all|length }}0+</p>
                         </div>
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
-                            <p class="text-[#111418] text-base font-medium leading-normal">Total Transactions</p>
-                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">5,000+</p>
+                            <p class="text-[#111418] text-base font-medium leading-normal">Active Suppliers</p>
+                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">{{ industry.categories.count }}0+</p>
                         </div>
                     </div>
                 </div>
+                {% empty %}
+                <!-- Fallback content -->
+                <div class="mb-12">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Metal</h2>
+                    <p class="text-[#111418] text-base font-normal leading-normal pb-3 pt-1 px-4">
+                        Explore the metal industry, including steel, aluminum, copper, and more. Find suppliers and buyers for raw materials, processed metals, and finished products.
+                    </p>
+                </div>
+                {% endfor %}
 
                 <!-- Call to Action -->
                 <div class="px-4 py-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl text-center">
@@ -129,4 +130,6 @@
         </div>
     </div>
 </div>
+
+<!-- Add custom filter for template -->
 {% endblock %}

@@ -24,7 +24,21 @@ class IndustriesView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['industries'] = Industry.objects.filter(is_active=True)
+        
+        # Get categories grouped by industry for the detailed sections
+        from products.models import Category
+        context['industry_categories'] = {}
+        
+        for industry in context['industries']:
+            categories = Category.objects.filter(
+                industry=industry,
+                is_active=True,
+                parent=None  # Only parent categories
+            ).prefetch_related('subcategories')
+            context['industry_categories'][industry.slug] = categories
+            
         return context
+
 
 class PricingView(TemplateView):
     template_name = 'core/pricing.html'
