@@ -95,8 +95,23 @@ class Product(models.Model):
         
         if not self.images:
             self.images = []
-        self.images.append(image_data)
-        
+        if len(self.images) < 5:  # Limit to 5 images total
+            self.images.append(image_data)
+    
+    def add_images(self, image_files):
+        """Add new images while keeping existing ones"""
+        if not self.images:
+            self.images = []
+        for image_file in image_files:
+            if len(self.images) >= 5:  # Limit to 5 images total
+                break
+            self.add_image(image_file)
+    
+    def remove_image(self, image_url):
+        """Remove a specific image from the images list"""
+        if self.images and image_url in self.images:
+            self.images.remove(image_url)
+    
     def increment_views(self):
         """Increment view count"""
         self.views_count += 1

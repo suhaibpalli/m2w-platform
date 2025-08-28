@@ -10,6 +10,7 @@ from django.core.exceptions import PermissionDenied
 from .models import Product, Category
 from .forms import ProductForm, ProductSearchForm
 from core.models import Industry
+import json
 
 # ─── Insert these two right here ──────────────────────────────
 class BusinessBuyerRequiredMixin:
@@ -187,23 +188,46 @@ class ProductUpdateView(
         return Product.objects.filter(company=self.request.user.company)
     
     def form_valid(self, form):
-        # Handle new image uploads
-        images = self.request.FILES.getlist('images')
-        if images:
-            # Clear existing images and add new ones
-            form.instance.images = []
-            for image in images[:3]:  # Limit to 3 images
-                form.instance.add_image(image)
-        
-        # Check if saving as draft or publishing
+        # Get the instance from the form without saving to the database yet.
+        self.object = form.save(commit=False)
+
+        # Handle image removal using data from the validated form.
+        remove_images_raw = form.cleaned_data.get('remove_images', '') or ''
+        image_urls_to_remove = []
+
+        if remove_images_raw:
+            # Expect JSON array from the form (e.g. '["data:...","data:..."]')
+            try:
+                image_urls_to_remove = json.loads(remove_images_raw)
+                # ensure it's a list of strings
+                if not isinstance(image_urls_to_remove, list):
+                    image_urls_to_remove = []
+            except Exception:
+                # Fallback for older values: attempt comma split (best-effort)
+                image_urls_to_remove = [url.strip() for url in remove_images_raw.split(',') if url.strip()]
+
+        # Remove each URL from the instance's images list (uses your model helper)
+        for image_url in image_urls_to_remove:
+            self.object.remove_image(image_url)
+
+        # Handle new image uploads from the request.
+        new_images = self.request.FILES.getlist('images')
+        if new_images:
+            self.object.add_images(new_images)
+
+        # Determine the product's status based on which submit button was clicked.
         if 'save_draft' in self.request.POST:
-            form.instance.status = 'draft'
+            self.object.status = 'draft'
             messages.success(self.request, 'Product updated and saved as draft.')
         else:
-            form.instance.status = 'active'
+            self.object.status = 'active'
             messages.success(self.request, 'Product updated and published!')
-            
-        return super().form_valid(form)
+
+        # Now, perform the final save of the fully modified object.
+        self.object.save()
+
+        # Redirect to the success URL, bypassing the problematic super() call.
+        return redirect(self.get_success_url())
     
     def get_success_url(self):
         return reverse_lazy('products:my_products')

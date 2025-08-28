@@ -42,6 +42,12 @@ class ProductForm(forms.ModelForm):
             'class': 'hidden'
         })
     )
+
+    remove_images = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        help_text="Comma-separated list of image URLs to remove"
+    )
     
     class Meta:
         model = Product
@@ -88,7 +94,22 @@ class ProductForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Group categories by industry
         self.fields['category'].queryset = Category.objects.filter(is_active=True).select_related('industry')
+
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
         
+    #     # Handle image removal
+    #     remove_images = self.cleaned_data.get('remove_images', '')
+    #     if remove_images:
+    #         image_urls_to_remove = [url.strip() for url in remove_images.split(',') if url.strip()]
+    #         for image_url in image_urls_to_remove:
+    #             instance.remove_image(image_url)
+        
+    #     if commit:
+    #         instance.save()
+        
+    #     return instance
+
 class ProductSearchForm(forms.Form):
     query = forms.CharField(
         required=False,

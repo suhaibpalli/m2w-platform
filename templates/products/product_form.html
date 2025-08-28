@@ -132,6 +132,29 @@
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Product Images</h2>
                         
                         <div class="space-y-4">
+                            <!-- Current Images (if editing) -->
+                            {% if object and object.images %}
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700 mb-3">Current Images</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="current-images">
+                                    {% for image in object.images %}
+                                    <div class="relative group image-item" data-image-url="{{ image }}">
+                                        <img src="{{ image }}" alt="Product image" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                                        <button type="button" 
+                                                onclick="removeImage('{{ image|escapejs }}')" 
+                                                class="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center text-sm hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            ×
+                                        </button>
+                                        <div class="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                                            {{ forloop.counter }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Upload New Images -->
                             <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-gray-400 transition-colors">
                                 <div class="space-y-4">
                                     <div class="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
@@ -140,9 +163,11 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">Upload Product Images</h3>
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            {% if object %}Add More Images{% else %}Upload Product Images{% endif %}
+                                        </h3>
                                         <p class="text-sm text-gray-600">Drag and drop images here, or click to browse</p>
-                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 10MB each (max 5 images)</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 10MB each (max 5 images total)</p>
                                     </div>
                                     <label for="{{ form.images.id_for_label }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,27 +176,20 @@
                                         Choose Files
                                     </label>
                                     {{ form.images }}
+                                    {{ form.remove_images }}
                                     {% if form.images.errors %}
                                         <p class="mt-2 text-sm text-red-600">{{ form.images.errors.0 }}</p>
                                     {% endif %}
                                 </div>
                             </div>
                             
-                            {% if object and object.images %}
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-700 mb-3">Current Images</h4>
-                                <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
-                                    {% for image in object.images %}
-                                    <div class="relative">
-                                        <img src="{{ image }}" alt="Product image" class="w-full h-24 object-cover rounded-lg border border-gray-200">
-                                        <button type="button" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600">
-                                            ×
-                                        </button>
-                                    </div>
-                                    {% endfor %}
+                            <!-- Image Preview for new uploads -->
+                            <div id="new-images-preview" class="hidden">
+                                <h4 class="text-sm font-medium text-gray-700 mb-3">New Images to Upload</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="preview-container">
+                                    <!-- Preview images will be added here by JavaScript -->
                                 </div>
                             </div>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -291,5 +309,107 @@ textarea {
 input[name="price"] {
     @apply rounded-l-none border-l-0;
 }
+
+/* Added for image management UI */
+.image-item {
+    transition: all 0.3s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#new-images-preview {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
 </style>
+<script>
+/* --- Image removal: use JSON array instead of comma-joined string --- */
+let imagesToRemove = [];
+
+function removeImage(imageUrl) {
+    if (!confirm('Are you sure you want to remove this image?')) return;
+
+    // Add to removal list
+    imagesToRemove.push(imageUrl);
+
+    // Store a JSON string in the hidden input (safe for data URIs)
+    const hidden = document.getElementById('id_remove_images');
+    if (hidden) {
+        hidden.value = JSON.stringify(imagesToRemove);
+    }
+
+    // Hide the matching .image-item by matching data-image-url attribute
+    document.querySelectorAll('.image-item').forEach(item => {
+        try {
+            if (item.getAttribute('data-image-url') === imageUrl) {
+                item.style.display = 'none';
+            }
+        } catch (e) { /* ignore selector issues */ }
+    });
+
+    // Show a UI hint
+    showMessage('Image marked for removal. Save the form to confirm changes.', 'warning');
+}
+
+function showMessage(message, type = 'info') {
+    // Create a temporary message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `fixed top-4 right-4 z-50 p-4 rounded-lg text-white ${type === 'warning' ? 'bg-orange-500' : 'bg-blue-500'} shadow-lg`;
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        document.body.removeChild(messageDiv);
+    }, 3000);
+}
+
+// Handle new image preview
+document.getElementById('{{ form.images.id_for_label }}').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const previewContainer = document.getElementById('preview-container');
+    const previewSection = document.getElementById('new-images-preview');
+
+    // Clear previous previews
+    previewContainer.innerHTML = '';
+
+    if (files.length > 0) {
+        previewSection.classList.remove('hidden');
+
+        Array.from(files).forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative';
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                        <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                            New ${index + 1}
+                        </div>
+                    `;
+                    previewContainer.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    } else {
+        previewSection.classList.add('hidden');
+    }
+});
+
+// Form submission warning if images are marked for removal
+document.querySelector('form').addEventListener('submit', function(e) {
+    if (imagesToRemove.length > 0) {
+        const confirmed = confirm(`You are about to remove ${imagesToRemove.length} image(s). This action cannot be undone. Continue?`);
+        if (!confirmed) {
+            e.preventDefault();
+        }
+    }
+});
+</script>
 {% endblock %}
