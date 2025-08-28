@@ -85,6 +85,17 @@ class SiteSettings(models.Model):
 class HeroCarouselImage(models.Model):
     """Hero carousel background images"""
     title = models.CharField(max_length=200)
+    # ADD THESE NEW FIELDS:
+    hero_title = models.CharField(
+        max_length=300, 
+        default="Connect in Metal, Wood, Plastic, Machineries, Technology",
+        help_text="Main hero title text"
+    )
+    hero_subtitle = models.TextField(
+        default="Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.",
+        help_text="Hero subtitle/description text"
+    )
+    # END NEW FIELDS
     image = models.TextField(help_text="Base64 encoded image data")
     is_active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers first)")
@@ -108,6 +119,7 @@ class HeroCarouselImage(models.Model):
         encoded = base64.b64encode(image_file.read()).decode('utf-8')
         mime_type = image_file.content_type
         self.image = f"data:{mime_type};base64,{encoded}"
+
 
 class TestimonialCarousel(models.Model):
     """Client testimonials carousel"""

@@ -28,27 +28,49 @@
             <div class="particle absolute w-1 h-1 bg-white/30 rounded-full animate-float-2"></div>
             <div class="particle absolute w-3 h-3 bg-white/10 rounded-full animate-float-3"></div>
         </div>
-        
         <!-- Content (above background) -->
         <div class="relative z-10 flex flex-col gap-4 text-center w-full items-center px-4 animate-hero-content">
-            <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
-                Connect in Metal, Wood, Plastic, Machineries, Technology
-            </h1>
-            <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
-                Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.
-            </h2>
+
+            {% if hero_images %}
+                {# Render one hero-text-content per slide; the first one is visible, others are absolutely overlaid and hidden #}
+                {% for image in hero_images %}
+                    {% if forloop.first %}
+                        <div class="hero-text-content opacity-100 relative pt-16 pb-8 transition-all duration-700" data-slide="{{ forloop.counter0 }}">
+                    {% else %}
+                        <div class="hero-text-content opacity-0 absolute inset-x-0 flex flex-col items-center justify-start pointer-events-none transition-all duration-700" style="top:20%;" data-slide="{{ forloop.counter0 }}">
+                    {% endif %}
+                        <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
+                            {{ image.hero_title }}
+                        </h1>
+                        <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
+                            {{ image.hero_subtitle }}
+                        </h2>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Fallback content (original static text) -->
+                <div class="hero-text-content opacity-100 relative" data-slide="0">
+                    <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
+                        Connect in Metal, Wood, Plastic, Machineries, Technology
+                    </h1>
+                    <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
+                        Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.
+                    </h2>
+                </div>
+            {% endif %}
+
+            <!-- Buttons remain outside the text content and always visible (original UI) -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4 transform transition-all duration-1000 delay-500 animate-slide-up">
-                <a href="{% url 'products:list' %}" 
+                <a href="{% url 'products:list' %}"
                    class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
                     <span class="truncate group-hover:animate-pulse">Browse Products</span>
                 </a>
-                <a href="{% url 'core:about' %}" 
+                <a href="{% url 'core:about' %}"
                    class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
                     <span class="truncate group-hover:animate-pulse">Learn More</span>
                 </a>
             </div>
         </div>
-        
         <!-- Enhanced Carousel Indicators -->
         {% if hero_images|length > 1 %}
         <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
@@ -447,234 +469,377 @@
 .particle:nth-child(1) { top: 20%; left: 10%; }
 .particle:nth-child(2) { top: 60%; right: 15%; }
 .particle:nth-child(3) { bottom: 30%; left: 70%; }
+
+/* hero text content transitions: keep them simple and compatible with Tailwind fading classes */
+.hero-text-content {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.hero-text-content.opacity-0 { opacity: 0; pointer-events: none; }
+.hero-text-content.opacity-100 { opacity: 1; pointer-events: auto; }
+
+/* --- Hero text positioning fixes --- */
+.hero-text-content {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* active / relative layout: leaves space for buttons below */
+.hero-text-content.relative {
+    position: relative;
+    pointer-events: auto;
+    padding-top: 4rem;   /* pt-16 equivalent */
+    padding-bottom: 2rem;/* pb-8 equivalent */
+    margin-bottom: 2rem; /* ensure buttons are clear */
+    max-width: 80ch;     /* prevent lines from growing too wide */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* inactive / absolute layout: keep higher and non-interactive so buttons stay visible */
+.hero-text-content.absolute {
+    position: absolute;
+    top: 15%;            /* place in upper area so it won't overlap buttons */
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-start; /* top-align text when absolute */
+    justify-content: center;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+}
+
+/* keep opacity classes controlling pointer-events as a safety net */
+.hero-text-content.opacity-0 { opacity: 0; pointer-events: none; }
+.hero-text-content.opacity-100 { opacity: 1; pointer-events: auto; }
+
+/* Restrict subtitle height so it can't push into the button area */
+.hero-text-content h2 {
+    max-height: 40vh; /* won't exceed viewport height portion */
+    overflow: auto;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
 </style>
 
 <script>
-// Enhanced Hero Carousel
-document.addEventListener('DOMContentLoaded', function() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const indicators = document.querySelectorAll('.carousel-indicator');
-    let currentSlide = 0;
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==================== HERO CAROUSEL ====================
+        const slides = document.querySelectorAll('.hero-slide');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        const textContents = document.querySelectorAll('.hero-text-content');
+        let currentSlide = 0;
+        let slideInterval;
+        
+        if (slides.length > 1) {
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach((slide) => {
+                    slide.classList.remove('opacity-100', 'scale-100');
+                    slide.classList.add('opacity-0', 'scale-110');
+                });
     
-    if (slides.length > 1) {
-        // Auto-advance slides every 6 seconds
-        const slideInterval = setInterval(function() {
-            nextSlide();
-        }, 6000);
-        
-        function showSlide(index) {
-            // Enhanced slide transitions
-            slides.forEach((slide, i) => {
-                slide.classList.remove('opacity-100', 'scale-100');
-                slide.classList.add('opacity-0', 'scale-110');
-            });
-            
-            // Update indicators with enhanced animation
-            indicators.forEach((indicator, i) => {
-                indicator.classList.remove('bg-white', 'scale-110');
-                indicator.classList.add('bg-white/50', 'scale-100');
-            });
-            
-            // Show current slide with enhanced animation
-            if (slides[index]) {
-                slides[index].classList.remove('opacity-0', 'scale-110');
-                slides[index].classList.add('opacity-100', 'scale-100');
+                // Hide all text content
+                textContents.forEach((textContent) => {
+                    textContent.classList.remove('opacity-100');
+                    textContent.classList.add('opacity-0');
+                });
+    
+                // Reset all indicators
+                indicators.forEach((indicator) => {
+                    indicator.classList.remove('bg-white', 'scale-110');
+                    indicator.classList.add('bg-white/50', 'scale-100');
+                });
+    
+                // Show current slide
+                if (slides[index]) {
+                    slides[index].classList.remove('opacity-0', 'scale-110');
+                    slides[index].classList.add('opacity-100', 'scale-100');
+                }
+    
+                // Show current text content
+                if (textContents[index]) {
+                    textContents[index].classList.remove('opacity-0');
+                    textContents[index].classList.add('opacity-100');
+                }
+    
+                // Update current indicator
+                if (indicators[index]) {
+                    indicators[index].classList.remove('bg-white/50', 'scale-100');
+                    indicators[index].classList.add('bg-white', 'scale-110');
+                }
             }
             
-            // Update current indicator
-            if (indicators[index]) {
-                indicators[index].classList.remove('bg-white/50', 'scale-100');
-                indicators[index].classList.add('bg-white', 'scale-110');
-            }
-        }
-        
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-        
-        // Enhanced click handlers
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', function() {
-                currentSlide = index;
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
                 showSlide(currentSlide);
-                // Add ripple effect
-                indicator.classList.add('animate-ping');
-                setTimeout(() => indicator.classList.remove('animate-ping'), 600);
-            });
-        });
-    }
-    
-    // Scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = parseInt(entry.target.dataset.delay) || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('animate-slide-up');
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }, delay);
             }
-        });
-    }, observerOptions);
-    
-    // Observe elements with fade-in-section class
-    document.querySelectorAll('.fade-in-section').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.8s ease-out';
-        observer.observe(el);
-    });
-    
-    // Staggered card animations
-    document.querySelectorAll('.card-animate').forEach((card, index) => {
-        const delay = parseInt(card.dataset.delay) || 0;
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'all 0.6s ease-out';
-        
-        setTimeout(() => {
-            observer.observe(card);
-        }, delay);
-    });
-    
-    // Industry cards staggered animation
-    document.querySelectorAll('.industry-card').forEach((card, index) => {
-        const delay = parseInt(card.dataset.delay) || 0;
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px) scale(0.9)';
-        card.style.transition = 'all 0.5s ease-out';
-        
-        setTimeout(() => {
-            observer.observe(card);
-        }, delay);
-    });
-    
-    // Step animations
-    document.querySelectorAll('.step-animate').forEach((step, index) => {
-        const delay = parseInt(step.dataset.delay) || 0;
-        step.style.opacity = '0';
-        step.style.transform = 'translateY(30px)';
-        step.style.transition = 'all 0.8s ease-out';
-        
-        setTimeout(() => {
-            observer.observe(step);
-        }, delay + 200);
-    });
-});
-
-// Enhanced Testimonials Carousel (keeping the existing functionality)
-document.addEventListener('DOMContentLoaded', function() {
-    const track = document.querySelector('.testimonial-carousel-track');
-    const slides = document.querySelectorAll('.testimonial-slide');
-    const nextBtn = document.querySelector('.testimonial-next');
-    const prevBtn = document.querySelector('.testimonial-prev');
-    const dots = document.querySelectorAll('.testimonial-dot');
-    
-    if (!track || slides.length === 0) return;
-    
-    let currentIndex = 0;
-    let slidesToShow = getSlidesToShow();
-    let maxIndex = Math.max(0, slides.length - slidesToShow);
-
-    function getSlidesToShow() {
-        if (window.innerWidth >= 1024) return 3;
-        if (window.innerWidth >= 768) return 2;
-        return 1;
-    }
-    
-    function updateCarousel() {
-        slidesToShow = getSlidesToShow();
-        maxIndex = Math.max(0, slides.length - slidesToShow);
-        if (currentIndex > maxIndex) currentIndex = maxIndex;
-        const slideWidth = slides[0].offsetWidth;
-        const offset = currentIndex * slideWidth;
-        track.style.transform = `translateX(-${offset}px)`;
-        
-        // Enhanced dots animation
-        dots.forEach((dot, index) => {
-            const isActive = index === Math.floor(currentIndex / slidesToShow);
-            dot.classList.toggle('bg-blue-500', isActive);
-            dot.classList.toggle('scale-110', isActive);
-            dot.classList.toggle('bg-gray-300', !isActive);
-            dot.classList.toggle('scale-100', !isActive);
-        });
-        
-        // Enhanced button states
-        if (prevBtn) {
-            prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
-            prevBtn.style.transform = currentIndex === 0 ? 'translateX(-4px) scale(0.95)' : 'translateX(-4px) scale(1)';
+            
+            function startAutoSlide() {
+                slideInterval = setInterval(nextSlide, 6000);
+            }
+            
+            function stopAutoSlide() {
+                if (slideInterval) {
+                    clearInterval(slideInterval);
+                }
+            }
+            
+            // Initialize carousel
+            showSlide(0);
+            startAutoSlide();
+            
+            // Add click handlers for indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    stopAutoSlide();
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                    
+                    // Add ripple effect
+                    indicator.classList.add('animate-ping');
+                    setTimeout(() => indicator.classList.remove('animate-ping'), 600);
+                    
+                    // Restart auto-slide after user interaction
+                    setTimeout(startAutoSlide, 3000);
+                });
+            });
+            
+            // Pause on hover
+            const heroSection = document.querySelector('.hero-slide').parentElement;
+            if (heroSection) {
+                heroSection.addEventListener('mouseenter', stopAutoSlide);
+                heroSection.addEventListener('mouseleave', startAutoSlide);
+            }
         }
-        if (nextBtn) {
-            nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
-            nextBtn.style.transform = currentIndex >= maxIndex ? 'translateX(4px) scale(0.95)' : 'translateX(4px) scale(1)';
-        }
-    }
     
-    function nextSlide() {
-        currentIndex = Math.min(currentIndex + 1, maxIndex);
-        updateCarousel();
-    }
+        // ==================== TESTIMONIALS CAROUSEL ====================
+        const testimonialTrack = document.querySelector('.testimonial-carousel-track');
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const nextBtn = document.querySelector('.testimonial-next');
+        const prevBtn = document.querySelector('.testimonial-prev');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        
+        if (testimonialTrack && testimonialSlides.length > 0) {
+            let currentIndex = 0;
+            let slidesToShow = getSlidesToShow();
+            let maxIndex = Math.max(0, testimonialSlides.length - slidesToShow);
+            let testimonialInterval;
     
-    function prevSlide() {
-        currentIndex = Math.max(currentIndex - 1, 0);
-        updateCarousel();
-    }
-    
-    // Enhanced event listeners
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            nextBtn.classList.add('animate-pulse');
-            setTimeout(() => nextBtn.classList.remove('animate-pulse'), 300);
-        });
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            prevBtn.classList.add('animate-pulse');
-            setTimeout(() => prevBtn.classList.remove('animate-pulse'), 300);
-        });
-    }
-    
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentIndex = index * slidesToShow;
+            function getSlidesToShow() {
+                if (window.innerWidth >= 1024) return 3;
+                if (window.innerWidth >= 768) return 2;
+                return 1;
+            }
+            
+            function updateCarousel() {
+                slidesToShow = getSlidesToShow();
+                maxIndex = Math.max(0, testimonialSlides.length - slidesToShow);
+                
+                // Ensure current index is valid
+                if (currentIndex > maxIndex) {
+                    currentIndex = maxIndex;
+                }
+                
+                // Calculate slide width and offset
+                const slideWidth = testimonialSlides[0].offsetWidth;
+                const offset = currentIndex * slideWidth;
+                testimonialTrack.style.transform = `translateX(-${offset}px)`;
+                
+                // Update dots
+                if (dots.length > 0) {
+                    dots.forEach((dot, index) => {
+                        const dotSlideIndex = index * slidesToShow;
+                        const isActive = currentIndex === dotSlideIndex;
+                        
+                        dot.classList.toggle('bg-blue-500', isActive);
+                        dot.classList.toggle('scale-110', isActive);
+                        dot.classList.toggle('bg-gray-300', !isActive);
+                        dot.classList.toggle('scale-100', !isActive);
+                    });
+                }
+                
+                // Update button states
+                if (prevBtn) {
+                    prevBtn.disabled = currentIndex === 0;
+                    prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+                    prevBtn.style.transform = currentIndex === 0 ? 'translateX(-4px) scale(0.95)' : 'translateX(-4px) scale(1)';
+                }
+                
+                if (nextBtn) {
+                    nextBtn.disabled = currentIndex >= maxIndex;
+                    nextBtn.style.opacity = currentIndex >= maxIndex ? '0.5' : '1';
+                    nextBtn.style.transform = currentIndex >= maxIndex ? 'translateX(4px) scale(0.95)' : 'translateX(4px) scale(1)';
+                }
+            }
+            
+            function nextTestimonialSlide() {
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0; // Loop back to start
+                }
+                updateCarousel();
+            }
+            
+            function prevTestimonialSlide() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                } else {
+                    currentIndex = maxIndex; // Loop to end
+                }
+                updateCarousel();
+            }
+            
+            function startTestimonialAutoSlide() {
+                if (testimonialSlides.length > slidesToShow) {
+                    testimonialInterval = setInterval(nextTestimonialSlide, 5000);
+                }
+            }
+            
+            function stopTestimonialAutoSlide() {
+                if (testimonialInterval) {
+                    clearInterval(testimonialInterval);
+                }
+            }
+            
+            // Initialize testimonial carousel
             updateCarousel();
-            dot.classList.add('animate-ping');
-            setTimeout(() => dot.classList.remove('animate-ping'), 400);
+            startTestimonialAutoSlide();
+            
+            // Button event listeners
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        stopTestimonialAutoSlide();
+                        nextTestimonialSlide();
+                        this.classList.add('animate-pulse');
+                        setTimeout(() => this.classList.remove('animate-pulse'), 300);
+                        setTimeout(startTestimonialAutoSlide, 3000);
+                    }
+                });
+            }
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        stopTestimonialAutoSlide();
+                        prevTestimonialSlide();
+                        this.classList.add('animate-pulse');
+                        setTimeout(() => this.classList.remove('animate-pulse'), 300);
+                        setTimeout(startTestimonialAutoSlide, 3000);
+                    }
+                });
+            }
+            
+            // Dot event listeners
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    stopTestimonialAutoSlide();
+                    currentIndex = Math.min(index * slidesToShow, maxIndex);
+                    updateCarousel();
+                    
+                    this.classList.add('animate-ping');
+                    setTimeout(() => this.classList.remove('animate-ping'), 400);
+                    setTimeout(startTestimonialAutoSlide, 3000);
+                });
+            });
+            
+            // Pause on hover
+            const testimonialSection = testimonialTrack.closest('.relative');
+            if (testimonialSection) {
+                testimonialSection.addEventListener('mouseenter', stopTestimonialAutoSlide);
+                testimonialSection.addEventListener('mouseleave', startTestimonialAutoSlide);
+            }
+            
+            // Handle resize
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    const newSlidesToShow = getSlidesToShow();
+                    if (newSlidesToShow !== slidesToShow) {
+                        slidesToShow = newSlidesToShow;
+                        currentIndex = 0;
+                        updateCarousel();
+                    }
+                }, 250);
+            });
+        }
+    
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = parseInt(entry.target.dataset.delay) || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-slide-up');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, delay);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe fade-in sections
+        document.querySelectorAll('.fade-in-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease-out';
+            observer.observe(el);
+        });
+        
+        // Observe card animations
+        document.querySelectorAll('.card-animate').forEach((card, index) => {
+            const delay = parseInt(card.dataset.delay) || 0;
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            
+            setTimeout(() => {
+                observer.observe(card);
+            }, delay);
+        });
+        
+        // Observe industry cards
+        document.querySelectorAll('.industry-card').forEach((card, index) => {
+            const delay = parseInt(card.dataset.delay) || 0;
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px) scale(0.9)';
+            card.style.transition = 'all 0.5s ease-out';
+            
+            setTimeout(() => {
+                observer.observe(card);
+            }, delay);
+        });
+        
+        // Observe step animations
+        document.querySelectorAll('.step-animate').forEach((step, index) => {
+            const delay = parseInt(step.dataset.delay) || 0;
+            step.style.opacity = '0';
+            step.style.transform = 'translateY(30px)';
+            step.style.transition = 'all 0.8s ease-out';
+            
+            setTimeout(() => {
+                observer.observe(step);
+            }, delay + 200);
         });
     });
+    </script>
     
-    // Auto-scroll with enhanced timing
-    setInterval(() => {
-        if (currentIndex >= maxIndex) {
-            currentIndex = 0;
-        } else {
-            nextSlide();
-        }
-        updateCarousel();
-    }, 7000);
-    
-    // Enhanced resize handler
-    window.addEventListener('resize', () => {
-        const newSlidesToShow = getSlidesToShow();
-        if (newSlidesToShow !== slidesToShow) {
-            slidesToShow = newSlidesToShow;
-            currentIndex = 0;
-            updateCarousel();
-        }
-    });
-    
-    // Initial setup
-    updateCarousel();
-});
-</script>
 {% endblock %}

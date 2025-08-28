@@ -142,7 +142,7 @@ class HeroCarouselImageForm(forms.ModelForm):
     
     class Meta:
         model = HeroCarouselImage
-        fields = ['title', 'is_active', 'order']
+        fields = ['title', 'hero_title', 'hero_subtitle', 'is_active', 'order']  # ADD hero_title, hero_subtitle
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -163,7 +163,7 @@ class HeroCarouselImageAdmin(admin.ModelAdmin):
     form = HeroCarouselImageForm
     list_display = ['title', 'is_active', 'order', 'created_at']
     list_filter = ['is_active', 'created_at']
-    search_fields = ['title']
+    search_fields = ['title', 'hero_title']  # ADD hero_title to search
     list_editable = ['is_active', 'order']
     readonly_fields = ['created_at', 'image_preview']
     
@@ -173,6 +173,12 @@ class HeroCarouselImageAdmin(admin.ModelAdmin):
                 ('Image Information', {
                     'fields': ('title', 'image_upload', 'image_preview', 'is_active', 'order')
                 }),
+                # ADD THIS NEW FIELDSET:
+                ('Hero Content', {
+                    'fields': ('hero_title', 'hero_subtitle'),
+                    'description': 'Text content that will be displayed over this hero image'
+                }),
+                # END NEW FIELDSET
                 ('Metadata', {
                     'fields': ('created_at',),
                     'classes': ('collapse',)
@@ -183,6 +189,12 @@ class HeroCarouselImageAdmin(admin.ModelAdmin):
                 ('Image Information', {
                     'fields': ('title', 'image_upload', 'is_active', 'order')
                 }),
+                # ADD THIS NEW FIELDSET:
+                ('Hero Content', {
+                    'fields': ('hero_title', 'hero_subtitle'),
+                    'description': 'Text content that will be displayed over this hero image'
+                }),
+                # END NEW FIELDSET
             )
     
     def image_preview(self, obj):
