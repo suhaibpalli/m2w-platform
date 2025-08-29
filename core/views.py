@@ -26,10 +26,15 @@ class IndustriesView(TemplateView):
         context['industries'] = Industry.objects.filter(is_active=True)
         
         # Get categories grouped by industry for the detailed sections
-        from products.models import Category
+        from products.models import Category, Product
+        from accounts.models import Company
+        from django.db.models import Count, Q
+        
         context['industry_categories'] = {}
+        context['industry_stats'] = {}
         
         for industry in context['industries']:
+            # Get categories for this industry
             categories = Category.objects.filter(
                 industry=industry,
                 is_active=True,
@@ -37,8 +42,35 @@ class IndustriesView(TemplateView):
             ).prefetch_related('subcategories')
             context['industry_categories'][industry.slug] = categories
             
+            # Calculate real statistics for this industry
+            # Get all categories (including subcategories) for this industry
+            all_categories = Category.objects.filter(
+                industry=industry,
+                is_active=True
+            )
+            
+            # Count products in this industry
+            total_products = Product.objects.filter(
+                category__industry=industry,
+                status='active'
+            ).count()
+            
+            # Count unique suppliers in this industry
+            active_suppliers = Company.objects.filter(
+                products__category__industry=industry,
+                products__status='active'
+            ).distinct().count()
+            
+            # Count active categories
+            active_categories = all_categories.count()
+            
+            context['industry_stats'][industry.slug] = {
+                'active_categories': active_categories,
+                'total_products': total_products,
+                'active_suppliers': active_suppliers,
+            }
+            
         return context
-
 
 class PricingView(TemplateView):
     template_name = 'core/pricing.html'

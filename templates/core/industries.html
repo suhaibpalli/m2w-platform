@@ -94,16 +94,26 @@
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
                             <p class="text-[#111418] text-base font-medium leading-normal">Active Categories</p>
                             <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">
-                                {% if industry.slug in industry_categories %}{{ industry_categories|lookup:industry.slug|length }}+{% else %}0{% endif %}
+                                {% with stats=industry_stats|lookup:industry.slug %}
+                                    {{ stats.active_categories|default:"0" }}
+                                {% endwith %}
                             </p>
                         </div>
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
                             <p class="text-[#111418] text-base font-medium leading-normal">Total Products</p>
-                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">{{ industry.categories.all|length }}0+</p>
+                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">
+                                {% with stats=industry_stats|lookup:industry.slug %}
+                                    {{ stats.total_products|default:"0" }}
+                                {% endwith %}
+                            </p>
                         </div>
                         <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-primary-50">
                             <p class="text-[#111418] text-base font-medium leading-normal">Active Suppliers</p>
-                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">{{ industry.categories.count }}0+</p>
+                            <p class="text-[#111418] tracking-light text-2xl font-bold leading-tight">
+                                {% with stats=industry_stats|lookup:industry.slug %}
+                                    {{ stats.active_suppliers|default:"0" }}
+                                {% endwith %}
+                            </p>
                         </div>
                     </div>
                 </div>
