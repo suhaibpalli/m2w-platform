@@ -9,11 +9,12 @@ class Industry(models.Model):
     icon = models.CharField(max_length=50, blank=True)  # CSS class for icon
     image = models.TextField(blank=True, help_text="Base64 encoded industry image")  # Add this line
     is_active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0, help_text="Order for display (lower numbers first)")
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name_plural = "Industries"
-        ordering = ['name']
+        ordering = ['display_order', 'name']  # ← Updated to use display_order first
     
     def save(self, *args, **kwargs):
         if not self.slug:

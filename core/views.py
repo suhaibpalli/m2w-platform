@@ -9,7 +9,7 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['industries'] = Industry.objects.filter(is_active=True)
+        context['industries'] = Industry.objects.filter(is_active=True).order_by('display_order', 'name')
         context['hero_images'] = HeroCarouselImage.objects.filter(is_active=True)
         context['testimonials'] = TestimonialCarousel.objects.filter(is_active=True)
         # site_settings is now global, so we don't set it here
@@ -23,7 +23,7 @@ class IndustriesView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['industries'] = Industry.objects.filter(is_active=True)
+        context['industries'] = Industry.objects.filter(is_active=True).order_by('display_order', 'name')
         
         # Get categories grouped by industry for the detailed sections
         from products.models import Category, Product

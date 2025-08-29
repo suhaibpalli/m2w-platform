@@ -24,17 +24,18 @@ class IndustryImageForm(forms.ModelForm):
 @admin.register(Industry)
 class IndustryAdmin(admin.ModelAdmin):
     form = IndustryImageForm
-    list_display = ['name', 'slug', 'is_active', 'has_image', 'created_at']
+    list_display = ['name', 'slug', 'display_order', 'is_active', 'has_image', 'created_at']
     list_filter = ['is_active', 'created_at']
     search_fields = ['name']
     prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ['created_at', 'image_preview']
-    
+    list_editable = ['display_order']  # Allow editing order directly in list view
+
     def get_fieldsets(self, request, obj=None):
         if obj:  # editing an existing object
             return (
                 ('Basic Information', {
-                    'fields': ('name', 'slug', 'description', 'icon')
+                    'fields': ('name', 'slug', 'description', 'icon', 'display_order')
                 }),
                 ('Image', {
                     'fields': ('image_upload', 'image_preview')
@@ -46,7 +47,7 @@ class IndustryAdmin(admin.ModelAdmin):
         else:  # adding a new object
             return (
                 ('Basic Information', {
-                    'fields': ('name', 'slug', 'description', 'icon')
+                    'fields': ('name', 'slug', 'description', 'icon', 'display_order')
                 }),
                 ('Image', {
                     'fields': ('image_upload',)
@@ -55,12 +56,12 @@ class IndustryAdmin(admin.ModelAdmin):
                     'fields': ('is_active',)
                 }),
             )
-    
+
     def has_image(self, obj):
         return bool(obj.image)
     has_image.boolean = True
     has_image.short_description = "Has Image"
-    
+
     def image_preview(self, obj):
         if obj and obj.image:
             return mark_safe(f'<img src="{obj.image}" style="max-height: 200px; max-width: 300px; border-radius: 8px;" />')
