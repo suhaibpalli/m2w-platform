@@ -25,53 +25,124 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Our Story -->
-                <div class="flex flex-col gap-10 px-4 py-10">
-                    <div class="flex flex-col gap-4">
-                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em]">Our Story</h2>
-                        <p class="text-[#111418] text-base font-normal leading-relaxed max-w-[720px]">
-                            MWPUAE Platform was founded in 2018 with a vision to revolutionize the B2B trading landscape. We recognized the challenges faced by businesses in sourcing and connecting with reliable suppliers across diverse industries. Our platform was built to bridge this gap, providing a seamless and efficient marketplace for companies in Metal, Wood, Plastic, Machineries, Technology, and other sectors.
-                        </p>
-                    </div>
-
-                    <!-- Company Image -->
-                    <div class="w-full">
-                        <div class="w-full aspect-[3/2] bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
-                            <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC-01.png' %}" alt="Company Banner" class="object-contain w-full h-full" />
+                <!-- Who We Are - Side by Side Layout -->
+                <div class="px-4 py-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <!-- Left Column - Content -->
+                        <div class="flex flex-col gap-6">
+                            <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em]">Who We Are</h2>
+                            <p class="text-[#111418] text-base font-normal leading-relaxed">
+                                <strong>METAL WOOD PLASTIC TECHNOLOGY FZC LLC (MWPUAE)</strong> is a licensed and approved B2B platform headquartered in the United Arab Emirates. We are officially registered under <strong>Trade Licence Number 262281621888</strong> and <strong>Corporate Tax Registration Number 105015084400001</strong>, ensuring full compliance with UAE regulations.
+                            </p>
+                            <p class="text-[#111418] text-base font-normal leading-relaxed">
+                                Our platform, <a href="https://www.mwpuae.ae" class="text-primary-500 hover:underline font-medium">www.mwpuae.ae</a>, is designed to connect genuine buyers and verified suppliers in the fields of Metal, Wood, Plastic, Machinery, and Technology, with the flexibility to handle other categories on special request.
+                            </p>
+                            <!-- License badges -->
+                            <div class="flex flex-wrap gap-4 mt-4">
+                                <div class="bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+                                    <p class="text-green-800 text-sm font-medium">✓ UAE Licensed</p>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2">
+                                    <p class="text-blue-800 text-sm font-medium">✓ Tax Registered</p>
+                                </div>
+                                <div class="bg-purple-50 border border-purple-200 rounded-lg px-4 py-2">
+                                    <p class="text-purple-800 text-sm font-medium">✓ Fully Compliant</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-center mt-4">
-                            <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC_icon.svg' %}" alt="Company Icon" class="w-20 h-20 rounded-full bg-white p-2 shadow" />
+                        
+                        <!-- Right Column - Images -->
+                        <div class="flex flex-col items-center gap-6">
+                            <div class="w-full max-w-md">
+                                <div class="w-full aspect-[5/3] bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden shadow-lg border border-gray-200">
+                                    <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC-01.png' %}" alt="MWPUAE Company Banner" class="object-contain w-full h-full p-6" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center gap-3">
+                                <img src="{% static 'images/Metal Wood Plastic Technology FZC LLC_icon.svg' %}" alt="MWPUAE Company Icon" class="w-20 h-20 rounded-full bg-white p-3 shadow-lg border-2 border-primary-100" />
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">Established in UAE</p>
+                                    <p class="text-xs text-gray-500">Serving Global Markets</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mission & Vision -->
+                <!-- What We Do -->
                 <div class="px-4 py-8 bg-gray-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">What We Do</h2>
+                    <p class="text-[#111418] text-base font-normal leading-relaxed">
+                        At MWPUAE, we simplify global trade by eliminating barriers between buyers and sellers. Through our digital platform, companies can register, showcase their products and services, and directly engage with real decision-makers. Unlike many directories filled with unreliable or dummy data, our platform ensures that every profile, listing, and business connection is authentic and verified. We are more than just a marketplace; we are a trustworthy bridge between businesses worldwide.
+                    </p>
+                </div>
+
+                <!-- Mission & Vision -->
+                <div class="px-4 py-8 bg-primary-50 rounded-xl mb-10">
                     <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] text-center mb-8">Mission & Vision</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="bg-white p-8 rounded-xl shadow-sm">
                             <h3 class="text-xl font-bold text-primary-500 mb-4">Our Mission</h3>
                             <p class="text-[#111418] text-base font-normal leading-relaxed">
-                                To empower businesses with the tools and connections they need to thrive in the global marketplace.
+                                Our mission is to empower businesses with access to genuine opportunities by providing a secure, transparent, and reliable B2B platform. We are committed to connecting companies across industries and continents, enabling them to build sustainable trade partnerships and achieve long-term growth.
                             </p>
                         </div>
                         <div class="bg-white p-8 rounded-xl shadow-sm">
                             <h3 class="text-xl font-bold text-primary-500 mb-4">Our Vision</h3>
                             <p class="text-[#111418] text-base font-normal leading-relaxed">
-                                We envision a future where B2B trading is transparent, efficient, and accessible to all.
+                                Our vision is to become one of the most trusted global B2B platforms, recognized for authenticity, compliance, and innovation. We aim to expand beyond borders and redefine how businesses connect, trade, and collaborate, ensuring that MWPUAE remains a symbol of trust in international commerce.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Our Team -->
+                <!-- Our Values -->
+                <div class="px-4 py-8 mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">Our Values</h2>
+                    <p class="text-[#111418] text-base font-normal leading-relaxed">
+                        We believe in <strong>authenticity</strong>, <strong>integrity</strong>, <strong>innovation</strong>, and <strong>growth</strong>. Authenticity drives our strict verification process, integrity guides how we operate, innovation powers our technology-driven platform, and growth defines the success of both our clients and ourselves. These values are the foundation that makes MWPUAE a reliable choice for businesses seeking real opportunities.
+                    </p>
+                </div>
+
+                <!-- Why Choose Us -->
+                <div class="px-4 py-8 bg-blue-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">Why Choose Us</h2>
+                    <p class="text-[#111418] text-base font-normal leading-relaxed">
+                        Companies choose MWPUAE because we deliver what truly matters: genuine connections and real business growth. With our headquarters in the UAE and strong partnerships across China, East Asia, the Middle East, Africa, USA, and Europe, we provide unparalleled reach and market access. As a licensed and tax-registered entity, we guarantee transparency, regulatory compliance, and professional service. Our platform is not just about finding suppliers or buyers — it's about building meaningful, trustworthy, and profitable relationships.
+                    </p>
+                </div>
+
+                <!-- Our Journey -->
+                <div class="px-4 py-8 mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">Our Journey</h2>
+                    <p class="text-[#111418] text-base font-normal leading-relaxed">
+                        MWPUAE was founded with a simple vision: to remove the frustration businesses face in finding reliable trade partners. Too often, companies wasted time and money on platforms filled with incomplete or false data. We built MWPUAE to change that. From our humble beginnings in the UAE, we grew into a trusted international platform, supported by partner offices in China and other countries. Today, we proudly serve businesses worldwide, helping them expand into new markets with confidence.
+                    </p>
+                </div>
+
+                <!-- Global Presence -->
+                <div class="px-4 py-8 bg-green-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">Global Presence</h2>
+                    <p class="text-[#111418] text-base font-normal leading-relaxed">
+                        With our headquarters in the United Arab Emirates and partner offices in China and other countries, MWPUAE has established a truly global footprint. We connect businesses across China, East Asia, the Middle East, Africa, USA, and Europe, ensuring that our members can tap into reliable trade opportunities across major economic hubs worldwide.
+                    </p>
+                </div>
+
+                <!-- Meet Our Team -->
                 <div class="px-4 py-8">
                     <div class="text-center mb-12">
-                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Our Team</h2>
-                        <p class="text-[#60758a] text-base font-normal leading-normal">Meet the people behind MWPUAE Platform</p>
+                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Meet Our Team</h2>
+                        <p class="text-[#60758a] text-base font-normal leading-normal max-w-4xl mx-auto">
+                            At MWPUAE, our team brings over 20 to 30 years of combined experience in international trade, B2B marketplaces, and technology-driven sourcing. We are a group of seasoned professionals, trade experts, and technology specialists committed to building trust and enabling seamless connections between genuine buyers and suppliers worldwide.
+                        </p>
+                        <p class="text-[#60758a] text-base font-normal leading-normal max-w-4xl mx-auto mt-4">
+                            With our deep industry knowledge and global network, we help businesses access real opportunities, reliable partnerships, and efficient trade solutions. Supported by partner offices in China, East Asia, the Middle East, Africa, USA, and Europe, our team ensures every interaction on MWPUAE is secure, transparent, and high-quality.
+                        </p>
+                        <p class="text-[#60758a] text-base font-normal leading-normal max-w-4xl mx-auto mt-4">
+                            <strong>Every member of the team shares a singular mission: to empower businesses to grow globally by connecting them with verified trade partners across industries, leveraging decades of professional expertise.</strong>
+                        </p>
                     </div>
-                    
+{% comment %}                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="flex flex-col gap-3 text-center">
                             <div class="w-24 h-24 bg-primary-100 rounded-full mx-auto mb-4 flex items-center justify-center">
@@ -132,13 +203,14 @@
                                 <p class="text-[#60758a] text-sm font-normal">Head of Customer Success</p>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
 
-                <!-- Achievements -->
-                <div class="px-4 py-8 bg-primary-50 rounded-xl">
+                <!-- Achievements/Stats -->
+                <div class="px-4 py-8 bg-gradient-to-r from-primary-50 to-blue-50 rounded-xl mb-10">
                     <div class="text-center mb-12">
-                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Our Achievements</h2>
+                        <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Our Impact</h2>
+                        <p class="text-[#60758a] text-base font-normal leading-normal">Connecting businesses worldwide with verified opportunities</p>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -147,13 +219,51 @@
                             <p class="text-[#111418] text-base font-medium">Registered Businesses</p>
                         </div>
                         <div class="bg-white p-8 rounded-xl shadow-sm text-center">
-                            <h3 class="text-3xl font-bold text-primary-500 mb-2">10,000+</h3>
-                            <p class="text-[#111418] text-base font-medium">Transactions Processed</p>
+                            <h3 class="text-3xl font-bold text-primary-500 mb-2">6</h3>
+                            <p class="text-[#111418] text-base font-medium">Continents Served</p>
                         </div>
                         <div class="bg-white p-8 rounded-xl shadow-sm text-center">
-                            <h3 class="text-3xl font-bold text-primary-500 mb-2">6</h3>
-                            <p class="text-[#111418] text-base font-medium">Industries Served</p>
+                            <h3 class="text-3xl font-bold text-primary-500 mb-2">100%</h3>
+                            <p class="text-[#111418] text-base font-medium">Verified Listings</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="px-4 py-8 bg-gray-900 text-white rounded-xl">
+                    <div class="text-center mb-8">
+                        <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Get in Touch</h2>
+                        <p class="text-gray-300 text-base font-normal leading-normal">
+                            We welcome businesses from around the world to join our platform and grow with us. Register today at <a href="https://www.mwpuae.ae" class="text-blue-400 hover:underline">www.mwpuae.ae</a> and start connecting with genuine buyers and suppliers.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-4">Company Information</h3>
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <p><strong>METAL WOOD PLASTIC TECHNOLOGY FZC LLC (MWPUAE)</strong></p>
+                                <p>Sheikh Khalifa Street, Rashideya 3<br>Ajman, P.O. Box 4848<br>United Arab Emirates</p>
+                                <p><strong>Trade Licence:</strong> 262281621888</p>
+                                <p><strong>Corporate Tax Reg:</strong> 105015084400001</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-4">Contact Details</h3>
+                            <div class="space-y-2 text-sm text-gray-300">
+                                <p><strong>Email:</strong> <a href="mailto:INFO@mwpuae.ae" class="text-blue-400 hover:underline">INFO@mwpuae.ae</a></p>
+                                <p><strong>UAE WhatsApp:</strong> <a href="https://wa.me/971502245815" class="text-green-400 hover:underline">+971 50 224 5815</a></p>
+                                <p><strong>Saudi WhatsApp:</strong> <a href="https://wa.me/966534040412" class="text-green-400 hover:underline">+966 534 040 412</a></p>
+                                <p><strong>Website:</strong> <a href="https://www.mwpuae.ae" class="text-blue-400 hover:underline">www.mwpuae.ae</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-8 pt-6 border-t border-gray-700">
+                        <p class="text-gray-400 text-sm italic">
+                            "At MWPUAE, we are committed to creating genuine opportunities and building lasting partnerships in the global marketplace."
+                        </p>
                     </div>
                 </div>
             </div>
