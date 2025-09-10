@@ -56,3 +56,4 @@ code_dump_script.py
 env.*
 .env.*
 .env
+db.sqlite3
