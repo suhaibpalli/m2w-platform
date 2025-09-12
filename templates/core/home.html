@@ -59,17 +59,17 @@
                 </div>
             {% endif %}
 
-            <!-- Buttons remain outside the text content and always visible (original UI) -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4 transform transition-all duration-1000 delay-500 animate-slide-up">
-                <a href="{% url 'products:list' %}"
-                   class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
-                    <span class="truncate group-hover:animate-pulse">Browse Products</span>
-                </a>
-                <a href="{% url 'core:about' %}"
-                   class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-                    <span class="truncate group-hover:animate-pulse">Learn More</span>
-                </a>
-            </div>
+            <!-- Browse Products Button -->
+            <a href="{% url 'products:list' %}"
+               class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                <span class="truncate group-hover:animate-pulse">Browse Products</span>
+            </a>
+
+            <!-- Learn More Button -->
+            <a href="{% url 'core:about' %}"
+               class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
+                <span class="truncate group-hover:animate-pulse">Learn More</span>
+            </a>
         </div>
         <!-- Enhanced Carousel Indicators -->
         {% if hero_images|length > 1 %}
@@ -102,18 +102,18 @@
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in-section" data-delay="200">
-                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-green-50 hover:to-emerald-50 card-animate" data-delay="0">
+                        <!-- Verified Listings Card -->
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-primary-50 hover:to-emerald-50 card-animate" data-delay="0">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 group-hover:bg-green-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary-100 group-hover:bg-primary-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-green-600 group-hover:text-green-700">
                                         <path d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-green-800 transition-colors duration-300">Verified Listings</h3>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-primary-800 transition-colors duration-300">Verified Listings</h3>
                             </div>
                             <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Access a network of trusted suppliers with verified business listings and credentials.</p>
                         </div>
-                        
                         <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 card-animate" data-delay="100">
                             <div class="flex items-center gap-3">
                                 <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 group-hover:bg-blue-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
