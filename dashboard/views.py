@@ -29,20 +29,20 @@ class DashboardHomeView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         company = user.company
         
-        # Role-based dashboard content
-        if company.role == 'vendor':
+        # Role-based dashboard content (updated to use company_types)
+        if 'seller' in company.company_types or 'manufacturer' in company.company_types:
             context.update(self.get_vendor_context(company))
-        elif company.role == 'business_buyer':
+        elif 'business_buyer' in company.company_types:
             context.update(self.get_buyer_context(company))
-        else:  # consumer_buyer
+        else:  # consumer_buyer or other
             context.update(self.get_consumer_buyer_context(company))
             
         # Common context
         context['user'] = user
         context['company'] = company
-        context['is_vendor'] = company.role == 'vendor'
-        context['is_business_buyer'] = company.role == 'business_buyer'
-        context['is_consumer_buyer'] = company.role == 'consumer_buyer'
+        context['is_vendor'] = 'seller' in company.company_types or 'manufacturer' in company.company_types
+        context['is_business_buyer'] = 'business_buyer' in company.company_types
+        context['is_consumer_buyer'] = 'consumer_buyer' in company.company_types
         
         return context
     

@@ -215,3 +215,7 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_SETTINGS["show_ui_builder"] = True
+
+
+# In your settings.py or as a site setting
+DEFAULT_MONTHLY_FEE = 30  # $30/month for everyone

@@ -12,28 +12,22 @@ from .models import Company
 class RegisterView(CreateView):
     form_class = CompanyRegistrationForm
     template_name = 'accounts/register.html'
-    success_url = '/payments/checkout/'  # Will redirect to payment after registration
+    success_url = '/payments/checkout/'  # Direct to payment for everyone
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        role = user.company.role
-        if role == 'vendor':
-            messages.success(
-                self.request,
-                'Registration successful! Please complete your payment to activate your vendor account.'
-            )
-            return redirect('/payments/checkout/')
-        else:
-            messages.success(
-                self.request,
-                'Registration successful! Welcome aboard. You can now browse the marketplace.'
-            )
-            return redirect('dashboard:home')  # ← Changed this line
+        
+        messages.success(
+            self.request,
+            'Registration successful! Please complete your payment to activate your account and access the platform.'
+        )
+        return redirect('/payments/checkout/')
     
     def form_invalid(self, form):
         messages.error(self.request, 'Please correct the errors below.')
         return super().form_invalid(form)
+
 
 class CustomLoginView(LoginView):
     form_class = CustomLoginForm

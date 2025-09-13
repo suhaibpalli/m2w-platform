@@ -56,7 +56,15 @@ class IndustriesView(TemplateView):
             ).count()
             
             # Count unique suppliers in this industry
+            # NOTE: If you previously filtered by company.role == 'vendor', update as below:
+            # active_suppliers = Company.objects.filter(
+            #     (Q(role='vendor') | Q(role='manufacturer')),
+            #     products__category__industry=industry,
+            #     products__status='active'
+            # ).distinct().count()
+            # Now, update to use company_types:
             active_suppliers = Company.objects.filter(
+                Q(company_types__contains=['seller']) | Q(company_types__contains=['manufacturer']),
                 products__category__industry=industry,
                 products__status='active'
             ).distinct().count()

@@ -16,7 +16,7 @@ import json
 class BusinessBuyerRequiredMixin:
     """Only allow business‑buyer users."""
     def dispatch(self, request, *args, **kwargs):
-        if request.user.company.role != 'business_buyer':
+        if 'business_buyer' not in getattr(request.user.company, 'company_types', []):
             raise PermissionDenied("Only business buyers may access this page.")
         return super().dispatch(request, *args, **kwargs)
 
@@ -31,7 +31,8 @@ class SubscriptionRequiredMixin:
 
 class VendorRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
-        if request.user.company.role != 'vendor':
+        company_types = getattr(request.user.company, 'company_types', [])
+        if not ('seller' in company_types or 'manufacturer' in company_types):
             raise PermissionDenied("Only vendors may manage products.")
         return super().dispatch(request, *args, **kwargs)
 

@@ -29,42 +29,46 @@
             <div class="particle absolute w-3 h-3 bg-white/10 rounded-full animate-float-3"></div>
         </div>
         <!-- Content (above background) -->
-        <div class="relative z-10 flex flex-col gap-4 text-center w-full items-center px-4 animate-hero-content">
-
+        <div class="relative z-10 flex flex-col gap-6 text-center w-full items-center px-4 animate-hero-content">
             {% if hero_images %}
-                {# Render one hero-text-content per slide; the first one is visible, others are absolutely overlaid and hidden #}
+                {# Render one hero-text-content per slide with proper spacing #}
                 {% for image in hero_images %}
                     {% if forloop.first %}
-                        <div class="hero-text-content opacity-100 relative pt-16 pb-8 transition-all duration-700" data-slide="{{ forloop.counter0 }}">
+                        <div class="hero-text-content opacity-100 relative w-full max-w-5xl mx-auto transition-all duration-700" data-slide="{{ forloop.counter0 }}">
                     {% else %}
-                        <div class="hero-text-content opacity-0 absolute inset-x-0 flex flex-col items-center justify-start pointer-events-none transition-all duration-700" style="top:20%;" data-slide="{{ forloop.counter0 }}">
+                        <div class="hero-text-content opacity-0 absolute inset-0 w-full max-w-5xl mx-auto flex flex-col items-center justify-center pointer-events-none transition-all duration-700" data-slide="{{ forloop.counter0 }}">
                     {% endif %}
-                        <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
-                            {{ image.hero_title }}
-                        </h1>
-                        <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
-                            {{ image.hero_subtitle }}
-                        </h2>
+                        <div class="text-center mb-8">
+                            <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl mb-4">
+                                {{ image.hero_title }}
+                            </h1>
+                            <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed drop-shadow-lg">
+                                {{ image.hero_subtitle }}
+                            </h2>
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}
-                <!-- Fallback content (original static text) -->
-                <div class="hero-text-content opacity-100 relative" data-slide="0">
-                    <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl max-w-4xl mx-auto transform transition-all duration-1000 animate-slide-up">
+                <!-- Fallback content -->
+                <div class="hero-text-content opacity-100 relative w-full max-w-5xl mx-auto text-center mb-8" data-slide="0">
+                    <h1 class="text-white text-3xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-[-0.033em] drop-shadow-2xl mb-4">
                         Connect in Metal, Wood, Plastic, Machineries, Technology
                     </h1>
-                    <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-lg transform transition-all duration-1000 delay-300 animate-slide-up">
+                    <h2 class="text-white/90 text-base lg:text-xl font-normal leading-relaxed drop-shadow-lg">
                         Streamline your B2B trading with our multi-vendor platform. Find verified suppliers, secure payments, and industry-focused solutions.
                     </h2>
                 </div>
             {% endif %}
 
-            <!-- Buttons remain outside the text content and always visible (original UI) -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4 transform transition-all duration-1000 delay-500 animate-slide-up">
+            <!-- Buttons - Always visible and properly spaced -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+                <!-- Browse Products Button -->
                 <a href="{% url 'products:list' %}"
                    class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-primary-500 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
                     <span class="truncate group-hover:animate-pulse">Browse Products</span>
                 </a>
+
+                <!-- Learn More Button -->
                 <a href="{% url 'core:about' %}"
                    class="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
                     <span class="truncate group-hover:animate-pulse">Learn More</span>
@@ -88,7 +92,6 @@
         <div class="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-purple-50/50"></div>
         <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 -translate-x-32 -translate-y-32"></div>
         <div class="absolute bottom-0 right-0 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 translate-x-32 translate-y-32"></div>
-        
         <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
             <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
                 <div class="flex flex-col gap-10 @container">
@@ -102,18 +105,18 @@
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in-section" data-delay="200">
-                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-green-50 hover:to-emerald-50 card-animate" data-delay="0">
+                        <!-- Verified Listings Card -->
+                        <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-primary-50 hover:to-emerald-50 card-animate" data-delay="0">
                             <div class="flex items-center gap-3">
-                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 group-hover:bg-green-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary-100 group-hover:bg-primary-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="text-green-600 group-hover:text-green-700">
                                         <path d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-green-800 transition-colors duration-300">Verified Listings</h3>
+                                <h3 class="text-[#111418] text-lg font-bold leading-tight group-hover:text-primary-800 transition-colors duration-300">Verified Listings</h3>
                             </div>
                             <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Access a network of trusted suppliers with verified business listings and credentials.</p>
                         </div>
-                        
                         <div class="group flex flex-col gap-4 rounded-xl border border-[#dbe0e6] bg-white p-6 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 card-animate" data-delay="100">
                             <div class="flex items-center gap-3">
                                 <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 group-hover:bg-blue-200 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
@@ -562,64 +565,38 @@
 .particle:nth-child(2) { top: 60%; right: 15%; }
 .particle:nth-child(3) { bottom: 30%; left: 70%; }
 
-/* hero text content transitions: keep them simple and compatible with Tailwind fading classes */
+/* Fix hero text content positioning */
 .hero-text-content {
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.hero-text-content.opacity-0 { opacity: 0; pointer-events: none; }
-.hero-text-content.opacity-100 { opacity: 1; pointer-events: auto; }
 
-/* --- Hero text positioning fixes --- */
-.hero-text-content {
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-/* active / relative layout: leaves space for buttons below */
 .hero-text-content.relative {
     position: relative;
     pointer-events: auto;
-    padding-top: 4rem;   /* pt-16 equivalent */
-    padding-bottom: 2rem;/* pb-8 equivalent */
-    margin-bottom: 2rem; /* ensure buttons are clear */
-    max-width: 80ch;     /* prevent lines from growing too wide */
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-/* inactive / absolute layout: keep higher and non-interactive so buttons stay visible */
 .hero-text-content.absolute {
     position: absolute;
-    top: 15%;            /* place in upper area so it won't overlap buttons */
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     pointer-events: none;
     display: flex;
-    align-items: flex-start; /* top-align text when absolute */
+    align-items: center;
     justify-content: center;
-    padding-top: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    box-sizing: border-box;
 }
 
-/* keep opacity classes controlling pointer-events as a safety net */
-.hero-text-content.opacity-0 { opacity: 0; pointer-events: none; }
-.hero-text-content.opacity-100 { opacity: 1; pointer-events: auto; }
-
-/* Restrict subtitle height so it can't push into the button area */
-.hero-text-content h2 {
-    max-height: 40vh; /* won't exceed viewport height portion */
-    overflow: auto;
-    margin-top: 0.75rem;
-    margin-bottom: 0.5rem;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+/* Ensure buttons are always visible */
+.hero-text-content.opacity-0 { 
+    opacity: 0; 
+    pointer-events: none; 
+}
+.hero-text-content.opacity-100 { 
+    opacity: 1; 
+    pointer-events: auto; 
 }
 
 </style>

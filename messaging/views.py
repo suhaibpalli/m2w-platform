@@ -27,7 +27,7 @@ class QuoteRequestCreateView(LoginRequiredMixin, CreateView):
             messages.error(request, 'You need an active subscription to request quotes.')
             return redirect('core:pricing')
         
-        # Prevent vendors from requesting quotes on their own products
+        # Prevent sellers/manufacturers from requesting quotes on their own products
         if request.user.company == self.product.company:
             messages.error(request, 'You cannot request a quote for your own product.')
             return redirect('products:detail', pk=self.product.pk)
@@ -202,9 +202,15 @@ class QuotesReceivedView(LoginRequiredMixin, ListView):
     paginate_by = 20
     
     def get_queryset(self):
-        return QuoteRequest.objects.filter(
-            supplier=self.request.user.company
-        ).select_related('product', 'requester').order_by('-created_at')
+        # Only show quotes where the current user's company is a seller or manufacturer
+        company = self.request.user.company
+        if 'seller' in getattr(company, 'company_types', []) or 'manufacturer' in getattr(company, 'company_types', []):
+            return QuoteRequest.objects.filter(
+                supplier=company
+            ).select_related('product', 'requester').order_by('-created_at')
+        else:
+            # If not a seller/manufacturer, return empty queryset
+            return QuoteRequest.objects.none()
 
 class QuotesSentView(LoginRequiredMixin, ListView):
     """List quotes sent by buyers"""

@@ -6,17 +6,27 @@ from core.models import Industry
 
 class Company(models.Model):
     """Company profile linked to User"""
-    ROLE_CHOICES = [
-        ('vendor', 'Vendor'),
-        ('business_buyer', 'Business Buyer'),
-        ('consumer_buyer', 'Consumer Buyer'),
+    
+    # Replace ROLE_CHOICES with COMPANY_TYPE_CHOICES
+    COMPANY_TYPE_CHOICES = [
+        ('manufacturer', 'Manufacturer'),
+        ('trader', 'Trader'),
+        ('buyer', 'Buyer'),
+        ('seller', 'Seller'),
+        ('distributor', 'Distributor'),
+        ('service_provider', 'Service Provider'),
+        ('other', 'Other'),
     ]
-    role = models.CharField(
-        max_length=20,
-        choices=ROLE_CHOICES,
-        default='vendor',
-        help_text="Are you registering as a vendor or buyer?"
-    )
+    
+    SECTOR_CHOICES = [
+        ('metal', 'Metal'),
+        ('wood', 'Wood'),
+        ('plastic', 'Plastic'),
+        ('technology', 'Technology'),
+        ('machinery', 'Machinery'),
+        ('other', 'Other'),
+    ]
+    
     SUBSCRIPTION_STATUS_CHOICES = [
         ('active', 'Active'),
         ('expired', 'Expired'),
@@ -29,19 +39,27 @@ class Company(models.Model):
     description = models.TextField(blank=True)
     logo = models.TextField(blank=True)  # Base64 encoded logo
     
+    # New fields for unified registration
+    company_types = models.JSONField(default=list, blank=True, help_text="List of company types")
+    sectors = models.JSONField(default=list, blank=True, help_text="List of business sectors")
+    other_company_type = models.CharField(max_length=200, blank=True)
+    other_sector = models.CharField(max_length=200, blank=True)
+    
     # Contact Information
+    contact_person_name = models.CharField(max_length=200, blank=True)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
+    company_address = models.TextField(blank=True)
     
     # Business Registration
-    registration_number = models.CharField(max_length=100, blank=True)
+    cr_number = models.CharField(max_length=100, blank=True, help_text="CR Number / VAT / Tax ID")
     country_of_registration = models.CharField(max_length=100, blank=True)
     
-    # Industries
+    # Industries (keep for backward compatibility)
     industries = models.ManyToManyField(Industry, blank=True)
     other_industry = models.CharField(max_length=200, blank=True)
     
-    # Subscription
+    # Subscription - Now flat rate for everyone
     subscription_status = models.CharField(
         max_length=20, 
         choices=SUBSCRIPTION_STATUS_CHOICES, 
@@ -65,8 +83,22 @@ class Company(models.Model):
     @property
     def is_subscription_active(self):
         return self.subscription_status == 'active'
+    
+    @property
+    def primary_company_type(self):
+        """Return the first company type for display purposes"""
+        if self.company_types:
+            return self.company_types[0]
+        return 'Not specified'
+    
+    @property
+    def primary_sector(self):
+        """Return the first sector for display purposes"""
+        if self.sectors:
+            return self.sectors[0]
+        return 'Not specified'
 
-# Signal to create Company when User is created
+# Keep the existing signals
 @receiver(post_save, sender=User)
 def create_user_company(sender, instance, created, **kwargs):
     if created:
