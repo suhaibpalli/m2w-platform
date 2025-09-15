@@ -56,17 +56,15 @@ class IndustriesView(TemplateView):
             ).count()
             
             # Count unique suppliers in this industry
-            # NOTE: If you previously filtered by company.role == 'vendor', update as below:
-            # active_suppliers = Company.objects.filter(
-            #     (Q(role='vendor') | Q(role='manufacturer')),
-            #     products__category__industry=industry,
-            #     products__status='active'
-            # ).distinct().count()
-            # Now, update to use company_types:
+            # SQLite doesn't support JSONField 'contains' lookup. Use string search on the JSON
+            # serialized value instead (checks for the JSON token "seller" / "manufacturer").
+            # This is a pragmatic fix for SQLite. For robust JSON queries use Postgres JSONB.
             active_suppliers = Company.objects.filter(
-                Q(company_types__contains=['seller']) | Q(company_types__contains=['manufacturer']),
                 products__category__industry=industry,
                 products__status='active'
+            ).filter(
+                Q(company_types__icontains='"seller"') |
+                Q(company_types__icontains='"manufacturer"')
             ).distinct().count()
             
             # Count active categories

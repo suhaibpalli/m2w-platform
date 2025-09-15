@@ -30,26 +30,7 @@
         </div>
         <!-- Content (above background) -->
         <div class="relative z-10 flex flex-col gap-6 text-center w-full items-center px-4 animate-hero-content">
-            <!-- START: Prominent registration banner (above the fold) -->
-            <div class="w-full max-w-4xl mx-auto px-4 py-4 sm:py-6 rounded-xl shadow-2xl bg-white/95 backdrop-blur-md border border-white/40 -mt-12 z-20">
-              <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="text-center md:text-left">
-                  <p class="text-sm font-semibold text-indigo-600">Exclusive Offer — Open to companies across GCC, China, India, Africa & beyond</p>
-                  <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
-                    Register your company for just
-                    <span class="text-indigo-600">$ {% if site_settings %}{{ site_settings.annual_fee|floatformat:2 }}{% else %}29.00{% endif %}</span><span class="text-base font-medium text-gray-700">/year</span>
-                  </h2>
-                  <p class="text-sm text-gray-600 mt-1">One-time annual registration fee — not a subscription. Full access to our global B2B platform.</p>
-                </div>
 
-                <div class="flex-shrink-0">
-                  <a href="{% url 'accounts:register' %}" class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition">
-                    Register for $ {% if site_settings %}{{ site_settings.annual_fee|floatformat:2 }}{% else %}29.00{% endif %}
-                  </a>
-                </div>
-              </div>
-            </div>
-            <!-- END: Prominent registration banner -->
 
             {% if hero_images %}
                 {# Render one hero-text-content per slide with proper spacing #}
