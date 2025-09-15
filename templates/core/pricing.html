@@ -37,11 +37,11 @@
                             <h2 class="text-2xl font-bold text-gray-900 mb-4">Business Plan</h2>
                             <div class="flex items-baseline justify-center gap-1">
                                 <span class="text-5xl font-black text-primary-500">
-                                    ${% if site_settings %}{{ site_settings.annual_fee }}{% else %}999{% endif %}
+                                    $ {% if site_settings %}{{ site_settings.annual_fee|floatformat:2 }}{% else %}29.00{% endif %}
                                 </span>
                                 <span class="text-lg font-semibold text-gray-600">/year</span>
                             </div>
-                            <p class="text-gray-500 mt-2">Everything you need to grow your business</p>
+                            <p class="text-sm text-gray-600 mt-2">One-time annual registration fee — not a subscription.</p>
                         </div>
                         
                         <div class="space-y-4 mb-8">

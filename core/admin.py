@@ -84,6 +84,12 @@ class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
         fields = ['site_name', 'annual_fee', 'currency', 'contact_email', 'contact_phone', 'address']
+        labels = {
+            'annual_fee': 'One-time annual registration fee (USD)',
+        }
+        help_texts = {
+            'annual_fee': 'Set the one-time registration fee (example: 29.00). This is an annual one-time fee, not a recurring monthly charge.',
+        }
     
     def save(self, commit=True):
         instance = super().save(commit=False)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from decimal import Decimal
 
 class Industry(models.Model):
     """Industries supported by the platform"""
@@ -55,7 +56,12 @@ class ContactInquiry(models.Model):
 class SiteSettings(models.Model):
     """Site-wide settings"""
     site_name = models.CharField(max_length=100, default="MWPUAE Platform")
-    annual_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    annual_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('29.00'),
+        help_text="One-time annual registration fee (not a subscription). Use admin to change."
+    )
     currency = models.CharField(max_length=3, default="USD")
     contact_email = models.EmailField(default="info@mwpuaeplatform.com")
     contact_phone = models.CharField(max_length=20, blank=True)
@@ -81,7 +87,6 @@ class SiteSettings(models.Model):
         encoded = base64.b64encode(logo_file.read()).decode('utf-8')
         mime_type = logo_file.content_type
         self.site_logo = f"data:{mime_type};base64,{encoded}"
-
 
 class HeroCarouselImage(models.Model):
     """Hero carousel background images"""
