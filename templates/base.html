@@ -129,6 +129,7 @@
                 <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'about' %}text-primary-600{% endif %}" href="{% url 'core:about' %}">About</a>
                 <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'industries' %}text-primary-600{% endif %}" href="{% url 'core:industries' %}">Industries</a>
                 <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'pricing' %}text-primary-600{% endif %}" href="{% url 'core:pricing' %}">Pricing</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'faq' %}text-primary-600{% endif %}" href="{% url 'core:faq' %}">FAQ</a>
                 <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'contact' %}text-primary-600{% endif %}" href="{% url 'core:contact' %}">Contact</a>
             </div>
         </div>
@@ -217,6 +218,7 @@
             <a href="{% url 'core:about' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">About</a>
             <a href="{% url 'core:industries' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Industries</a>
             <a href="{% url 'core:pricing' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Pricing</a>
+            <a href="{% url 'core:faq' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">FAQ</a>
             <a href="{% url 'core:contact' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Contact</a>
         </div>
     </div>
@@ -291,6 +293,7 @@
                         <li><a href="{% url 'core:about' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">About Us</a></li>
                         <li><a href="{% url 'core:industries' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Industries</a></li>
                         <li><a href="{% url 'core:pricing' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Pricing</a></li>
+                        <li><a href="{% url 'core:faq' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">FAQ</a></li>
                     </ul>
                 </div>
                 

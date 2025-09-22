@@ -104,3 +104,9 @@ class ContactView(TemplateView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)
+
+def faq(request):
+    """FAQ page view"""
+    return render(request, 'core/faq.html', {
+        'page_title': 'Frequently Asked Questions'
+    })

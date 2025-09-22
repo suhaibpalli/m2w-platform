@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block title %}Frequently Asked Questions - MWPUAE Platform{% endblock %}
+
+{% block content %}
+<div class="relative flex size-full min-h-screen flex-col bg-white">
+    <div class="layout-container flex h-full grow flex-col">
+        <div class="px-4 lg:px-10 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                
+                <!-- Header -->
+                <div class="flex flex-wrap justify-between gap-3 p-4 mb-8">
+                    <div class="flex min-w-72 flex-col gap-3">
+                        <h1 class="text-[#111418] text-4xl font-black leading-tight tracking-[-0.033em]">MWPUAE – FAQ</h1>
+                        <p class="text-[#60758a] text-lg font-normal leading-relaxed">
+                            Find answers to commonly asked questions about our platform, services, and operations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact Section -->
+                <div class="px-4 py-8 bg-red-50 rounded-xl mb-10 border border-red-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-red-800">Emergency Contact - First Point of Contact</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-red-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">📞 Priority Contact – Emergency & Global Coordination</h3>
+                        <div class="space-y-2">
+                            <p class="text-gray-700"><strong>Mr. Yasser Arafath Kunnath</strong></p>
+                            <p class="text-gray-700">International Coordinator – MWPUAE</p>
+                            <div class="flex flex-wrap gap-4 mt-3">
+                                <a href="mailto:yasser@mwpuae.ae" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    yasser@mwpuae.ae
+                                </a>
+                                <a href="https://wa.me/971502245815" class="inline-flex items-center text-green-600 hover:text-green-800">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.700"/>
+                                    </svg>
+                                    +971 50 224 5815 (UAE)
+                                </a>
+                                <a href="https://wa.me/966534040412" class="inline-flex items-center text-green-600 hover:text-green-800">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.700"/>
+                                    </svg>
+                                    +966 534 040 412 (Saudi)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Information FAQ -->
+                <div class="px-4 py-8 mb-10">
+                    <h2 class="text-[#111418] text-2xl font-bold leading-tight mb-6">Company Information</h2>
+                    <div class="space-y-6">
+                        
+                        <!-- FAQ Item -->
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ What is MWPUAE?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                MWPUAE stands for Metal Wood Plastic Technology FZC LLC, a UAE-based B2B platform for global sourcing, industrial trade, and supply chain solutions.
+                            </div>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ Where is your head office located?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                <strong>Ajman, United Arab Emirates</strong><br>
+                                Office No. CWS-1V-176693, 26th Floor, Sheikh Khalifa Street, Rashideya 3, P.O. Box 4848
+                            </div>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ Are you officially registered?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                <strong>Yes.</strong><br>
+                                Licence No.: 26228162188<br>
+                                VAT No.: 105015084400001
+                            </div>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ Do you operate in Saudi Arabia?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                <strong>Yes.</strong> Our Saudi partner office, SLASA AL-INTAG, is based in Dammam.<br>
+                                CR No.: 2050213693<br>
+                                VAT No.: 311989274700003
+                            </div>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ Do you have offices in Asia?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                <strong>Yes.</strong><br>
+                                • Hong Kong Office – Tuen Mun NT<br>
+                                • Mainland China Office – Yuyao, Ningbo
+                            </div>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl p-6 group">
+                            <summary class="font-semibold cursor-pointer flex justify-between items-center text-gray-800">
+                                ➕ What is your official website?
+                                <span class="text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                            </summary>
+                            <div class="mt-4 text-gray-600 leading-relaxed">
+                                Visit: <a href="https://www.mwpuae.ae" class="text-blue-600 hover:underline">www.mwpuae.ae</a>
+                            </div>
+                        </details>
+
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="px-4 py-8 bg-blue-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-2xl font-bold leading-tight mb-6">📧 Departmental Contacts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ How can I reach MWPUAE for general inquiries?</h3>
+                                <a href="mailto:info@mwpuae.ae" class="text-blue-600 hover:underline">📧 info@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ How do I request a quotation or submit an RFQ?</h3>
+                                <a href="mailto:sales@mwpuae.ae" class="text-blue-600 hover:underline">📧 sales@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Where do I send technical or product support queries?</h3>
+                                <a href="mailto:support@mwpuae.ae" class="text-blue-600 hover:underline">📧 support@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Who handles marketing and PR campaigns?</h3>
+                                <a href="mailto:marketing@mwpuae.ae" class="text-blue-600 hover:underline">📧 marketing@mwpuae.ae</a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ How do I contact for billing or payment issues?</h3>
+                                <a href="mailto:billing@mwpuae.ae" class="text-blue-600 hover:underline">📧 billing@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Where do I apply for jobs or HR-related matters?</h3>
+                                <a href="mailto:careers@mwpuae.ae" class="text-blue-600 hover:underline">📧 careers@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ How do I register as a member or onboard as a partner?</h3>
+                                <a href="mailto:register@mwpuae.ae" class="text-blue-600 hover:underline">📧 register@mwpuae.ae</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Operations -->
+                <div class="px-4 py-8 bg-green-50 rounded-xl mb-10">
+                    <h2 class="text-[#111418] text-2xl font-bold leading-tight mb-6">🌍 Regional Operations</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Who oversees Saudi operations?</h3>
+                                <a href="mailto:gm@mwpuae.ae" class="text-blue-600 hover:underline">📧 gm@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Who is in charge of Middle East partner relations?</h3>
+                                <a href="mailto:nawaf@mwpuae.ae" class="text-blue-600 hover:underline">📧 nawaf@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Who manages China and East Asia operations?</h3>
+                                <a href="mailto:xu@mwpuae.ae" class="text-blue-600 hover:underline">📧 xu@mwpuae.ae</a> / 
+                                <a href="mailto:nick@mwpuae.ae" class="text-blue-600 hover:underline">nick@mwpuae.ae</a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Who manages Hong Kong operations?</h3>
+                                <a href="mailto:hk@mwpuae.ae" class="text-blue-600 hover:underline">📧 hk@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ Where do I send China sourcing or intake requests?</h3>
+                                <a href="mailto:anythingfromchina@mwpuae.ae" class="text-blue-600 hover:underline">📧 anythingfromchina@mwpuae.ae</a>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-900 mb-2">➕ How do I reach the CEO's office?</h3>
+                                <a href="mailto:ceo@mwpuae.ae" class="text-blue-600 hover:underline">📧 ceo@mwpuae.ae</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
