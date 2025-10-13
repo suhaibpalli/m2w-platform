@@ -9,10 +9,12 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from .forms import CompanyRegistrationForm, CustomLoginForm, CompanyProfileForm
 from .models import Company
 
+from django.urls import reverse_lazy
+
 class RegisterView(CreateView):
     form_class = CompanyRegistrationForm
     template_name = 'accounts/register.html'
-    success_url = '/payments/checkout/'  # Direct to payment for everyone
+    success_url = reverse_lazy('payments:checkout')  # Changed to payments checkout
 
     def form_valid(self, form):
         user = form.save()
@@ -22,7 +24,7 @@ class RegisterView(CreateView):
             self.request,
             'Registration successful! Please complete your payment to activate your account and access the platform.'
         )
-        return redirect('/payments/checkout/')
+        return redirect(self.success_url)
     
     def form_invalid(self, form):
         messages.error(self.request, 'Please correct the errors below.')

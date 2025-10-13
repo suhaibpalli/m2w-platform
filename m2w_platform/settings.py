@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from decimal import Decimal
+from decouple import config 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -221,3 +222,11 @@ JAZZMIN_SETTINGS["show_ui_builder"] = True
 # In your settings.py or as a site setting
 # DEFAULT_MONTHLY_FEE = 30  # $30/month for everyone
 DEFAULT_REGISTRATION_FEE = Decimal('29.00')  # One-time annual registration
+
+# m2w_platform/settings.py
+
+# Add to existing settings
+NGENIUS_BASE_URL = config('NGENIUS_BASE_URL', default='https://api-gateway.sandbox.ngenius-payments.com')
+NGENIUS_OUTLET_REF = config('NGENIUS_OUTLET_REF')
+NGENIUS_HOSTED_SESSION_API_KEY = config('NGENIUS_HOSTED_SESSION_API_KEY')  # For frontend SDK
+NGENIUS_SERVICE_ACCOUNT_API_KEY = config('NGENIUS_SERVICE_ACCOUNT_API_KEY')  # For backend API

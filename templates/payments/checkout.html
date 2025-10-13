@@ -1,0 +1,321 @@
+<!-- templates/payments/checkout.html -->
+{% extends 'base.html' %}
+
+{% block title %}Complete Payment - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Payment Summary Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
+                <h1 class="text-2xl font-bold text-white">Complete Your Registration</h1>
+                <p class="text-red-100 text-sm mt-1">Activate your MWPUAE Platform account</p>
+            </div>
+            
+            <div class="p-6">
+                <!-- Company Info -->
+                <div class="mb-6 pb-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">Company Details</h2>
+                    <p class="text-gray-700"><span class="font-medium">Company:</span> {{ company.company_name }}</p>
+                    <p class="text-gray-600 text-sm"><span class="font-medium">Email:</span> {{ user.email }}</p>
+                </div>
+                
+                <!-- Fee Breakdown -->
+                <div class="bg-red-50 border-2 border-red-200 rounded-lg p-6 mb-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Annual Registration Fee</h3>
+                            <p class="text-sm text-gray-600 mt-1">One-time payment valid for 12 months</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-3xl font-bold text-red-600">${{ site_settings.annual_fee }}</span>
+                            <p class="text-sm text-gray-600">{{ site_settings.currency }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 mt-4">
+                        <ul class="space-y-2 text-sm text-gray-700">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Full platform access for your company
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Unlimited product listings
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Direct messaging with buyers/suppliers
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Quote management system
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Payment Form Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Information</h3>
+                    
+                    <!-- Loading Spinner (shown initially) -->
+                    <div id="loading-spinner" class="text-center py-12">
+                        <svg class="animate-spin h-12 w-12 text-red-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
+                            ircle class="opacity-25" cx="12" cy="12" r="10" stroke="currentntColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="text-gray-600 font-medium">Loading secure payment form...</p>
+                        <p class="text-gray-500 text-sm mt-2">Please wait a moment</p>
+                    </div>
+                    
+                    <!-- N-Genius Card Input Container (hidden initially) -->
+                    <div id="payment-form-container" style="display: none;">
+                        <div id="ngenius-card-fields" class="mb-4"></div>
+                    </div>
+                    
+                    <!-- 3DS Challenge Container -->
+                    <div id="3ds-challenge-container" style="display: none;" class="mb-4">
+                        <div id="3ds-iframe"></div>
+                    </div>
+                    
+                    <!-- Error Message -->
+                    <div id="error-message" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <div class="flex">
+                            <svg class="w-5 h-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            <span id="error-text" class="text-red-800 text-sm"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Pay Button -->
+                    <button 
+                        id="pay-button" 
+                        onclick="processPayment()" 
+                        class="w-full bg-red-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                        disabled
+                    >
+                        <span id="button-text">Complete Payment - ${{ site_settings.annual_fee }}</span>
+                        <svg id="button-spinner" class="hidden animate-spin h-5 w-5 text-white mx-auto" fill="none" viewBox="0 0 24 24">
+                            ircle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Security Badge -->
+                <div class="flex items-center justify-center text-sm text-gray-600 pt-4 border-t border-gray-200">
+                    <svg class="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Secured by <strong>N-Genius Payment Gateway</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- N-Genius Web SDK -->
+<script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
+
+<script>
+    let sessionId = null;
+    const payButton = document.getElementById('pay-button');
+    const buttonText = document.getElementById('button-text');
+    const buttonSpinner = document.getElementById('button-spinner');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const paymentFormContainer = document.getElementById('payment-form-container');
+    const threeDSContainer = document.getElementById('3ds-challenge-container');
+    const errorMessage = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+    
+    // Debug: Log configuration
+    console.log('N-Genius Configuration:');
+    console.log('Outlet Ref:', '{{ ngenius_outlet_ref }}');
+    console.log('API Key exists:', '{{ ngenius_hosted_session_key }}' !== '');
+    
+    // Show error message
+    function showError(message) {
+        errorText.textContent = message;
+        errorMessage.classList.remove('hidden');
+        setTimeout(() => {
+            errorMessage.classList.add('hidden');
+        }, 5000);
+    }
+    
+    // Mount N-Genius payment form when DOM is ready
+    window.addEventListener('DOMContentLoaded', function() {
+        const apiKey = '{{ ngenius_hosted_session_key }}';
+        const outletRef = '{{ ngenius_outlet_ref }}';
+        
+        if (!apiKey || apiKey === '') {
+            console.error('❌ Missing Hosted Session API Key');
+            loadingSpinner.style.display = 'none';
+            showError('Configuration error: Missing API credentials');
+            return;
+        }
+        
+        if (!outletRef || outletRef === '') {
+            console.error('❌ Missing Outlet Reference');
+            loadingSpinner.style.display = 'none';
+            showError('Configuration error: Missing outlet reference');
+            return;
+        }
+        
+        console.log('✅ Initializing N-Genius SDK...');
+        console.log('Using API Key (first 20 chars):', apiKey.substring(0, 20) + '...');
+        console.log('Using Outlet:', outletRef);
+        
+        window.NI.mountCardInput('ngenius-card-fields', {
+            style: {
+                base: {
+                    color: '#111518',
+                    fontSize: '16px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontWeight: '400',
+                    '::placeholder': {
+                        color: '#9ca3af'
+                    }
+                },
+                invalid: {
+                    color: '#dc2626',
+                    iconColor: '#dc2626'
+                }
+            },
+            apiKey: apiKey,
+            language: 'en',
+            outletRef: outletRef,
+            onSuccess: function() {
+                loadingSpinner.style.display = 'none';
+                paymentFormContainer.style.display = 'block';
+                console.log('✅ N-Genius SDK loaded successfully');
+            },
+            onFail: function(error) {
+                loadingSpinner.style.display = 'none';
+                showError('Failed to load payment form. Please refresh the page and try again.');
+                console.error('❌ SDK Mount Error:', error);
+            },
+            onChangeValidStatus: function({ isCVVValid, isExpiryValid, isNameValid, isPanValid }) {
+                const allValid = isCVVValid && isExpiryValid && isNameValid && isPanValid;
+                payButton.disabled = !allValid;
+                
+                if (allValid) {
+                    console.log('✅ All card fields are valid');
+                }
+            }
+        });
+    });
+    
+    // Process Payment Function
+    async function processPayment() {
+        payButton.disabled = true;
+        buttonText.classList.add('hidden');
+        buttonSpinner.classList.remove('hidden');
+        
+        try {
+            console.log('🔄 Step 1: Generating session ID from card details...');
+            
+            const sessionResponse = await window.NI.generateSessionId();
+            sessionId = sessionResponse.session_id;
+            
+            console.log('✅ Session ID generated:', sessionId);
+            console.log('🔄 Step 2: Sending payment request to server...');
+            
+            const response = await fetch('{% url "payments:process_payment" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    session_id: sessionId,
+                    amount: parseFloat('{{ site_settings.annual_fee }}')
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Server error: ' + response.statusText);
+            }
+            
+            const paymentResponse = await response.json();
+            console.log('✅ Payment response received:', paymentResponse);
+            console.log('Response state:', paymentResponse.state);
+            console.log('🔄 Step 3: Handling payment response (including 3DS if required)...');
+            
+            // FIXED: Show 3DS container before handling response
+            if (paymentResponse.state === 'AWAIT_3DS' || paymentResponse.state === 'AWAITING_3DS_RESPONSE') {
+                console.log('⚠️ 3DS authentication required - showing iframe');
+                // Hide payment form, show 3DS container
+                paymentFormContainer.style.display = 'none';
+                threeDSContainer.style.display = 'block';
+            }
+            
+            const { status, error } = await window.NI.handlePaymentResponse(paymentResponse, {
+                mountId: '3ds-iframe',
+                style: { 
+                    width: '100%',
+                    height: 600,
+                    border: 'none'
+                }
+            });
+            
+            console.log('📊 Final Payment Status:', status);
+            
+            if (status === window.NI.paymentStates.CAPTURED || 
+                status === window.NI.paymentStates.PURCHASED ||
+                status === window.NI.paymentStates.AUTHORISED) {
+                console.log('✅ Payment successful! Redirecting...');
+                window.location.href = '{% url "payments:success" %}';
+            } else if (status === window.NI.paymentStates.FAILED || 
+                       status === window.NI.paymentStates.THREE_DS_FAILURE) {
+                console.error('❌ Payment failed:', error);
+                
+                // Hide 3DS, show form again
+                threeDSContainer.style.display = 'none';
+                paymentFormContainer.style.display = 'block';
+                
+                showError('Payment failed. Please check your card details and try again.');
+                
+                buttonText.classList.remove('hidden');
+                buttonSpinner.classList.add('hidden');
+                payButton.disabled = false;
+            } else {
+                console.warn('⚠️ Unknown payment status:', status);
+                
+                // Hide 3DS, show form again
+                threeDSContainer.style.display = 'none';
+                paymentFormContainer.style.display = 'block';
+                
+                showError('Payment status unknown. Please contact support.');
+                
+                buttonText.classList.remove('hidden');
+                buttonSpinner.classList.add('hidden');
+                payButton.disabled = false;
+            }
+            
+        } catch (error) {
+            console.error('❌ Payment Error:', error);
+            
+            // Hide 3DS, show form again
+            threeDSContainer.style.display = 'none';
+            paymentFormContainer.style.display = 'block';
+            
+            showError('An error occurred: ' + error.message);
+            
+            buttonText.classList.remove('hidden');
+            buttonSpinner.classList.add('hidden');
+            payButton.disabled = false;
+        }
+    }
+</script>
+{% endblock %}
