@@ -230,3 +230,48 @@ NGENIUS_BASE_URL = config('NGENIUS_BASE_URL', default='https://api-gateway.sandb
 NGENIUS_OUTLET_REF = config('NGENIUS_OUTLET_REF')
 NGENIUS_HOSTED_SESSION_API_KEY = config('NGENIUS_HOSTED_SESSION_API_KEY')  # For frontend SDK
 NGENIUS_SERVICE_ACCOUNT_API_KEY = config('NGENIUS_SERVICE_ACCOUNT_API_KEY')  # For backend API
+
+# settings.py
+# Multi-Currency Pricing (MCP) - Set to True to enable
+NGENIUS_MCP_ENABLED = config('NGENIUS_MCP_ENABLED', cast=bool, default=True)
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] {asctime} {module} {message}',
+            'style': '{',
+            'datefmt': '%d/%b/%Y %H:%M:%S',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'payments.log',
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'payments': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
