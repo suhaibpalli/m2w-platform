@@ -205,54 +205,62 @@
     async function getConvertedAmountForCurrency() {
         const currencyInput = document.getElementById('currency-list');
         if (!currencyInput) return;
-        
+
         const conversionDisplay = document.getElementById('currency-conversion-value');
         const convertedAmountValue = document.getElementById('converted-amount-value');
-        
+
         conversionDisplay.style.display = 'none';
         selectedCurrency = currencyInput.value;
-        
+
         console.log('💱 Currency changed to:', selectedCurrency);
-        
+
         if (merchantCurrency === selectedCurrency) {
             console.info('ℹ️ Target currency same as merchant currency - no conversion needed');
             convertedAmount = null;
             return;
         }
-        
+
         try {
             console.log('🔄 Fetching forex conversion...');
-            
-            const { response: convertedAmountResponse, error } = 
+
+            const { response: convertedAmountResponse, error } =
                 await window.NI.handleForexCurrencyConversion('currency-conversion', {
                     style: {},
                     apiKey: '{{ ngenius_hosted_session_key }}',
                     outletRef: '{{ ngenius_outlet_ref }}',
+                    // IMPORTANT: NI SDK expects order amount in MAJOR units (e.g. 29 for AED 29),
+                    // not minor units (cents). Do NOT multiply by 100 here.
                     orderAmount: {
-                        value: Math.round(orderAmount * 100), // Minor units
+                        value: Number(orderAmount), // send major units
                         currencyCode: merchantCurrency
                     },
                     targetCurrencyCode: selectedCurrency
                 });
-            
+
+            // Debug: show what we sent and what we received
+            console.log('🔁 Forex conversion request sent - orderAmount (major units):', Number(orderAmount));
             if (error) {
                 console.error('❌ Forex conversion error:', error);
                 showError('Currency conversion failed. Please select a different currency.');
                 return;
             }
-            
-            console.log('✅ Converted amount:', convertedAmountResponse);
-            
+
+            // `convertedAmountResponse` often contains a formatted string like "USD 7.90".
+            // Keep that for display, but also extract a numeric value for any further logic.
+            console.log('✅ Converted amount raw response:', convertedAmountResponse);
+
             conversionDisplay.style.display = 'flex';
             convertedAmountValue.innerHTML = convertedAmountResponse;
-            convertedAmount = convertedAmountResponse;
-            
+
+            // Extract numeric amount for later use (e.g. optional sending to backend)
+            const numericMatch = String(convertedAmountResponse).match(/[-+]?[0-9]*\.?[0-9]+/);
+            convertedAmount = numericMatch ? parseFloat(numericMatch[0]) : null;
+
         } catch (e) {
             console.error('❌ Forex conversion exception:', e);
             showError('Currency conversion error: ' + e.message);
         }
     }
-    
     // Get supported currencies (MCP)
     async function getSupportedCurrencies() {
         if (!isMCPEnabled) {
