@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Processing{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-white py-12 px-4 flex items-center justify-center">
+    <div class="max-w-md w-full text-center">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="flex justify-center mb-4">
+                <svg class="animate-spin h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">Processing Payment</h1>
+            <p class="text-gray-600 mb-4">Your payment is being confirmed. This usually takes a few seconds.</p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6 text-left">
+                <p class="text-sm text-blue-800">
+                    <strong>Order ID:</strong> {{ order_id }}<br>
+                    <strong>Amount:</strong> {{ amount }} {{ currency }}<br>
+                    <strong>Status:</strong> Processing...
+                </p>
+            </div>
+            
+            <p class="text-sm text-gray-500 mb-6">
+                This page will automatically refresh. If you don't see a confirmation page within 30 seconds, your payment may already be processed.
+            </p>
+            
+            <div class="space-y-3">
+                <a href="{% url 'dashboard:home' %}" class="block w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                    Go to Dashboard
+                </a>
+                <button onclick="location.reload()" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-3 rounded-lg transition-colors">
+                    Check Status
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-refresh every 5 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 5000);
+</script>
+{% endblock %}

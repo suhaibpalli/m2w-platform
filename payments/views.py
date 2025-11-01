@@ -1,332 +1,460 @@
-# payments/views.py
+import requests
 import json
+import uuid
 import logging
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal
 from datetime import timedelta
 
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.conf import settings
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.utils import timezone
-from core.models import SiteSettings
+from django.urls import reverse_lazy
+
 from accounts.models import Company
+from core.models import SiteSettings
 from .models import Payment
-import requests
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('payments')
 
-@login_required
-def checkout_view(request):
-    """Display checkout page with N-Genius SDK"""
-    logger.info(f"Checkout page accessed by user: {request.user.email}")
-    
-    company = request.user.company
-    if company.subscription_status == 'active':
-        logger.info(f"User {request.user.email} already has active subscription, redirecting to dashboard")
-        return redirect('dashboard:home')
-    
-    site_settings = SiteSettings.objects.first()
+# ==============================================================================
+# UTILITY FUNCTIONS
+# ==============================================================================
 
-    # MCP Configuration
-    is_mcp_enabled = getattr(settings, 'NGENIUS_MCP_ENABLED', False)  # Add this to your settings
+def get_access_token():
+    """Step 1: Authenticate and retrieve the Access Token."""
+    token_url = f"{settings.NGENIUS_BASE_URL}/identity/auth/access-token"
 
-    context = {
-        'company': company,
-        'site_settings': site_settings,
-        'ngenius_hosted_session_key': settings.NGENIUS_HOSTED_SESSION_API_KEY,
-        'ngenius_outlet_ref': settings.NGENIUS_OUTLET_REF,
-        'is_mcp_enabled': is_mcp_enabled,
-        'merchant_currency': site_settings.currency,
-        'order_amount': float(site_settings.annual_fee),
-    }
-
-    logger.info(
-        f"Checkout context prepared - Amount: {site_settings.annual_fee} {site_settings.currency}, MCP: {is_mcp_enabled}"
-    )
-    return render(request, 'payments/checkout.html', context)
-
-
-@login_required
-def process_payment(request):
-    """Process payment with N-Genius backend API"""
-    if request.method != 'POST':
-        logger.warning(f"Invalid method attempt: {request.method}")
-        return JsonResponse({'error': 'Invalid method'}, status=405)
-    
-    try:
-        # Parse request data
-        data = json.loads(request.body)
-        session_id = data.get('session_id')
-        amount = data.get('amount')
-        target_currency = data.get('target_currency')  # MCP support
-        
-        if not session_id:
-            logger.error("Missing session_id in request")
-            return JsonResponse({'error': 'Missing session ID'}, status=400)
-        
-        logger.info(f"=== PAYMENT PROCESS STARTED ===")
-        logger.info(f"User: {request.user.email}")
-        logger.info(f"Company: {request.user.company.company_name}")
-        logger.info(f"Session ID: {session_id}")
-        logger.info(f"Amount: {amount}")
-        logger.info(f"Target Currency: {target_currency or 'None (merchant currency)'}")
-        
-        # Get site settings
-        site_settings = SiteSettings.objects.first()
-        company = request.user.company
-
-        logger.info(f"Site Settings - Currency: {site_settings.currency}, Fee: {site_settings.annual_fee}")
-        
-        # Step 1: Get N-Genius access token
-        logger.info("Step 1/4: Requesting N-Genius access token...")
-        access_token = get_ngenius_access_token()
-        logger.info(f"Step 1/4: Access token obtained (length: {len(access_token)} chars)")
-
-        # Step 2: Create payment record
-        logger.info("Step 2/4: Creating payment record in database...")
-        payment = Payment.objects.create(
-            company=company,
-            payment_type='subscription',
-            amount=site_settings.annual_fee,
-            currency=target_currency or site_settings.currency,  # Use target currency if provided
-            ngenius_session_id=session_id,
-            status='pending'
-        )
-        logger.info(f"Step 2/4: Payment record created - ID: {payment.id}, Status: {payment.status}")
-
-        # Step 3: Call N-Genius payment API
-        merchant_ref = f"SUB-{company.id}-{payment.id}"
-        logger.info(f"Step 3/4: Calling N-Genius payment API...")
-        logger.info(f"Merchant Reference: {merchant_ref}")
-        logger.info(f"Outlet Reference: {settings.NGENIUS_OUTLET_REF}")
-
-        payment_response = complete_ngenius_payment(
-            access_token=access_token,
-            session_id=session_id,
-            amount=float(site_settings.annual_fee),
-            currency=site_settings.currency,
-            outlet_ref=settings.NGENIUS_OUTLET_REF,
-            merchant_ref=merchant_ref,
-            target_currency=target_currency  # MCP parameter
-        )
-
-        # Step 4: Store N-Genius response
-        logger.info("Step 4/4: Storing payment response...")
-        payment.ngenius_order_ref = payment_response.get('reference', '')
-        payment.transaction_details = payment_response
-        payment.save()
-
-        response_state = payment_response.get('state', 'UNKNOWN')
-        logger.info(f"Step 4/4: Payment response stored")
-        logger.info(f"Payment State: {response_state}")
-        logger.info(f"Order Reference: {payment.ngenius_order_ref}")
-        logger.info(f"=== PAYMENT PROCESS COMPLETED ===")
-        
-        # Return full response to frontend for 3DS handling
-        return JsonResponse(payment_response)
-        
-    except requests.exceptions.HTTPError as http_err:
-        # Extract error details from N-Genius response
-        try:
-            error_detail = http_err.response.json()
-            error_message = error_detail.get('message', 'Unknown error')
-            error_code = error_detail.get('code', http_err.response.status_code)
-            errors_list = error_detail.get('errors', [])
-        except:
-            error_detail = http_err.response.text
-            error_message = error_detail
-            error_code = http_err.response.status_code
-            errors_list = []
-        
-        logger.error(f"========================")
-        logger.error(f"N-GENIUS HTTP ERROR")
-        logger.error(f"Status Code: {http_err.response.status_code}")
-        logger.error(f"Error Message: {error_message}")
-        logger.error(f"Error Code: {error_code}")
-        if errors_list:
-            logger.error(f"Detailed Errors:")
-            for err in errors_list:
-                logger.error(f"   - {err.get('errorCode', 'N/A')}: {err.get('message', 'N/A')}")
-        logger.error(f"Request URL: {http_err.request.url}")
-        logger.error(f"Full Response: {error_detail}")
-        logger.error(f"========================")
-        
-        return JsonResponse({
-            'error': 'Payment gateway error',
-            'message': error_message,
-            'details': error_detail,
-            'status_code': http_err.response.status_code
-        }, status=http_err.response.status_code)
-        
-    except Exception as e:
-        logger.error(f"========================")
-        logger.error(f"PAYMENT PROCESSING ERROR")
-        logger.error(f"Error Type: {type(e).__name__}")
-        logger.error(f"Error Message: {str(e)}")
-        logger.error(f"========================", exc_info=True)
-        return JsonResponse({'error': str(e)}, status=500)
-
-def get_ngenius_access_token():
-    """
-    Get access token from N-Genius Identity API
-    """
-    url = f"{settings.NGENIUS_BASE_URL}/identity/auth/access-token"
-    
-    headers = {
-        'Authorization': f'Basic {settings.NGENIUS_SERVICE_ACCOUNT_API_KEY}',
+    token_headers = {
+        'Authorization': f"Basic {settings.NGENIUS_SERVICE_ACCOUNT_API_KEY}",
+        'Content-Type': 'application/vnd.ni-identity.v1+json',
         'Accept': 'application/vnd.ni-identity.v1+json'
     }
 
-    logger.info(f"Requesting access token from N-Genius Identity API")
-    logger.info(f"URL: {url}")
-    logger.debug(f"API Key (first 20 chars): {settings.NGENIUS_SERVICE_ACCOUNT_API_KEY[:20]}...")
-
     try:
-        response = requests.post(url, headers=headers, timeout=10)
-        
-        logger.info(f"Identity API Response Status: {response.status_code}")
-        
-        response.raise_for_status()
-        
-        token_data = response.json()
-        access_token = token_data.get('access_token')
-        expires_in = token_data.get('expires_in', 'Unknown')
+        logger.info(f"[TOKEN] Requesting from: {token_url}")
+        token_response = requests.post(
+            token_url,
+            headers=token_headers,
+            data=json.dumps({"realmName": "ni"}),
+            timeout=30
+        )
+        logger.info(f"[TOKEN] Response status: {token_response.status_code}")
+        if token_response.status_code != 200:
+            logger.error(f"[TOKEN] Failed. Status: {token_response.status_code}")
+            logger.error(f"[TOKEN] Response: {token_response.text}")
+            return None
+        access_token = token_response.json().get('access_token')
+        if access_token:
+            logger.info("[TOKEN] Access token obtained successfully")
+            return access_token
+        else:
+            logger.error("[TOKEN] No access_token in response")
+            return None
+    except requests.exceptions.RequestException as e:
+        logger.error(f"[TOKEN] API Error: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            logger.error(f"[TOKEN] Response body: {e.response.text}")
+        return None
 
-        if not access_token:
-            logger.error(f"No access token in response: {token_data}")
-            raise ValueError("No access token received from N-Genius")
-        
-        logger.info(f"Access token obtained successfully")
-        logger.info(f"Token expires in: {expires_in} seconds")
-        logger.debug(f"Token (first 30 chars): {access_token[:30]}...")
+def create_ngenius_order(request, payment):
+    """Step 2: Create N-Genius order and return payment URL (HPP link).
 
-        return access_token
+    CRITICAL: Uses correct field names per official N-Genius docs:
+    - merchantAttributes.redirectUrl (not top-level returnUrl)
+    - merchantAttributes.notificationUrl (not top-level notifyUrl)
+    - merchantAttributes.skipConfirmationPage (enables auto-redirect)
+    """
 
-    except requests.exceptions.Timeout:
-        logger.error("Request to N-Genius Identity API timed out after 10 seconds")
-        raise
-    except requests.exceptions.ConnectionError as e:
-        logger.error(f"Connection error to N-Genius Identity API: {str(e)}")
-        raise
-    except Exception as e:
-        logger.error(f"Unexpected error getting access token: {str(e)}")
-        raise
+    access_token = get_access_token()
+    if not access_token:
+        logger.error("[ORDER] Failed to get access token")
+        return None
 
-def complete_ngenius_payment(access_token, session_id, amount, currency, outlet_ref, merchant_ref, target_currency=None):
-    """Complete payment using N-Genius Hosted Session API with MCP support"""
-    url = f"{settings.NGENIUS_BASE_URL}/transactions/outlets/{outlet_ref}/payment/hosted-session/{session_id}"
-    
-    headers = {
-        'Authorization': f'Bearer {access_token}',
+    transactions_url = f"{settings.NGENIUS_BASE_URL}/transactions/outlets/{settings.NGENIUS_OUTLET_REF}/orders"
+
+    # Build return/notify URLs
+    return_url = request.build_absolute_uri(reverse_lazy('payments:callback'))
+    notify_url = request.build_absolute_uri(reverse_lazy('payments:webhook'))
+
+    order_headers = {
+        'Authorization': f"Bearer {access_token}",
         'Content-Type': 'application/vnd.ni-payment.v2+json',
         'Accept': 'application/vnd.ni-payment.v2+json'
     }
-    
-    # Convert amount to minor units (cents)
-    amount_cents = int(amount * 100)
-    
-    # Base payload
-    payload = {
-        "action": "PURCHASE",
-        "amount": {
-            "currencyCode": currency,  # Original merchant currency
-            "value": amount_cents
+
+    email = payment.company.contact_email or 'noemail@example.com'
+
+    # ✅ CORRECTED: Field names MUST be inside merchantAttributes
+    order_payload = {
+        'action': 'PURCHASE',
+        'amount': {
+            'currencyCode': payment.currency,
+            'value': payment.amount_in_cents
         },
-        "merchantOrderReference": merchant_ref
-    }
-    
-    # Add MCP payment block if target currency provided
-    if target_currency and target_currency != currency:
-        payload["payment"] = {
-            "currency": target_currency
+        'merchantOrderReference': payment.order_id,
+        'emailAddress': email,
+        'billingAddress': {
+            'firstName': payment.company.contact_person_name.split()[0] if payment.company.contact_person_name else 'Customer',
+            'lastName': payment.company.contact_person_name.split()[-1] if payment.company.contact_person_name and len(payment.company.contact_person_name.split()) > 1 else 'User',
+        },
+        'merchantAttributes': {
+            # CRITICAL: Use redirectUrl and notificationUrl in merchantAttributes
+            'redirectUrl': return_url,
+            'notificationUrl': notify_url,
+            'skipConfirmationPage': True,
+            # Optional improvements
+            'maskPaymentInfo': True,
+            'slim': 'true'
         }
-        logger.info(f"MCP ENABLED - Original: {currency}, Target: {target_currency}")
-    else:
-        logger.info(f"Standard Payment - Currency: {currency}")
-    
-    logger.info(f"Sending payment request to N-Genius")
-    logger.info(f"URL: {url}")
-    logger.info(f"Merchant Order Reference: {merchant_ref}")
-    logger.info(f"Amount: {amount_cents} minor units ({amount} {currency})")
-    logger.info(f"Outlet: {outlet_ref}")
-    logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
-    
-    try:
-        response = requests.post(url, headers=headers, json=payload, timeout=15)
-        
-        logger.info(f"Payment API Response Status: {response.status_code}")
-        
-        # Log response regardless of status
-        try:
-            response_json = response.json()
-            logger.info(f"Response State: {response_json.get('state', 'N/A')}")
-            logger.info(f"Response Reference: {response_json.get('reference', 'N/A')}")
-            logger.debug(f"Full Response: {json.dumps(response_json, indent=2)[:1000]}...")
-        except:
-            logger.warning(f"Response is not JSON: {response.text[:500]}")
-        
-        response.raise_for_status()
-        
-        logger.info(f"Payment request completed successfully")
-        return response.json()
-        
-    except requests.exceptions.Timeout:
-        logger.error("Payment request timed out after 15 seconds")
-        raise
-    except requests.exceptions.HTTPError as e:
-        logger.error(f"HTTP Error during payment: {e.response.status_code}")
-        logger.error(f"Response: {e.response.text}")
-        raise
-    except Exception as e:
-        logger.error(f"Unexpected error during payment: {str(e)}")
-        raise
-
-@login_required
-def payment_success(request):
-    """Payment success page - activate subscription"""
-    logger.info(f"Payment success page accessed by user: {request.user.email}")
-    
-    company = request.user.company
-    
-    # Get the latest payment for this company
-    latest_payment = Payment.objects.filter(
-        company=company,
-        payment_type='subscription'
-    ).order_by('-created_at').first()
-    
-    if latest_payment and latest_payment.status == 'pending':
-        logger.info(f"Activating subscription for company: {company.company_name}")
-        logger.info(f"Payment ID: {latest_payment.id}")
-        logger.info(f"Amount: {latest_payment.amount} {latest_payment.currency}")
-        
-        # Update payment status to completed
-        latest_payment.status = 'completed'
-        latest_payment.save()
-        
-        # Activate subscription
-        subscription_start = timezone.now()
-        subscription_end = subscription_start + timedelta(days=365)
-        
-        company.subscription_status = 'active'
-        company.subscription_start_date = subscription_start
-        company.subscription_end_date = subscription_end
-        company.save()
-        
-        logger.info(f"Subscription activated successfully")
-        logger.info(f"Start Date: {subscription_start}")
-        logger.info(f"End Date: {subscription_end}")
-    else:
-        logger.warning(f"No pending payment found for company: {company.company_name}")
-    
-    context = {
-        'company': company,
-        'payment': latest_payment
     }
-    return render(request, 'payments/success.html', context)
 
-@login_required
-def payment_failed(request):
-    """Payment failed page"""
-    logger.warning(f"Payment failed page accessed by user: {request.user.email}")
-    return render(request, 'payments/failed.html')
+    try:
+        logger.info(f"[ORDER] Creating order")
+        logger.info(f"[ORDER] redirectUrl: {return_url}")
+        logger.info(f"[ORDER] notificationUrl: {notify_url}")
+        logger.info(f"[ORDER] skipConfirmationPage: True")
+        order_response = requests.post(
+            transactions_url,
+            json=order_payload,
+            headers=order_headers,
+            timeout=30
+        )
+        logger.info(f"[ORDER] Response status: {order_response.status_code}")
+        if order_response.status_code not in [200, 201]:
+            logger.error(f"[ORDER] Failed. Status: {order_response.status_code}")
+            logger.error(f"[ORDER] Response: {order_response.text}")
+            return None
+        order_data = order_response.json()
+        payment_link = order_data.get('_links', {}).get('payment', {}).get('href')
+        order_reference = order_data.get('reference')
+        if payment_link and order_reference:
+            payment.transaction_reference = order_reference
+            payment.save()
+            logger.info(f"[ORDER] Order created: {order_reference}")
+            logger.info(f"[ORDER] Payment link: {payment_link}")
+            return payment_link
+        logger.error(f"[ORDER] No payment link in response")
+        logger.error(f"[ORDER] Response: {json.dumps(order_data, indent=2)}")
+        return None
+    except requests.exceptions.RequestException as e:
+        logger.error(f"[ERROR] Order API error: {str(e)}", exc_info=True)
+        if hasattr(e, 'response') and e.response is not None:
+            logger.error(f"[ERROR] Status: {e.response.status_code}, Body: {e.response.text}")
+        return None
+
+
+# ==============================================================================
+# VIEWS
+# ==============================================================================
+
+class PaymentCheckoutView(LoginRequiredMixin, View):
+    """Initializes payment and redirects user to N-Genius HPP."""
+
+    def get(self, request, *args, **kwargs):
+        # Prerequisite checks
+        site_settings = SiteSettings.objects.first()
+        if not site_settings:
+            messages.error(request, 'Payment configuration not found. Please contact support.')
+            return redirect('core:home')
+
+        if not hasattr(request.user, 'company'):
+            messages.error(request, 'Company profile not found. Please complete registration.')
+            return redirect('accounts:register')
+
+        company = request.user.company
+        if company.subscription_status == 'active':
+            messages.info(request, 'Your subscription is already active.')
+            return redirect('dashboard:home')
+
+        # Create local Payment record
+        order_id = f"ORD-{uuid.uuid4().hex[:12].upper()}"
+        try:
+            payment = Payment.objects.create(
+                company=company,
+                amount=site_settings.annual_fee,
+                currency=site_settings.currency,
+                order_id=order_id,
+                payment_type='registration'
+            )
+            logger.info(f"[CHECKOUT] Payment record created: {order_id}")
+        except Exception as e:
+            logger.error(f"[CHECKOUT] Error creating payment record: {str(e)}", exc_info=True)
+            messages.error(request, 'An error occurred. Please try again.')
+            return redirect('core:pricing')
+
+        # Create N-Genius order and get payment URL
+        payment_url = create_ngenius_order(request, payment)
+        if payment_url:
+            logger.info(f"[CHECKOUT] Redirecting to N-Genius HPP")
+            return redirect(payment_url)
+        else:
+            payment.status = 'failed'
+            payment.error_message = 'Failed to create N-Genius order.'
+            payment.save()
+            messages.error(request, 'Payment initialization failed. Please try again.')
+            return redirect('core:pricing')
+
+
+from django.urls import reverse_lazy
+
+class PaymentCallbackView(TemplateView):
+    """Handle N-Genius payment callback - Browser redirect after payment"""
+    template_name = 'payments/callback.html'
+
+    def get(self, request, *args, **kwargs):
+        """Process callback from N-Genius"""
+
+        transaction_ref = request.GET.get('ref') or request.GET.get('reference')
+        merchant_order_ref = request.GET.get('orderReference') or request.GET.get('order_id')
+
+        logger.info(f"[CALLBACK] Received callback")
+        logger.info(f"[CALLBACK] Transaction ref: {transaction_ref}")
+        logger.info(f"[CALLBACK] Merchant order ref: {merchant_order_ref}")
+
+        try:
+            payment = None
+
+            if transaction_ref:
+                try:
+                    payment = Payment.objects.get(transaction_reference=transaction_ref)
+                    logger.info(f"[CALLBACK] Found by transaction_ref: {payment.order_id}")
+                except Payment.DoesNotExist:
+                    logger.warning(f"[CALLBACK] Not found by transaction_ref: {transaction_ref}")
+
+            if not payment and merchant_order_ref:
+                try:
+                    payment = Payment.objects.get(order_id=merchant_order_ref)
+                    logger.info(f"[CALLBACK] Found by order_id: {payment.order_id}")
+                except Payment.DoesNotExist:
+                    logger.warning(f"[CALLBACK] Not found by order_id: {merchant_order_ref}")
+
+            if not payment:
+                logger.error(f"[CALLBACK] Payment not found. Params: {dict(request.GET)}")
+                messages.error(request, 'Payment record not found.')
+                return redirect('core:home')
+
+            # If already successful
+            if payment.is_successful:
+                logger.info(f"[CALLBACK] Payment already successful")
+                messages.success(request, 'Payment successful! Your account is now active.')
+                return redirect('payments:success', order_reference=payment.order_id)
+
+            # If still pending - query API once
+            if payment.status == 'pending':
+                logger.info(f"[CALLBACK] Status pending, querying API...")
+                if self.verify_payment_with_api(payment):
+                    # API confirmed it's captured
+                    logger.info(f"[CALLBACK] API confirmed payment captured")
+                    messages.success(request, 'Payment successful! Your account is now active.')
+                    return redirect('payments:success', order_reference=payment.order_id)
+                else:
+                    # API didn't confirm yet (webhook will arrive soon)
+                    # ✅ FIX: Don't redirect - render a waiting page
+                    logger.info(f"[CALLBACK] Payment pending - rendering waiting page")
+                    messages.info(request, 'Your payment is being processed. Please wait...')
+                    return render(request, 'payments/callback_waiting.html', {
+                        'order_id': payment.order_id,
+                        'transaction_ref': payment.transaction_reference,
+                        'amount': payment.amount,
+                        'currency': payment.currency,
+                    })
+
+            # If failed
+            if payment.status == 'failed':
+                logger.warning(f"[CALLBACK] Payment failed")
+                messages.error(request, f'Payment failed: {payment.error_message}')
+                return redirect('payments:failure')
+
+        except Exception as e:
+            logger.error(f"[CALLBACK] Unexpected error: {str(e)}", exc_info=True)
+            messages.error(request, 'An unexpected error occurred.')
+            return redirect('core:home')
+
+    def verify_payment_with_api(self, payment):
+        """Query N-Genius API to verify payment status"""
+        try:
+            token_url = f"{settings.NGENIUS_BASE_URL}/identity/auth/access-token"
+            token_headers = {
+                'Authorization': f"Basic {settings.NGENIUS_SERVICE_ACCOUNT_API_KEY}",
+                'Content-Type': 'application/vnd.ni-identity.v1+json',
+                'Accept': 'application/vnd.ni-identity.v1+json'
+            }
+
+            token_response = requests.post(
+                token_url,
+                headers=token_headers,
+                data=json.dumps({"realmName": "ni"}),
+                timeout=30
+            )
+
+            if token_response.status_code != 200:
+                logger.error(f"[CALLBACK-API] Token failed: {token_response.status_code}")
+                return False
+
+            access_token = token_response.json().get('access_token')
+            if not access_token:
+                logger.error("[CALLBACK-API] No access_token in response")
+                return False
+
+            order_url = f"{settings.NGENIUS_BASE_URL}/transactions/outlets/{settings.NGENIUS_OUTLET_REF}/orders/{payment.transaction_reference}"
+            order_headers = {
+                'Authorization': f"Bearer {access_token}",
+                'Accept': 'application/vnd.ni-payment.v2+json'
+            }
+
+            order_response = requests.get(order_url, headers=order_headers, timeout=30)
+            if order_response.status_code != 200:
+                logger.error(f"[CALLBACK-API] Query failed: {order_response.status_code}")
+                return False
+
+            order_data = order_response.json()
+            payments = order_data.get('_embedded', {}).get('payment', [])
+
+            if not payments:
+                logger.warning("[CALLBACK-API] No payment data in response")
+                return False
+
+            state = payments[0].get('state', '')
+            logger.info(f"[CALLBACK-API] Payment state: {state}")
+
+            # ✅ FIX: Include PURCHASED state
+            if state in ['PURCHASED', 'CAPTURED', 'AUTHORISED']:
+                logger.info(f"[CALLBACK-API] Payment successful (state: {state})")
+                payment.status = 'captured'
+                payment.completed_at = timezone.now()
+                payment.webhook_data = order_data
+                payment.authorization_code = payments[0].get('authResponse', {}).get('authorizationCode', '')
+                payment.save()
+
+                company = payment.company
+                if company.subscription_status != 'active':
+                    logger.info(f"[CALLBACK-API] Activating subscription for {company.company_name}")
+                    company.subscription_status = 'active'
+                    company.subscription_start_date = timezone.now()
+                    company.subscription_end_date = timezone.now() + timedelta(days=365)
+                    company.is_verified = True
+                    company.save()
+                    logger.info(f"[CALLBACK-API] Subscription activated")
+
+                return True
+
+            elif state in ['FAILED', 'DECLINED']:
+                logger.warning(f"[CALLBACK-API] Payment failed: {state}")
+                payment.status = 'failed'
+                payment.error_message = payments[0].get('failureReason', 'Payment declined')
+                payment.save()
+                return False
+
+            logger.warning(f"[CALLBACK-API] Unknown state: {state}")
+            return False
+
+        except Exception as e:
+            logger.error(f"[CALLBACK-API] Error: {str(e)}", exc_info=True)
+            return False
+
+
+@csrf_exempt
+@require_POST
+def payment_webhook(request):
+    """Handle N-Genius webhook callback"""
+
+    # 🛑 CRITICAL SECURITY WARNING 🛑
+    # You MUST implement HMAC/Signature verification here before processing the payment.
+    # Without signature verification, an attacker could send a fake 'CAPTURED' payload.
+    # Refer to N-Genius documentation on Consuming web-hooks for HMAC verification details.
+
+    try:
+        payload = json.loads(request.body)
+        logger.info(f"[WEBHOOK] Received webhook")
+
+        # Ensure order_reference is extracted correctly (N-Genius uses 'reference' in webhook)
+        order_reference = payload.get('reference')
+
+        if not order_reference:
+            logger.warning("[WEBHOOK] No order reference in payload")
+            return JsonResponse({'error': 'No order reference'}, status=400)
+
+        try:
+            payment = Payment.objects.get(transaction_reference=order_reference)
+        except Payment.DoesNotExist:
+            logger.error(f"[WEBHOOK] Payment not found: {order_reference}")
+            return JsonResponse({'error': 'Payment not found'}, status=404)
+
+        # Extract payment state
+        embedded = payload.get('_embedded', {})
+        payment_data = embedded.get('payment', [{}])[0]
+        state = payment_data.get('state', '')
+
+        logger.info(f"[WEBHOOK] Payment state: {state}")
+
+        # ✅ FIX: Include PURCHASED state
+        if state in ['PURCHASED', 'CAPTURED', 'AUTHORISED']:
+            logger.info(f"[WEBHOOK] Payment successful (state: {state})")
+            payment.status = 'captured'
+            payment.completed_at = timezone.now()
+            payment.webhook_data = payload
+            payment.authorization_code = payment_data.get('authResponse', {}).get('authorizationCode', '')
+            payment.save()
+
+            company = payment.company
+            if company.subscription_status != 'active':
+                logger.info(f"[WEBHOOK] Activating subscription for {company.company_name}")
+                company.subscription_status = 'active'
+                company.subscription_start_date = timezone.now()
+                company.subscription_end_date = timezone.now() + timedelta(days=365)
+                company.is_verified = True
+                company.save()
+                logger.info(f"[WEBHOOK] Subscription activated")
+
+        elif state in ['FAILED', 'DECLINED']:
+            logger.info(f"[WEBHOOK] Payment failed: {state}")
+            payment.status = 'failed'
+            payment.error_message = payment_data.get('failureReason', 'Payment declined')
+            payment.webhook_data = payload
+            payment.save()
+            logger.warning(f"[WEBHOOK] Payment declined: {order_reference}")
+
+        return JsonResponse({'status': 'received'}, status=200)
+
+    except json.JSONDecodeError:
+        logger.error("[WEBHOOK] Invalid JSON in webhook")
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"[WEBHOOK] Processing error: {str(e)}", exc_info=True)
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+class PaymentSuccessView(LoginRequiredMixin, TemplateView):
+    """Payment success page"""
+    template_name = 'payments/success.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order_reference = self.kwargs.get('order_reference')
+
+        try:
+            payment = Payment.objects.get(order_id=order_reference)
+            context['payment'] = payment
+            context['company'] = payment.company
+            context['is_active'] = payment.is_successful
+            logger.info(f"[SUCCESS] Success page: {order_reference}")
+        except Payment.DoesNotExist:
+            context['is_active'] = False
+            logger.error(f"[ERROR] Success page: Payment not found {order_reference}")
+
+        return context
+
+class PaymentFailureView(TemplateView):
+    """Payment failure page"""
+    template_name = 'payments/failure.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        logger.info("[FAILURE] Failure page accessed")
+        return context

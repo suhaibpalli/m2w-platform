@@ -57,3 +57,6 @@ env.*
 .env.*
 .env
 db.sqlite3
+
+got.py
+test.py

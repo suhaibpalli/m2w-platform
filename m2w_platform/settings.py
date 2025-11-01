@@ -31,6 +31,7 @@ DEBUG = os.getenv('DEBUG', 'False')
 # DEBUG = 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+# ALLOWED_HOSTS = ["*"]  # Allow all hosts (insecure for production)
 
 
 # Application definition
@@ -44,12 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-     # Custom apps
+    # Custom apps
     'core',
     'accounts',
     'products',
     'messaging',
-    'payments',
+    'payments',  # ← ADD THIS LINE
     'dashboard',
 ]
 
@@ -223,19 +224,37 @@ JAZZMIN_SETTINGS["show_ui_builder"] = True
 # DEFAULT_MONTHLY_FEE = 30  # $30/month for everyone
 DEFAULT_REGISTRATION_FEE = Decimal('29.00')  # One-time annual registration
 
-# m2w_platform/settings.py
+# ============================================
+# N-Genius Payment Configuration
+# ============================================
 
-# Add to existing settings
-NGENIUS_BASE_URL = config('NGENIUS_BASE_URL', default='https://api-gateway.ngenius-payments.com')
+# IMPORTANT:
+# Use the correct N-Genius Base URL for your environment.
+# These are critical for backend authentication (identity) and creating orders:
+#
+#   Sandbox (UAT):    https://api-gateway.sandbox.ngenius-payments.com
+#   Production (Live): https://api-gateway.ngenius-payments.com
+#
+# Set NGENIUS_BASE_URL in your .env or environment config accordingly.
+
+NGENIUS_BASE_URL = config(
+    'NGENIUS_BASE_URL',
+    default='https://api-gateway.sandbox.ngenius-payments.com'
+)
+
+
 NGENIUS_OUTLET_REF = config('NGENIUS_OUTLET_REF')
-NGENIUS_HOSTED_SESSION_API_KEY = config('NGENIUS_HOSTED_SESSION_API_KEY')  # For frontend SDK
-NGENIUS_SERVICE_ACCOUNT_API_KEY = config('NGENIUS_SERVICE_ACCOUNT_API_KEY')  # For backend API
+NGENIUS_HOSTED_SESSION_API_KEY = config('NGENIUS_HOSTED_SESSION_API_KEY')  # For frontend SDK payments
+NGENIUS_SERVICE_ACCOUNT_API_KEY = config('NGENIUS_SERVICE_ACCOUNT_API_KEY')  # For backend authentication
 
-# settings.py
-# Multi-Currency Pricing (MCP) - Set to True to enable
+# Multi-Currency Pricing (MCP)
 NGENIUS_MCP_ENABLED = config('NGENIUS_MCP_ENABLED', cast=bool, default=True)
 
-# Logging Configuration
+# Payment session and webhook settings
+PAYMENT_WEBHOOK_TIMEOUT = 30   # seconds
+PAYMENT_SESSION_EXPIRY = 3600  # seconds (1 hour)
+
+# Logging for payments (log file will be created in BASE_DIR/logs/)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -243,35 +262,51 @@ LOGGING = {
         'verbose': {
             'format': '[{levelname}] {asctime} {module} {message}',
             'style': '{',
-            'datefmt': '%d/%b/%Y %H:%M:%S',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
         },
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'file': {
+        'payments_file': {
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'payments.log',
-            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'maxBytes': 1024 * 1024 * 10,  # 10MB
             'backupCount': 5,
             'formatter': 'verbose',
         },
     },
     'loggers': {
         'payments': {
-            'handlers': ['console', 'file'],
+            'handlers': ['payments_file'],
             'level': 'INFO',
             'propagate': False,
         },
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
     },
 }
+
+
+# ============================================
+# CSRF CONFIGURATION FOR TUNNELING
+# ============================================
+
+# For local development with ngrok/pinggy tunnels
+# Add your tunnel domain here
+CSRF_TRUSTED_ORIGINS = [
+    # Local development
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    
+    # Ngrok tunnels (add your actual ngrok URL)
+    'https://abcd1234.ngrok.io',  # Replace with your ngrok URL
+    'https://*.ngrok.io',  # Wildcard for all ngrok subdomains
+    
+    # Pinggy tunnels (add your actual pinggy URL)
+    'https://ejrfr-122-164-82-206.a.free.pinggy.link',  # Your current pinggy URL
+    'https://*.free.pinggy.link',  # Wildcard for all pinggy subdomains
+    # Production (add when you go live)
+    'https://mwpuae.ae',
+    'https://www.mwpuae.ae',
+]
+
+# Also ensure CSRF cookie settings are correct
+CSRF_COOKIE_SECURE = False  # Set to True only in HTTPS production
+CSRF_COOKIE_HTTPONLY = False  # JavaScript needs to read CSRF token in forms
