@@ -63,91 +63,101 @@ def get_access_token():
         return None
 
 def create_ngenius_order(request, payment):
-    """Step 2: Create N-Genius order and return payment URL (HPP link).
-
-    CRITICAL: Uses correct field names per official N-Genius docs:
-    - merchantAttributes.redirectUrl (not top-level returnUrl)
-    - merchantAttributes.notificationUrl (not top-level notifyUrl)
-    - merchantAttributes.skipConfirmationPage (enables auto-redirect)
     """
-
+    Create N-Genius order with complete billing address for 3DS2 validation.
+    """
     access_token = get_access_token()
     if not access_token:
-        logger.error("[ORDER] Failed to get access token")
+        logger.error("ORDER: Failed to get access token")
         return None
 
     transactions_url = f"{settings.NGENIUS_BASE_URL}/transactions/outlets/{settings.NGENIUS_OUTLET_REF}/orders"
-
-    # Build return/notify URLs
+    
     return_url = request.build_absolute_uri(reverse_lazy('payments:callback'))
     notify_url = request.build_absolute_uri(reverse_lazy('payments:webhook'))
-
+    
     order_headers = {
-        'Authorization': f"Bearer {access_token}",
-        'Content-Type': 'application/vnd.ni-payment.v2+json',
-        'Accept': 'application/vnd.ni-payment.v2+json'
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/vnd.ni-payment.v2+json",
+        "Accept": "application/vnd.ni-payment.v2+json"
     }
-
-    email = payment.company.contact_email or 'noemail@example.com'
-
-    # ✅ CORRECTED: Field names MUST be inside merchantAttributes
+    
+    # Get company data
+    company = payment.company
+    email = company.contact_email or getattr(getattr(company, "user", None), "email", None) or "noemail@example.com"
+    
+    # Parse first/last name from contact_person_name
+    contact_name = company.contact_person_name or "Customer User"
+    name_parts = contact_name.strip().split()
+    first_name = name_parts[0] if name_parts else "Customer"
+    last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else "User"
+    
+    # Build order payload
     order_payload = {
-        'action': 'PURCHASE',
-        'amount': {
-            'currencyCode': payment.currency,
-            'value': payment.amount_in_cents
+        "action": "PURCHASE",
+        "amount": {
+            "currencyCode": payment.currency,
+            "value": payment.amount_in_cents
         },
-        'merchantOrderReference': payment.order_id,
-        'emailAddress': email,
-        'billingAddress': {
-            'firstName': payment.company.contact_person_name.split()[0] if payment.company.contact_person_name else 'Customer',
-            'lastName': payment.company.contact_person_name.split()[-1] if payment.company.contact_person_name and len(payment.company.contact_person_name.split()) > 1 else 'User',
+        "merchantOrderReference": payment.order_id,
+        "emailAddress": email,
+        
+        # Complete billing address for 3DS2
+        "billingAddress": {
+            "firstName": first_name,
+            "lastName": last_name,
+            "address1": (company.company_address or "Address Line 1")[:100],
+            "city": company.billing_city or "Dubai",
+            "state": company.billing_state or "Dubai",
+            "country": company.billing_country or "United Arab Emirates",
+            "countryCode": (company.billing_country_code or "AE").upper(),
+            "postalCode": company.billing_postal_code or "00000",
+            "phone": company.contact_phone or ""
         },
-        'merchantAttributes': {
-            # CRITICAL: Use redirectUrl and notificationUrl in merchantAttributes
-            'redirectUrl': return_url,
-            'notificationUrl': notify_url,
-            'skipConfirmationPage': True,
-            # Optional improvements
-            'maskPaymentInfo': True,
-            'slim': 'true'
+        
+        "merchantAttributes": {
+            "redirectUrl": return_url,
+            "notificationUrl": notify_url,
+            "skipConfirmationPage": True,
+            "maskPaymentInfo": True,
+            "showPayerName": True,
+            "slim": "true"
         }
     }
 
     try:
-        logger.info(f"[ORDER] Creating order")
-        logger.info(f"[ORDER] redirectUrl: {return_url}")
-        logger.info(f"[ORDER] notificationUrl: {notify_url}")
-        logger.info(f"[ORDER] skipConfirmationPage: True")
+        logger.info(f"ORDER: Creating for {company.company_name}")
+        logger.info(f"ORDER: billingAddress = {order_payload['billingAddress']}")
+        
         order_response = requests.post(
             transactions_url,
             json=order_payload,
             headers=order_headers,
             timeout=30
         )
-        logger.info(f"[ORDER] Response status: {order_response.status_code}")
+        
+        logger.info(f"ORDER: Response status = {order_response.status_code}")
+        
         if order_response.status_code not in [200, 201]:
-            logger.error(f"[ORDER] Failed. Status: {order_response.status_code}")
-            logger.error(f"[ORDER] Response: {order_response.text}")
+            logger.error(f"ORDER: Failed - {order_response.text}")
             return None
+        
         order_data = order_response.json()
-        payment_link = order_data.get('_links', {}).get('payment', {}).get('href')
-        order_reference = order_data.get('reference')
+        payment_link = order_data.get("_links", {}).get("payment", {}).get("href")
+        order_reference = order_data.get("reference")
+        
         if payment_link and order_reference:
             payment.transaction_reference = order_reference
             payment.save()
-            logger.info(f"[ORDER] Order created: {order_reference}")
-            logger.info(f"[ORDER] Payment link: {payment_link}")
+            logger.info(f"ORDER: Created {order_reference}")
             return payment_link
-        logger.error(f"[ORDER] No payment link in response")
-        logger.error(f"[ORDER] Response: {json.dumps(order_data, indent=2)}")
+        
+        logger.error(f"ORDER: No payment link in response")
         return None
+        
     except requests.exceptions.RequestException as e:
-        logger.error(f"[ERROR] Order API error: {str(e)}", exc_info=True)
-        if hasattr(e, 'response') and e.response is not None:
-            logger.error(f"[ERROR] Status: {e.response.status_code}, Body: {e.response.text}")
+        logger.error(f"ERROR: Order API failed - {str(e)}", exc_info=True)
         return None
-
 
 # ==============================================================================
 # VIEWS

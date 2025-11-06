@@ -6,7 +6,7 @@ from core.models import Industry
 
 class CompanyRegistrationForm(UserCreationForm):
     # Remove role field completely
-    
+
     company_name = forms.CharField(
         max_length=200,
         widget=forms.TextInput(attrs={
@@ -14,7 +14,7 @@ class CompanyRegistrationForm(UserCreationForm):
             'placeholder': 'Enter your company name'
         })
     )
-    
+
     # Add new company type field (multiple choice)
     company_types = forms.MultipleChoiceField(
         choices=Company.COMPANY_TYPE_CHOICES,
@@ -24,7 +24,7 @@ class CompanyRegistrationForm(UserCreationForm):
         required=True,
         help_text="Select all that apply"
     )
-    
+
     other_company_type = forms.CharField(
         max_length=200,
         required=False,
@@ -33,7 +33,7 @@ class CompanyRegistrationForm(UserCreationForm):
             'placeholder': 'Please specify other company type'
         })
     )
-    
+
     # Add new sector field (multiple choice)
     sectors = forms.MultipleChoiceField(
         choices=Company.SECTOR_CHOICES,
@@ -43,7 +43,7 @@ class CompanyRegistrationForm(UserCreationForm):
         required=True,
         help_text="Select all sectors your business operates in"
     )
-    
+
     other_sector = forms.CharField(
         max_length=200,
         required=False,
@@ -52,7 +52,7 @@ class CompanyRegistrationForm(UserCreationForm):
             'placeholder': 'Please specify other sector'
         })
     )
-    
+
     # Core company information fields
     cr_number = forms.CharField(
         max_length=100,
@@ -63,7 +63,7 @@ class CompanyRegistrationForm(UserCreationForm):
         }),
         help_text="Commercial Registration Number, VAT Number, or Tax ID"
     )
-    
+
     contact_person_name = forms.CharField(
         max_length=200,
         widget=forms.TextInput(attrs={
@@ -71,14 +71,14 @@ class CompanyRegistrationForm(UserCreationForm):
             'placeholder': 'Contact person full name'
         })
     )
-    
+
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
             'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
             'placeholder': 'Contact person email'
         })
     )
-    
+
     contact_phone = forms.CharField(
         max_length=20,
         widget=forms.TextInput(attrs={
@@ -86,7 +86,7 @@ class CompanyRegistrationForm(UserCreationForm):
             'placeholder': 'Phone number'
         })
     )
-    
+
     company_address = forms.CharField(
         widget=forms.Textarea(attrs={
             'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] min-h-24 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
@@ -94,7 +94,61 @@ class CompanyRegistrationForm(UserCreationForm):
             'rows': 2
         })
     )
-    
+
+    # --- Begin new optional billing fields with smart defaults ---
+
+    billing_city = forms.CharField(
+        max_length=100,
+        required=False,
+        initial="Dubai",
+        widget=forms.TextInput(attrs={
+            'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
+            'placeholder': 'City (default: Dubai)'
+        })
+    )
+
+    billing_state = forms.CharField(
+        max_length=100,
+        required=False,
+        initial="Dubai",
+        widget=forms.TextInput(attrs={
+            'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
+            'placeholder': 'State/Emirate (default: Dubai)'
+        })
+    )
+
+    billing_country = forms.CharField(
+        max_length=100,
+        required=False,
+        initial="United Arab Emirates",
+        widget=forms.TextInput(attrs={
+            'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
+            'placeholder': 'Country (default: UAE)'
+        })
+    )
+
+    billing_country_code = forms.CharField(
+        max_length=2,
+        required=False,
+        initial="AE",
+        widget=forms.TextInput(attrs={
+            'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
+            'placeholder': 'Country Code (default: AE)'
+        })
+    )
+
+    billing_postal_code = forms.CharField(
+        max_length=20,
+        required=False,
+        initial="00000",
+        widget=forms.TextInput(attrs={
+            'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
+            'placeholder': 'Postal Code (default: 00000)'
+        })
+    )
+
+    # --- End new billing fields ---
+
     description = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={
@@ -103,7 +157,7 @@ class CompanyRegistrationForm(UserCreationForm):
             'rows': 2
         })
     )
-    
+
     terms_accepted = forms.BooleanField(
         required=True,
         widget=forms.CheckboxInput(attrs={
@@ -113,18 +167,21 @@ class CompanyRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = (
-            'company_name', 'company_types', 'other_company_type', 
+        fields = [
+            'company_name', 'company_types', 'other_company_type',
             'sectors', 'other_sector', 'cr_number', 'contact_person_name',
-            'email', 'contact_phone', 'company_address', 'description',
+            'email', 'contact_phone', 'company_address',
+            'billing_city', 'billing_state', 'billing_country',
+            'billing_country_code', 'billing_postal_code',
+            'description',
             'password1', 'password2', 'terms_accepted'
-        )
-    
+        ]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Remove username field and use email as username
         self.fields.pop('username', None)
-        
+
         # Customize password fields
         self.fields['password1'].widget.attrs.update({
             'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
@@ -134,15 +191,15 @@ class CompanyRegistrationForm(UserCreationForm):
             'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
             'placeholder': 'Confirm password'
         })
-    
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = self.cleaned_data['email']
         user.email = self.cleaned_data['email']
-        
+
         if commit:
             user.save()
-            # Update company details
+
             company = user.company
             company.company_name = self.cleaned_data['company_name']
             company.company_types = self.cleaned_data['company_types']
@@ -155,12 +212,17 @@ class CompanyRegistrationForm(UserCreationForm):
             company.contact_phone = self.cleaned_data['contact_phone']
             company.company_address = self.cleaned_data['company_address']
             company.description = self.cleaned_data.get('description', '')
-            
-            # Set subscription status to pending for everyone
+
+            # Save billing fields (with fallback to defaults)
+            company.billing_city = self.cleaned_data.get('billing_city') or 'Dubai'
+            company.billing_state = self.cleaned_data.get('billing_state') or 'Dubai'
+            company.billing_country = self.cleaned_data.get('billing_country') or 'United Arab Emirates'
+            company.billing_country_code = self.cleaned_data.get('billing_country_code') or 'AE'
+            company.billing_postal_code = self.cleaned_data.get('billing_postal_code') or '00000'
+
             company.subscription_status = 'pending'
-            
             company.save()
-        
+
         return user
 
 class CustomLoginForm(AuthenticationForm):
@@ -170,14 +232,14 @@ class CustomLoginForm(AuthenticationForm):
             'placeholder': 'Email'
         })
     )
-    
+
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#121416] focus:outline-0 focus:ring-0 border border-[#dde1e3] bg-white focus:border-[#dde1e3] h-14 placeholder:text-[#6a7681] p-[15px] text-base font-normal leading-normal',
             'placeholder': 'Password'
         })
     )
-    
+
     remember_me = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={

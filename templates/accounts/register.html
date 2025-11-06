@@ -195,6 +195,83 @@
                             <p class="mt-1 text-sm text-red-600">{{ form.description.errors.0 }}</p>
                         {% endif %}
                     </div>
+
+                    <!-- Billing Information (Optional - Collapsible) -->
+                    <div class="border-t pt-8 mt-8">
+                        <details class="group">
+                            <summary class="flex items-center justify-between cursor-pointer list-none mb-4">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">Billing Address (Optional)</h3>
+                                    <p class="text-sm text-gray-600">For payment processing - defaults to UAE if not specified</p>
+                                </div>
+                                <span class="transition group-open:rotate-180">
+                                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </span>
+                            </summary>
+
+                            <div class="space-y-6 pt-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="{{ form.billing_city.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            City
+                                        </label>
+                                        {{ form.billing_city }}
+                                        {% if form.billing_city.errors %}
+                                            <p class="mt-1 text-sm text-red-600">{{ form.billing_city.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.billing_state.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            State/Emirate
+                                        </label>
+                                        {{ form.billing_state }}
+                                        {% if form.billing_state.errors %}
+                                            <p class="mt-1 text-sm text-red-600">{{ form.billing_state.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.billing_country.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Country
+                                        </label>
+                                        {{ form.billing_country }}
+                                        {% if form.billing_country.errors %}
+                                            <p class="mt-1 text-sm text-red-600">{{ form.billing_country.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.billing_country_code.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Country Code
+                                        </label>
+                                        {{ form.billing_country_code }}
+                                        {% if form.billing_country_code.errors %}
+                                            <p class="mt-1 text-sm text-red-600">{{ form.billing_country_code.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="{{ form.billing_postal_code.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Postal/ZIP Code
+                                        </label>
+                                        {{ form.billing_postal_code }}
+                                        {% if form.billing_postal_code.errors %}
+                                            <p class="mt-1 text-sm text-red-600">{{ form.billing_postal_code.errors.0 }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <p class="text-sm text-blue-800">
+                                        <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        If left blank, billing will default to: Dubai, UAE (AE), Postal Code: 00000
+                                    </p>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    <!-- End Billing Information (Optional - Collapsible) -->
+
                 </div>
 
                 <!-- Pricing Information -->
