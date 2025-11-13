@@ -36,12 +36,18 @@ def get_access_token():
         'Accept': 'application/vnd.ni-identity.v1+json'
     }
 
+    # ✅ FIX: Use correct realm name based on environment
+    # Sandbox uses "ni", Production uses "NetworkInternational"
+    is_sandbox = 'sandbox' in settings.NGENIUS_BASE_URL.lower()
+    realm_name = "ni" if is_sandbox else "NetworkInternational"
+
     try:
         logger.info(f"[TOKEN] Requesting from: {token_url}")
+        logger.info(f"[TOKEN] Using realm: {realm_name}")
         token_response = requests.post(
             token_url,
             headers=token_headers,
-            data=json.dumps({"realmName": "ni"}),
+            data=json.dumps({"realmName": realm_name}),
             timeout=30
         )
         logger.info(f"[TOKEN] Response status: {token_response.status_code}")
@@ -296,10 +302,14 @@ class PaymentCallbackView(TemplateView):
                 'Accept': 'application/vnd.ni-identity.v1+json'
             }
 
+            # ✅ FIX: Use correct realm name
+            is_sandbox = 'sandbox' in settings.NGENIUS_BASE_URL.lower()
+            realm_name = "ni" if is_sandbox else "NetworkInternational"
+
             token_response = requests.post(
                 token_url,
                 headers=token_headers,
-                data=json.dumps({"realmName": "ni"}),
+                data=json.dumps({"realmName": realm_name}),
                 timeout=30
             )
 
