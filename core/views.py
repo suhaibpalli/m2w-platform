@@ -110,3 +110,10 @@ def faq(request):
     return render(request, 'core/faq.html', {
         'page_title': 'Frequently Asked Questions'
     })
+
+
+class TermsView(TemplateView):
+    template_name = 'core/terms.html'
+
+class PrivacyView(TemplateView):
+    template_name = 'core/privacy.html'

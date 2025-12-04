@@ -302,8 +302,8 @@
                     <ul class="space-y-3">
                         <li><a href="{% url 'core:contact' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Contact Us</a></li>
                         <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Help Center</a></li>
-                        <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a></li>
-                        <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Terms of Service</a></li>
+                        <li><a href="{% url 'core:privacy' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a></li>
+                        <li><a href="{% url 'core:terms' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
                 
@@ -326,6 +326,10 @@
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <p class="text-[#60758a] text-sm">
                         © 2025 {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}. All rights reserved.
+                        <span class="mx-2 hidden md:inline">|</span>
+                        <a href="{% url 'core:privacy' %}" class="underline hover:text-primary-700 ml-2">Privacy Policy</a>
+                        <span class="mx-1">·</span>
+                        <a href="{% url 'core:terms' %}" class="underline hover:text-primary-700">Terms &amp; Conditions</a>
                     </p>
                     
                     <!-- Powered by DelQ Solutions -->
