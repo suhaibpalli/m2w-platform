@@ -191,29 +191,34 @@ if not DEBUG:
 
 # Jazzmin config
 JAZZMIN_SETTINGS = {
+    # Branding
+    "site_title": "MWPUAE Admin Panel",
+    "site_header": "MWPUAE Platform Admin",
+    "site_brand": "MWPUAE Platform",
 
-    ### Branding ###
-    "site_title":    "MWPUAE Admin Panel",        # <title>
-    "site_header":   "MWPUAE Platform Admin",     # top left
-    "site_brand":    "MWPUAE Platform",           # sidebar logo text
-    "site_logo":     None,                     # you can point to your own SVG/PNG
-    "show_developer": False,                   # hide “Powered by Django” link
-    "copyright":     "© 2025 MWPUAE Platform",    # your own footer
-                                           
-    ### Theme ###
-    "theme":        "darkly",                 # choose any Bootswatch theme
-    "dark_mode_theme": "cyborg",               # optional dark theme
-    "show_ui_builder": True,                   # live-theme editor (disable in prod)
+    # 👇 THIS IS THE IMPORTANT PART
+    "site_logo": "images/Metal Wood Plastic Technology FZC LLC_icon.svg",          # sidebar + top-left logo
+    "login_logo": "images/Metal Wood Plastic Technology FZC LLC_icon.svg",         # login page logo (optional)
+    "site_logo_classes": "img-circle",       # optional styling
 
-    ### Layout ###
-    "topmenu_links": [                         # add/remove top‑bar links
-        {"name": "Home",  "url": "/", "permissions": ["auth.view_user"]},
+    "show_developer": False,
+    "copyright": "© 2025 MWPUAE Platform",
+
+    # Theme
+    "theme": "darkly",
+    "dark_mode_theme": "cyborg",
+
+    # UI
+    "show_ui_builder": True,
+
+    # Layout
+    "topmenu_links": [
+        {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
     ],
-    "order_with_respect_to": ["auth", "core"], # menu ordering
-    "custom_css":  None,                       # if you have extra CSS
-    "custom_js":   None,                       # or JS
-
-    # …and dozens more. See full list: 
+    "order_with_respect_to": ["auth", "core"],
+    "custom_css": None,
+    "custom_js": None,
+    # …and dozens more. See full list:
     # https://github.com/farridav/django-jazzmin#settings
 }
 
