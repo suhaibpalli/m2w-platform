@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,131 +96,160 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(0, 150, 57, 0.3);
         }
-        </style>
-        
+    </style>
+
+    {% include 'includes/google_tag.html' %}
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-white" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
     <!-- Navigation -->
-    <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-4 lg:px-10 py-3 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-4 lg:px-10 py-3 sticky top-0 z-50 bg-white/95 backdrop-blur-sm">
         <div class="flex items-center gap-4 text-[#111418]">
             {% if site_settings and site_settings.site_logo %}
-                <div class="h-8">
-                    <img src="{{ site_settings.site_logo }}" 
-                         alt="{{ site_settings.site_name }}" 
-                         class="h-8 w-auto object-contain">
-                </div>
+            <div class="h-8">
+                <img src="{{ site_settings.site_logo }}" alt="{{ site_settings.site_name }}"
+                    class="h-8 w-auto object-contain">
+            </div>
             {% else %}
-                <div class="size-8">
-                    <img src="{% static 'images/Metal_Wood_Plastic_Technology_FZC_LLC_icon.svg' %}" 
-                         alt="MWPUAE Platform" 
-                         class="w-8 h-8 object-contain">
-                </div>
+            <div class="size-8">
+                <img src="{% static 'images/Metal_Wood_Plastic_Technology_FZC_LLC_icon.svg' %}" alt="MWPUAE Platform"
+                    class="w-8 h-8 object-contain">
+            </div>
             {% endif %}
             <a href="{% url 'core:home' %}" class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">
                 {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}
             </a>
         </div>
-        
+
         <!-- Desktop Navigation -->
         <div class="hidden lg:flex flex-1 justify-center">
             <div class="flex items-center gap-9">
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'home' %}text-primary-600{% endif %}" href="{% url 'core:home' %}">Home</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'list' %}text-primary-600{% endif %}" href="{% url 'products:list' %}">Products</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'about' %}text-primary-600{% endif %}" href="{% url 'core:about' %}">About</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'industries' %}text-primary-600{% endif %}" href="{% url 'core:industries' %}">Industries</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'pricing' %}text-primary-600{% endif %}" href="{% url 'core:pricing' %}">Pricing</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'faq' %}text-primary-600{% endif %}" href="{% url 'core:faq' %}">FAQ</a>
-                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'contact' %}text-primary-600{% endif %}" href="{% url 'core:contact' %}">Contact</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'home' %}text-primary-600{% endif %}"
+                    href="{% url 'core:home' %}">Home</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'list' %}text-primary-600{% endif %}"
+                    href="{% url 'products:list' %}">Products</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'about' %}text-primary-600{% endif %}"
+                    href="{% url 'core:about' %}">About</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'industries' %}text-primary-600{% endif %}"
+                    href="{% url 'core:industries' %}">Industries</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'pricing' %}text-primary-600{% endif %}"
+                    href="{% url 'core:pricing' %}">Pricing</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'faq' %}text-primary-600{% endif %}"
+                    href="{% url 'core:faq' %}">FAQ</a>
+                <a class="text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors {% if request.resolver_match.url_name == 'contact' %}text-primary-600{% endif %}"
+                    href="{% url 'core:contact' %}">Contact</a>
             </div>
         </div>
-        
+
         <!-- Auth Buttons -->
         <div class="flex items-center gap-2">
             {% if user.is_authenticated %}
-                <a href="{% url 'dashboard:home' %}" 
-                   class="hidden sm:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary-500 text-white text-sm font-medium leading-normal tracking-[0.015em] hover:bg-primary-600 transition-colors">
-                    Dashboard
-                </a>
-                
-                <!-- Messages Link -->
-                <a href="{% url 'messaging:messages' %}" class="relative hidden sm:flex items-center justify-center rounded-lg h-10 px-4 text-[#111418] hover:bg-gray-50 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M216,48H40A16,16,0,0,0,24,64V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/>
-                    </svg>
-                    <span id="message-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
-                </a>
-                
-                <!-- User Menu -->
-                <div class="relative group">
-                    <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                            {{ user.company.company_name.0|upper }}
-                        </div>
-                        <span class="hidden lg:block text-sm font-medium text-[#111418]">{{ user.company.company_name }}</span>
-                        <svg class="w-4 h-4 text-[#60758a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                        <div class="px-4 py-3 border-b border-gray-100">
-                            <div class="font-semibold text-[#111418]">{{ user.company.company_name }}</div>
-                            <div class="text-xs text-[#60758a]">{{ user.company.get_role_display }}</div>
-                            <div class="text-xs {% if user.company.subscription_status == 'active' %}text-green-600{% elif user.company.subscription_status == 'pending' %}text-orange-600{% else %}text-red-600{% endif %}">
-                                {{ user.company.get_subscription_status_display }}
-                            </div>
-                        </div>
-                        
-                        {% if user.company.subscription_status == 'active' %}
-                            {% if user.company.role == 'vendor' %}
-                                <a href="{% url 'products:my_products' %}" class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">My Products</a>
-                            {% elif user.company.role == 'business_buyer' %}
-                                <a href="{% url 'messaging:quotes_sent' %}" class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">My Quotes</a>
-                            {% endif %}
-                        {% endif %}
-                        
-                        <a href="{% url 'messaging:notifications' %}" class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Notifications</a>
-                        <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Profile Settings</a>
-                        
-                        {% if user.is_staff %}
-                            <a href="{% url 'dashboard:admin' %}" class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Admin Panel</a>
-                        {% endif %}
-                        
-                        <hr class="my-2">
-                        <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+            <a href="{% url 'dashboard:home' %}"
+                class="hidden sm:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary-500 text-white text-sm font-medium leading-normal tracking-[0.015em] hover:bg-primary-600 transition-colors">
+                Dashboard
+            </a>
+
+            <!-- Messages Link -->
+            <a href="{% url 'messaging:messages' %}"
+                class="relative hidden sm:flex items-center justify-center rounded-lg h-10 px-4 text-[#111418] hover:bg-gray-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M216,48H40A16,16,0,0,0,24,64V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z" />
+                </svg>
+                <span id="message-badge"
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
+            </a>
+
+            <!-- User Menu -->
+            <div class="relative group">
+                <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div
+                        class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                        {{ user.company.company_name.0|upper }}
                     </div>
+                    <span class="hidden lg:block text-sm font-medium text-[#111418]">{{ user.company.company_name
+                        }}</span>
+                    <svg class="w-4 h-4 text-[#60758a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div
+                    class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div class="px-4 py-3 border-b border-gray-100">
+                        <div class="font-semibold text-[#111418]">{{ user.company.company_name }}</div>
+                        <div class="text-xs text-[#60758a]">{{ user.company.get_role_display }}</div>
+                        <div
+                            class="text-xs {% if user.company.subscription_status == 'active' %}text-green-600{% elif user.company.subscription_status == 'pending' %}text-orange-600{% else %}text-red-600{% endif %}">
+                            {{ user.company.get_subscription_status_display }}
+                        </div>
+                    </div>
+
+                    {% if user.company.subscription_status == 'active' %}
+                    {% if user.company.role == 'vendor' %}
+                    <a href="{% url 'products:my_products' %}"
+                        class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">My Products</a>
+                    {% elif user.company.role == 'business_buyer' %}
+                    <a href="{% url 'messaging:quotes_sent' %}"
+                        class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">My Quotes</a>
+                    {% endif %}
+                    {% endif %}
+
+                    <a href="{% url 'messaging:notifications' %}"
+                        class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Notifications</a>
+                    <a href="{% url 'accounts:profile' %}"
+                        class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Profile Settings</a>
+
+                    {% if user.is_staff %}
+                    <a href="{% url 'dashboard:admin' %}"
+                        class="block px-4 py-2 text-sm text-[#111418] hover:bg-gray-50">Admin Panel</a>
+                    {% endif %}
+
+                    <hr class="my-2">
+                    <a href="{% url 'accounts:logout' %}"
+                        class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
                 </div>
+            </div>
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors">
-                    Login
-                </a>
-                <a href="{% url 'accounts:register' %}" 
-                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary-500 text-white text-sm font-medium leading-normal tracking-[0.015em] hover:bg-primary-600 transition-colors">
-                    Register
-                </a>
+            <a href="{% url 'accounts:login' %}"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 text-[#111418] text-sm font-medium leading-normal hover:text-primary-600 transition-colors">
+                Login
+            </a>
+            <a href="{% url 'accounts:register' %}"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary-500 text-white text-sm font-medium leading-normal tracking-[0.015em] hover:bg-primary-600 transition-colors">
+                Register
+            </a>
             {% endif %}
-            
+
             <!-- Mobile menu button -->
             <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-50">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
     </header>
-    
+
     <!-- Mobile Navigation -->
     <div id="mobile-menu" class="lg:hidden hidden bg-white border-b border-gray-200">
         <div class="px-4 pt-2 pb-3 space-y-1">
-            <a href="{% url 'core:home' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Home</a>
-            <a href="{% url 'products:list' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Products</a>
-            <a href="{% url 'core:about' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">About</a>
-            <a href="{% url 'core:industries' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Industries</a>
-            <a href="{% url 'core:pricing' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Pricing</a>
-            <a href="{% url 'core:faq' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">FAQ</a>
-            <a href="{% url 'core:contact' %}" class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Contact</a>
+            <a href="{% url 'core:home' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Home</a>
+            <a href="{% url 'products:list' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Products</a>
+            <a href="{% url 'core:about' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">About</a>
+            <a href="{% url 'core:industries' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Industries</a>
+            <a href="{% url 'core:pricing' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Pricing</a>
+            <a href="{% url 'core:faq' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">FAQ</a>
+            <a href="{% url 'core:contact' %}"
+                class="block px-3 py-2 text-[#111418] hover:text-primary-600 rounded-lg">Contact</a>
         </div>
     </div>
 
@@ -228,31 +258,31 @@
     <main>
         <!-- Messages -->
         {% if messages %}
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                {% for message in messages %}
-                    {% if message.tags == 'success' %}
-                        <!-- Success Message -->
-                        <div class="mb-4 p-4 rounded-lg bg-primary-50 text-primary-800 border border-primary-200">
-                            {{ message }}
-                        </div>
-                    {% elif message.tags == 'error' %}
-                        <!-- Error Message -->
-                        <div class="mb-4 p-4 rounded-lg bg-secondary-50 text-secondary-800 border border-secondary-200">
-                            {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="mb-4 p-4 rounded-lg bg-blue-50 text-blue-800 border border-blue-200">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            {% for message in messages %}
+            {% if message.tags == 'success' %}
+            <!-- Success Message -->
+            <div class="mb-4 p-4 rounded-lg bg-primary-50 text-primary-800 border border-primary-200">
+                {{ message }}
             </div>
+            {% elif message.tags == 'error' %}
+            <!-- Error Message -->
+            <div class="mb-4 p-4 rounded-lg bg-secondary-50 text-secondary-800 border border-secondary-200">
+                {{ message }}
+            </div>
+            {% else %}
+            <div class="mb-4 p-4 rounded-lg bg-blue-50 text-blue-800 border border-blue-200">
+                {{ message }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
         {% endif %}
-        
+
         {% block content %}
         {% endblock %}
     </main>
-    
+
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 lg:px-10">
@@ -262,7 +292,9 @@
                     <div class="flex items-center gap-3 mb-4">
                         <div class="size-6">
                             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"/>
+                                <path
+                                    d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
+                                    fill="currentColor" />
                             </svg>
                         </div>
                         <span class="text-[#111418] text-lg font-bold">
@@ -270,103 +302,150 @@
                         </span>
                     </div>
                     <p class="text-[#60758a] text-sm leading-relaxed mb-4">
-                        Connecting businesses across Metal, Wood, Plastic, Machineries, and Technology industries with verified suppliers and secure trading solutions.
+                        Connecting businesses across Metal, Wood, Plastic, Machineries, and Technology industries with
+                        verified suppliers and secure trading solutions.
                     </p>
                     <!-- Key social media icons -->
                     <div class="flex flex-wrap gap-3 mt-2">
                         <!-- Facebook -->
-                        <a href="https://www.facebook.com/mwpuae" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-colors" aria-label="Facebook">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M13.5 9H16V6h-2.5C10.91 6 9 7.91 9 10.5V12H7v3h2v6h3v-6h2.25L15 12h-3v-1.5C12 9.67 12.67 9 13.5 9z"/>
+                        <a href="https://www.facebook.com/mwpuae" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-colors"
+                            aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M13.5 9H16V6h-2.5C10.91 6 9 7.91 9 10.5V12H7v3h2v6h3v-6h2.25L15 12h-3v-1.5C12 9.67 12.67 9 13.5 9z" />
                             </svg>
                         </a>
                         <!-- Instagram -->
-                        <a href="https://www.instagram.com/mwpuae?igsh=NjVkNTduYzRtMWxx&utm_source=qr" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:brightness-110 transition" aria-label="Instagram">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm5.5-3a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+                        <a href="https://www.instagram.com/mwpuae?igsh=NjVkNTduYzRtMWxx&utm_source=qr" target="_blank"
+                            rel="noopener"
+                            class="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:brightness-110 transition"
+                            aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3zm5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm5.5-3a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
                             </svg>
                         </a>
                         <!-- YouTube -->
-                        <a href="https://youtube.com/@mwpuaeofficial?si=v-akBLM1Q4___ROI" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-[#FF0000]/10 text-[#FF0000] flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition-colors" aria-label="YouTube">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M21.8 8.001a2.75 2.75 0 00-1.94-1.948C18.23 5.5 12 5.5 12 5.5s-6.23 0-7.86.553A2.75 2.75 0 002.2 8.001 28.78 28.78 0 002 12a28.78 28.78 0 00.2 3.999 2.75 2.75 0 001.94 1.948C5.77 18.5 12 18.5 12 18.5s6.23 0 7.86-.553a2.75 2.75 0 001.94-1.948A28.78 28.78 0 0022 12a28.78 28.78 0 00-.2-3.999zM10 15.5v-7l6 3.5-6 3.5z"/>
+                        <a href="https://youtube.com/@mwpuaeofficial?si=v-akBLM1Q4___ROI" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-[#FF0000]/10 text-[#FF0000] flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition-colors"
+                            aria-label="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M21.8 8.001a2.75 2.75 0 00-1.94-1.948C18.23 5.5 12 5.5 12 5.5s-6.23 0-7.86.553A2.75 2.75 0 002.2 8.001 28.78 28.78 0 002 12a28.78 28.78 0 00.2 3.999 2.75 2.75 0 001.94 1.948C5.77 18.5 12 18.5 12 18.5s6.23 0 7.86-.553a2.75 2.75 0 001.94-1.948A28.78 28.78 0 0022 12a28.78 28.78 0 00-.2-3.999zM10 15.5v-7l6 3.5-6 3.5z" />
                             </svg>
                         </a>
                         <!-- TikTok -->
-                        <a href="https://www.tiktok.com/@mwpuae?_r=1&_t=ZS-92NrCu2gnjD" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-black/5 text-black flex items-center justify-center hover:bg-black hover:text-white transition-colors" aria-label="TikTok">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M20 7.5c-1.5-.3-2.7-1.3-3.3-2.7A4.6 4.6 0 0116.3 4H13v11.1a2.1 2.1 0 11-1.5-2l.5-.1V9.1A5.1 5.1 0 007 9.5a5.1 5.1 0 105.6 7.5A5 5 0 0013 14.3V9.4c1 .8 2.2 1.4 3.5 1.7.5.1 1 .2 1.5.2V7.5z"/>
+                        <a href="https://www.tiktok.com/@mwpuae?_r=1&_t=ZS-92NrCu2gnjD" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-black/5 text-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                            aria-label="TikTok">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M20 7.5c-1.5-.3-2.7-1.3-3.3-2.7A4.6 4.6 0 0116.3 4H13v11.1a2.1 2.1 0 11-1.5-2l.5-.1V9.1A5.1 5.1 0 007 9.5a5.1 5.1 0 105.6 7.5A5 5 0 0013 14.3V9.4c1 .8 2.2 1.4 3.5 1.7.5.1 1 .2 1.5.2V7.5z" />
                             </svg>
                         </a>
                         <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/in/mwpuae" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-colors" aria-label="LinkedIn">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8.5h4.56V24H.22zM8.9 8.5h4.37v2.11h.06c.61-1.16 2.1-2.38 4.33-2.38 4.63 0 5.48 3.05 5.48 7.02V24h-4.56v-7.17c0-1.71-.03-3.91-2.38-3.91-2.38 0-2.75 1.86-2.75 3.78V24H8.9z"/>
+                        <a href="https://www.linkedin.com/in/mwpuae" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-colors"
+                            aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8.5h4.56V24H.22zM8.9 8.5h4.37v2.11h.06c.61-1.16 2.1-2.38 4.33-2.38 4.63 0 5.48 3.05 5.48 7.02V24h-4.56v-7.17c0-1.71-.03-3.91-2.38-3.91-2.38 0-2.75 1.86-2.75 3.78V24H8.9z" />
                             </svg>
                         </a>
                         <!-- WhatsApp -->
-                        <a href="https://wa.me/message/YS3LC3GECK2JB1" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-[#25D366]/10 text-[#25D366] flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-colors" aria-label="WhatsApp">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M12.04 2C6.59 2 2.2 6.26 2.2 11.57c0 1.83.52 3.61 1.51 5.16L2 22l5.44-1.63a10.44 10.44 0 004.6 1.12h.01c5.45 0 9.84-4.26 9.84-9.57C21.9 6.26 17.5 2 12.04 2zm0 17.3c-1.5 0-2.96-.4-4.24-1.17l-.3-.18-3.22.97.95-3.09-.2-.32a7.7 7.7 0 01-1.2-4.14c0-4.27 3.5-7.74 7.8-7.74 2.08 0 4.03.8 5.5 2.25a7.6 7.6 0 012.28 5.5c0 4.27-3.5 7.72-7.8 7.72zm4.26-5.8c-.23-.12-1.37-.68-1.58-.76-.21-.08-.36-.12-.5.12-.15.23-.58.76-.7.92-.13.15-.26.17-.48.06-.23-.12-.96-.36-1.83-1.13-.68-.6-1.14-1.34-1.27-1.57-.13-.23-.01-.35.1-.47.1-.1.23-.26.34-.39.11-.13.15-.23.23-.38.08-.15.04-.28-.02-.39-.06-.12-.5-1.2-.68-1.64-.18-.44-.36-.38-.5-.38h-.43c-.15 0-.39.06-.6.28-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.11.15 1.62 2.56 3.93 3.49.55.24.98.38 1.31.49.55.18 1.04.15 1.44.09.44-.07 1.37-.56 1.57-1.1.2-.55.2-1.02.14-1.12-.06-.1-.21-.16-.44-.28z"/>
+                        <a href="https://wa.me/message/YS3LC3GECK2JB1" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-[#25D366]/10 text-[#25D366] flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-colors"
+                            aria-label="WhatsApp">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M12.04 2C6.59 2 2.2 6.26 2.2 11.57c0 1.83.52 3.61 1.51 5.16L2 22l5.44-1.63a10.44 10.44 0 004.6 1.12h.01c5.45 0 9.84-4.26 9.84-9.57C21.9 6.26 17.5 2 12.04 2zm0 17.3c-1.5 0-2.96-.4-4.24-1.17l-.3-.18-3.22.97.95-3.09-.2-.32a7.7 7.7 0 01-1.2-4.14c0-4.27 3.5-7.74 7.8-7.74 2.08 0 4.03.8 5.5 2.25a7.6 7.6 0 012.28 5.5c0 4.27-3.5 7.72-7.8 7.72zm4.26-5.8c-.23-.12-1.37-.68-1.58-.76-.21-.08-.36-.12-.5.12-.15.23-.58.76-.7.92-.13.15-.26.17-.48.06-.23-.12-.96-.36-1.83-1.13-.68-.6-1.14-1.34-1.27-1.57-.13-.23-.01-.35.1-.47.1-.1.23-.26.34-.39.11-.13.15-.23.23-.38.08-.15.04-.28-.02-.39-.06-.12-.5-1.2-.68-1.64-.18-.44-.36-.38-.5-.38h-.43c-.15 0-.39.06-.6.28-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.11.15 1.62 2.56 3.93 3.49.55.24.98.38 1.31.49.55.18 1.04.15 1.44.09.44-.07 1.37-.56 1.57-1.1.2-.55.2-1.02.14-1.12-.06-.1-.21-.16-.44-.28z" />
                             </svg>
                         </a>
                         <!-- Telegram -->
-                        <a href="https://t.me/MWPUAE" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-[#229ED9]/10 text-[#229ED9] flex items-center justify-center hover:bg-[#229ED9] hover:text-white transition-colors" aria-label="Telegram">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-                                <path d="M21.94 3.34a1.5 1.5 0 00-1.54-.2L3.4 10.4a1.5 1.5 0 00.08 2.8l3.9 1.4 1.5 4.9a1.5 1.5 0 002.5.6l2.2-2.3 3.7 2.7a1.5 1.5 0 002.36-.9l2.2-15.1a1.5 1.5 0 00-.9-1.56zM9.2 13.5l8.1-5.2-4.9 6.3-3.2-1.1z"/>
+                        <a href="https://t.me/MWPUAE" target="_blank" rel="noopener"
+                            class="w-9 h-9 rounded-full bg-[#229ED9]/10 text-[#229ED9] flex items-center justify-center hover:bg-[#229ED9] hover:text-white transition-colors"
+                            aria-label="Telegram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4"
+                                fill="currentColor">
+                                <path
+                                    d="M21.94 3.34a1.5 1.5 0 00-1.54-.2L3.4 10.4a1.5 1.5 0 00.08 2.8l3.9 1.4 1.5 4.9a1.5 1.5 0 002.5.6l2.2-2.3 3.7 2.7a1.5 1.5 0 002.36-.9l2.2-15.1a1.5 1.5 0 00-.9-1.56zM9.2 13.5l8.1-5.2-4.9 6.3-3.2-1.1z" />
                             </svg>
                         </a>
                     </div>
                 </div>
-                
+
                 <div>
                     <h3 class="text-[#111418] font-semibold mb-4">Quick Links</h3>
                     <ul class="space-y-3">
-                        <li><a href="{% url 'products:list' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Products</a></li>
-                        <li><a href="{% url 'core:about' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">About Us</a></li>
-                        <li><a href="{% url 'core:industries' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Industries</a></li>
-                        <li><a href="{% url 'core:pricing' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Pricing</a></li>
-                        <li><a href="{% url 'core:faq' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">FAQ</a></li>
+                        <li><a href="{% url 'products:list' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Products</a></li>
+                        <li><a href="{% url 'core:about' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">About Us</a></li>
+                        <li><a href="{% url 'core:industries' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Industries</a>
+                        </li>
+                        <li><a href="{% url 'core:pricing' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Pricing</a></li>
+                        <li><a href="{% url 'core:faq' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">FAQ</a></li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <h3 class="text-[#111418] font-semibold mb-4">Support</h3>
                     <ul class="space-y-3">
-                        <li><a href="{% url 'core:contact' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Contact Us</a></li>
-                        <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Help Center</a></li>
-                        <li><a href="{% url 'core:privacy' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a></li>
-                        <li><a href="{% url 'core:terms' %}" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Terms &amp; Conditions</a></li>
+                        <li><a href="{% url 'core:contact' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Contact Us</a>
+                        </li>
+                        <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Help
+                                Center</a></li>
+                        <li><a href="{% url 'core:privacy' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a>
+                        </li>
+                        <li><a href="{% url 'core:terms' %}"
+                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Terms &amp;
+                                Conditions</a></li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <h3 class="text-[#111418] font-semibold mb-4">Contact Info</h3>
                     <div class="space-y-3 text-sm text-[#60758a]">
                         <p>{% if site_settings.contact_email %}{{ site_settings.contact_email }}{% else %}info@mwpuaeplatform.com{% endif %}</p>
                         <p>{% if site_settings.contact_phone %}{{ site_settings.contact_phone }}{% else %}+1 (555) 123-4567{% endif %}</p>
                         {% if site_settings.address %}
-                            <p>{{ site_settings.address|linebreaks }}</p>
+                        <p>{{ site_settings.address|linebreaks }}</p>
                         {% else %}
-                            <p>123 Business Ave<br>Suite 456<br>Tech City, CA 91234</p>
+                        <p>123 Business Ave<br>Suite 456<br>Tech City, CA 91234</p>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            
+
             <!-- Bottom Footer -->
             <div class="border-t border-gray-200 py-6">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <p class="text-[#60758a] text-sm">
-                        © 2025 {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}. All rights reserved.
+                        © 2025 {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}.
+                        All rights reserved.
                         <span class="mx-2 hidden md:inline">|</span>
-                        <a href="{% url 'core:privacy' %}" class="underline hover:text-primary-700 ml-2">Privacy Policy</a>
+                        <a href="{% url 'core:privacy' %}" class="underline hover:text-primary-700 ml-2">Privacy
+                            Policy</a>
                         <span class="mx-1">·</span>
-                        <a href="{% url 'core:terms' %}" class="underline hover:text-primary-700">Terms &amp; Conditions</a>
+                        <a href="{% url 'core:terms' %}" class="underline hover:text-primary-700">Terms &amp;
+                            Conditions</a>
                     </p>
-                    
+
                     <!-- Powered by DelQ Solutions -->
-                    <a href="https://delqsolutions.com" target="_blank" class="flex items-center gap-2 text-[#60758a] hover:text-[#111418] transition-colors group">
+                    <a href="https://delqsolutions.com" target="_blank"
+                        class="flex items-center gap-2 text-[#60758a] hover:text-[#111418] transition-colors group">
                         <span class="text-sm">Powered by</span>
                         <span class="text-sm font-bold tracking-wide ml-1">DELQ SOLUTIONS</span>
                     </a>
@@ -378,7 +457,7 @@
     <!-- Scripts -->
     <script>
         // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         });
@@ -407,7 +486,8 @@
         setInterval(updateMessageBadge, 30000);
         {% endif %}
     </script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

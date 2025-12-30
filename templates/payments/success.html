@@ -9,7 +9,7 @@
             <div class="text-green-500 text-6xl mb-4">✓</div>
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
             <p class="text-gray-600 mb-6">Your account has been activated</p>
-            
+
             {% if payment %}
             <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
                 <div class="flex justify-between mb-2">
@@ -26,11 +26,24 @@
                 </div>
             </div>
             {% endif %}
-            
-            <a href="{% url 'dashboard:home' %}" class="block w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 rounded-lg transition-colors">
+
+            <a href="{% url 'dashboard:home' %}"
+                class="block w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 rounded-lg transition-colors">
                 Go to Dashboard
             </a>
         </div>
     </div>
 </div>
+{% block extra_head %}
+<!-- Event snippet for Purchase conversion page -->
+<script>
+    gtag('event', 'conversion', {
+        'send_to': 'AW-17838403994/O-tkCJ673NgbEJrjgbpC',
+        'value': {{ payment.amount |default: 1.0 }},
+        'currency': '{{ payment.currency|default:"SAR" }}',
+        'transaction_id': '{{ payment.order_id|default:"" }}'
+  });
+</script>
+{% endblock %}
+
 {% endblock %}
