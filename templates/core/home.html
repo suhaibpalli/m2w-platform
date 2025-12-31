@@ -226,7 +226,7 @@
                                     <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-blue-50">
                                         {% if industry.image %}
                                             <div class="w-24 h-24 rounded-xl overflow-hidden group-hover:scale-110 transition-transform duration-300">
-                                                <img src="{{ industry.image }}" alt="{{ industry.name }}" class="w-full h-full object-cover">
+                                                <img src="{{ industry.image }}" alt="{{ industry.name }}" class="w-full h-full object-cover" loading="lazy">
                                             </div>
                                         {% else %}
                                             <div class="w-20 h-20 text-4xl group-hover:scale-110 transition-transform duration-300 group-hover:animate-bounce">🏭</div>

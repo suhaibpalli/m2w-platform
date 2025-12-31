@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MWPUAE Platform - The leading B2B multi-vendor trading platform for Metal, Wood, Plastic, Machineries, and Technology industries in UAE. Connect with verified suppliers.">
     <title>{% block title %}MWPUAE Platform - B2B Multi-Vendor Trading{% endblock %}</title>
     
     <!-- Fonts -->
@@ -109,12 +110,12 @@
             {% if site_settings and site_settings.site_logo %}
             <div class="h-8">
                 <img src="{{ site_settings.site_logo }}" alt="{{ site_settings.site_name }}"
-                    class="h-8 w-auto object-contain">
+                    class="h-8 w-auto object-contain" width="120" height="32">
             </div>
             {% else %}
             <div class="size-8">
                 <img src="{% static 'images/Metal_Wood_Plastic_Technology_FZC_LLC_icon.svg' %}" alt="MWPUAE Platform"
-                    class="w-8 h-8 object-contain">
+                    class="w-8 h-8 object-contain" width="32" height="32">
             </div>
             {% endif %}
             <a href="{% url 'core:home' %}" class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">
@@ -169,8 +170,7 @@
                         class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
                         {{ user.company.company_name.0|upper }}
                     </div>
-                    <span class="hidden lg:block text-sm font-medium text-[#111418]">{{ user.company.company_name
-                        }}</span>
+                    <span class="hidden lg:block text-sm font-medium text-[#111418]">{{ user.company.company_name }}</span>
                     <svg class="w-4 h-4 text-[#60758a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
@@ -225,7 +225,7 @@
             {% endif %}
 
             <!-- Mobile menu button -->
-            <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-50">
+            <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-50" aria-label="Mobile menu">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -301,7 +301,7 @@
                             {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}
                         </span>
                     </div>
-                    <p class="text-[#60758a] text-sm leading-relaxed mb-4">
+                    <p class="text-[#374151] text-sm leading-relaxed mb-4">
                         Connecting businesses across Metal, Wood, Plastic, Machineries, and Technology industries with
                         verified suppliers and secure trading solutions.
                     </p>
@@ -385,16 +385,16 @@
                     <h3 class="text-[#111418] font-semibold mb-4">Quick Links</h3>
                     <ul class="space-y-3">
                         <li><a href="{% url 'products:list' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Products</a></li>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Products</a></li>
                         <li><a href="{% url 'core:about' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">About Us</a></li>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">About Us</a></li>
                         <li><a href="{% url 'core:industries' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Industries</a>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Industries</a>
                         </li>
                         <li><a href="{% url 'core:pricing' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Pricing</a></li>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Pricing</a></li>
                         <li><a href="{% url 'core:faq' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">FAQ</a></li>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">FAQ</a></li>
                     </ul>
                 </div>
 
@@ -402,22 +402,22 @@
                     <h3 class="text-[#111418] font-semibold mb-4">Support</h3>
                     <ul class="space-y-3">
                         <li><a href="{% url 'core:contact' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Contact Us</a>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Contact Us</a>
                         </li>
-                        <li><a href="#" class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Help
+                        <li><a href="#" class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Help
                                 Center</a></li>
                         <li><a href="{% url 'core:privacy' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a>
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Privacy Policy</a>
                         </li>
                         <li><a href="{% url 'core:terms' %}"
-                                class="text-[#60758a] hover:text-[#111418] transition-colors text-sm">Terms &amp;
+                                class="text-[#374151] hover:text-[#111418] transition-colors text-sm">Terms &amp;
                                 Conditions</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="text-[#111418] font-semibold mb-4">Contact Info</h3>
-                    <div class="space-y-3 text-sm text-[#60758a]">
+                    <div class="space-y-3 text-sm text-[#374151]">
                         <p>{% if site_settings.contact_email %}{{ site_settings.contact_email }}{% else %}info@mwpuaeplatform.com{% endif %}</p>
                         <p>{% if site_settings.contact_phone %}{{ site_settings.contact_phone }}{% else %}+1 (555) 123-4567{% endif %}</p>
                         {% if site_settings.address %}
@@ -432,7 +432,7 @@
             <!-- Bottom Footer -->
             <div class="border-t border-gray-200 py-6">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p class="text-[#60758a] text-sm">
+                    <p class="text-[#374151] text-sm">
                         © 2025 {% if site_settings %}{{ site_settings.site_name }}{% else %}MWPUAE Platform{% endif %}.
                         All rights reserved.
                         <span class="mx-2 hidden md:inline">|</span>
@@ -445,7 +445,7 @@
 
                     <!-- Powered by DelQ Solutions -->
                     <a href="https://delqsolutions.com" target="_blank"
-                        class="flex items-center gap-2 text-[#60758a] hover:text-[#111418] transition-colors group">
+                        class="flex items-center gap-2 text-[#374151] hover:text-[#111418] transition-colors group">
                         <span class="text-sm">Powered by</span>
                         <span class="text-sm font-bold tracking-wide ml-1">DELQ SOLUTIONS</span>
                     </a>

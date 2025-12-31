@@ -77,7 +77,7 @@
                         <a href="{% url 'products:detail' product.pk %}" class="block">
                             <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                                 {% if product.main_image %}
-                                <img src="{{ product.main_image }}" alt="{{ product.name }}" class="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ product.main_image }}" alt="{{ product.name }}" class="h-48 w-full object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
                                 {% else %}
                                 <div class="h-48 w-full bg-gray-100 flex items-center justify-center">
                                     <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
