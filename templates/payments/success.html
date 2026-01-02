@@ -39,7 +39,7 @@
 <script>
     gtag('event', 'conversion', {
         'send_to': 'AW-17838403994/O-tkCJ673NgbEJrjgbpC',
-        'value': {{ payment.amount |default: 1.0 }},
+        'value': {{ payment.amount|default:1.0 }},
         'currency': '{{ payment.currency|default:"SAR" }}',
         'transaction_id': '{{ payment.order_id|default:"" }}'
   });
