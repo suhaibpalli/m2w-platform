@@ -5,7 +5,7 @@
 {% block content %}
 <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden">
     <!-- Hero Section with Carousel (Full Width, Enhanced) -->
-    <div class="relative flex w-full min-h-[100vh] items-center justify-center overflow-hidden">
+    <div class="relative flex w-full min-h-[85vh] lg:min-h-screen items-center justify-center overflow-hidden">
         {% if hero_images %}
             {% for image in hero_images %}
                 <div class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 {% if forloop.first %}opacity-100 scale-100{% else %}opacity-0 scale-110{% endif %}"
@@ -89,7 +89,7 @@
     </div>
 
     <!-- Value Propositions Section -->
-    <div class="relative bg-gradient-to-b from-gray-50 to-white py-20 overflow-hidden">
+    <div class="relative bg-gradient-to-b from-gray-50 to-white py-12 md:py-20 overflow-hidden">
         <!-- Background decoration -->
         <div class="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-purple-50/50"></div>
         <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 -translate-x-32 -translate-y-32"></div>
@@ -161,7 +161,7 @@
     </div>
 
     <!-- How It Works Section -->
-    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 py-20 overflow-hidden">
+    <div class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 py-12 md:py-20 overflow-hidden">
         <!-- Background animations -->
         <div class="absolute inset-0">
             <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
@@ -706,6 +706,34 @@
             if (heroSection) {
                 heroSection.addEventListener('mouseenter', stopAutoSlide);
                 heroSection.addEventListener('mouseleave', startAutoSlide);
+
+                // Swipe support for Hero
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                heroSection.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    stopAutoSlide();
+                }, {passive: true});
+
+                heroSection.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                    startAutoSlide();
+                }, {passive: true});
+
+                function handleSwipe() {
+                    const SWIPE_THRESHOLD = 50;
+                    if (touchEndX < touchStartX - SWIPE_THRESHOLD) {
+                        // Swipe Left -> Next
+                        nextSlide();
+                    }
+                    if (touchEndX > touchStartX + SWIPE_THRESHOLD) {
+                        // Swipe Right -> Prev
+                        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                        showSlide(currentSlide);
+                    }
+                }
             }
         }
     
@@ -846,6 +874,33 @@
             if (testimonialSection) {
                 testimonialSection.addEventListener('mouseenter', stopTestimonialAutoSlide);
                 testimonialSection.addEventListener('mouseleave', startTestimonialAutoSlide);
+
+                // Swipe support for Testimonials
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                testimonialSection.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    stopTestimonialAutoSlide();
+                }, {passive: true});
+
+                testimonialSection.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleTestimonialSwipe();
+                    startTestimonialAutoSlide();
+                }, {passive: true});
+
+                function handleTestimonialSwipe() {
+                    const SWIPE_THRESHOLD = 50;
+                    if (touchEndX < touchStartX - SWIPE_THRESHOLD) {
+                        // Swipe Left -> Next
+                        nextTestimonialSlide();
+                    }
+                    if (touchEndX > touchStartX + SWIPE_THRESHOLD) {
+                        // Swipe Right -> Prev
+                        prevTestimonialSlide();
+                    }
+                }
             }
             
             // Handle resize
@@ -1066,6 +1121,33 @@ if (industryTrack && industrySlides.length > 0) {
     if (industrySection) {
         industrySection.addEventListener('mouseenter', stopIndustryAutoSlide);
         industrySection.addEventListener('mouseleave', startIndustryAutoSlide);
+
+        // Swipe support for Industries
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        industrySection.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopIndustryAutoSlide();
+        }, {passive: true});
+
+        industrySection.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleIndustrySwipe();
+            startIndustryAutoSlide();
+        }, {passive: true});
+
+        function handleIndustrySwipe() {
+            const SWIPE_THRESHOLD = 50;
+            if (touchEndX < touchStartX - SWIPE_THRESHOLD) {
+                // Swipe Left -> Next
+                nextIndustrySlide();
+            }
+            if (touchEndX > touchStartX + SWIPE_THRESHOLD) {
+                // Swipe Right -> Prev
+                prevIndustrySlide();
+            }
+        }
     }
     
     // Handle resize for industry carousel
