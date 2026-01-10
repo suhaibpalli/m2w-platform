@@ -208,32 +208,32 @@
         </div>
     </div>
     <!-- Industries Showcase -->
-    <div class="relative bg-gradient-to-b from-white to-gray-50 py-20">
+    <div class="relative bg-gradient-to-b from-white to-gray-50 py-12 md:py-20 overflow-hidden">
         <div class="px-4 lg:px-10 flex flex-1 justify-center">
-            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                <div class="text-center mb-12 fade-in-section" data-delay="0">
-                    <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">Industries We Serve</h2>
-                    <p class="text-[#60758a] text-lg font-normal leading-relaxed">Specialized marketplace for key industrial sectors</p>
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1 overflow-hidden">
+                <div class="text-center mb-8 md:mb-12 fade-in-section px-2" data-delay="0">
+                    <h2 class="text-[#111418] text-2xl md:text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-3 md:mb-4">Industries We Serve</h2>
+                    <p class="text-[#60758a] text-base md:text-lg font-normal leading-relaxed">Specialized marketplace for key industrial sectors</p>
                 </div>
                 
                 <!-- Industries Carousel Container -->
-                <div class="relative fade-in-section" data-delay="200">
+                <div class="relative fade-in-section px-2 md:px-0" data-delay="200">
                     {% if industries %}
-                        <div class="industry-carousel-container overflow-hidden">
+                        <div class="industry-carousel-container overflow-hidden rounded-xl">
                             <div class="industry-carousel-track flex transition-transform duration-500 ease-in-out">
                                 {% for industry in industries %}
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-blue-50">
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-blue-50">
                                         {% if industry.image %}
-                                            <div class="w-24 h-24 rounded-xl overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                                            <div class="w-16 h-16 md:w-24 md:h-24 rounded-xl overflow-hidden group-hover:scale-110 transition-transform duration-300">
                                                 <img src="{{ industry.image }}" alt="{{ industry.name }}" class="w-full h-full object-cover" loading="lazy">
                                             </div>
                                         {% else %}
-                                            <div class="w-20 h-20 text-4xl group-hover:scale-110 transition-transform duration-300 group-hover:animate-bounce">🏭</div>
+                                            <div class="w-14 h-14 md:w-20 md:h-20 text-3xl md:text-4xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">🏭</div>
                                         {% endif %}
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-blue-600 transition-colors duration-300">{{ industry.name }}</h3>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-blue-600 transition-colors duration-300">{{ industry.name }}</h3>
                                         {% if industry.description %}
-                                            <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{{ industry.description }}</p>
+                                            <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">{{ industry.description }}</p>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -243,13 +243,13 @@
                         
                         <!-- Enhanced Navigation Buttons -->
                         {% if industries|length > 3 %}
-                        <button class="industry-prev absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="industry-prev absolute left-1 md:left-0 top-1/2 transform -translate-y-1/2 md:-translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>
                             </svg>
                         </button>
-                        <button class="industry-next absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="industry-next absolute right-1 md:right-0 top-1/2 transform -translate-y-1/2 md:translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M96,216a12,12,0,0,1-8.49-20.49L159,128,87.51,60.49a12,12,0,0,1,17-17l80,80a12,12,0,0,1,0,17l-80,80A12,12,0,0,1,96,216Z"/>
                             </svg>
                         </button>
@@ -269,87 +269,87 @@
                         
                     {% else %}
                         <!-- Enhanced Fallback content with big cards -->
-                        <div class="industry-carousel-container overflow-hidden">
+                        <div class="industry-carousel-container overflow-hidden rounded-xl">
                             <div class="industry-carousel-track flex transition-transform duration-500 ease-in-out">
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-blue-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-xl group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-300">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" fill="currentColor" viewBox="0 0 256 256" class="text-blue-600">
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-blue-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-blue-100 rounded-xl group-hover:bg-blue-200 group-hover:scale-110 transition-all duration-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256" class="md:w-8 md:h-8 text-blue-600">
                                                 <path d="M224,48H32A8,8,0,0,0,24,56V200a8,8,0,0,0,8,8H224a8,8,0,0,0,8-8V56A8,8,0,0,0,224,48ZM40,192V64H216V192Z"/>
                                             </svg>
                                         </div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-blue-600 transition-colors duration-300">Metal & Steel</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">High-quality metal products and steel materials for construction and manufacturing industries.</p>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-blue-600 transition-colors duration-300">Metal & Steel</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">High-quality metal products and steel materials for construction and manufacturing industries.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-green-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-green-100 rounded-xl group-hover:bg-green-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">🌿</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-green-600 transition-colors duration-300">Wood & Timber</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Premium wood products, timber, and lumber for construction and furniture manufacturing.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-green-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-green-100 rounded-xl group-hover:bg-green-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">🌿</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-green-600 transition-colors duration-300">Wood & Timber</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Premium wood products, timber, and lumber for construction and furniture manufacturing.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-purple-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-purple-100 rounded-xl group-hover:bg-purple-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">♻️</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-purple-600 transition-colors duration-300">Plastic & Polymers</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Advanced plastic materials and polymer solutions for various industrial applications.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-purple-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-purple-100 rounded-xl group-hover:bg-purple-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">♻️</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-purple-600 transition-colors duration-300">Plastic & Polymers</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Advanced plastic materials and polymer solutions for various industrial applications.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-orange-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-orange-100 rounded-xl group-hover:bg-orange-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">⚙️</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-orange-600 transition-colors duration-300">Machinery & Equipment</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Industrial machinery, equipment, and tools for manufacturing and production processes.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-orange-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-orange-100 rounded-xl group-hover:bg-orange-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">⚙️</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-orange-600 transition-colors duration-300">Machinery & Equipment</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Industrial machinery, equipment, and tools for manufacturing and production processes.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-indigo-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-indigo-100 rounded-xl group-hover:bg-indigo-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">💻</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-indigo-600 transition-colors duration-300">Technology & Electronics</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Cutting-edge technology solutions and electronic components for modern businesses.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-indigo-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-indigo-100 rounded-xl group-hover:bg-indigo-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">💻</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-indigo-600 transition-colors duration-300">Technology & Electronics</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Cutting-edge technology solutions and electronic components for modern businesses.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-gray-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-xl group-hover:bg-gray-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">📦</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-gray-600 transition-colors duration-300">Other Industries</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Diverse range of products and services across various other industrial sectors.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-gray-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-gray-100 rounded-xl group-hover:bg-gray-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">📦</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-gray-600 transition-colors duration-300">Other Industries</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Diverse range of products and services across various other industrial sectors.</p>
                                     </div>
                                 </div>
                                 <!-- Additional industry cards for 4-card layout demo -->
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-teal-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-teal-100 rounded-xl group-hover:bg-teal-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">🏗️</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-teal-600 transition-colors duration-300">Construction & Building</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Building materials, construction equipment, and architectural solutions for infrastructure projects.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-teal-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-teal-100 rounded-xl group-hover:bg-teal-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">🏗️</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-teal-600 transition-colors duration-300">Construction & Building</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Building materials, construction equipment, and architectural solutions for infrastructure projects.</p>
                                     </div>
                                 </div>
-                                <div class="industry-slide flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-                                    <div class="group flex flex-col items-center gap-6 rounded-xl border border-[#dbe0e6] bg-white p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-amber-50">
-                                        <div class="w-20 h-20 flex items-center justify-center bg-amber-100 rounded-xl group-hover:bg-amber-200 group-hover:scale-110 transition-all duration-300 group-hover:animate-bounce">⛽</div>
-                                        <h3 class="text-[#111418] font-bold text-xl group-hover:text-amber-600 transition-colors duration-300">Energy & Oil</h3>
-                                        <p class="text-[#60758a] text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300">Energy solutions, oil and gas products, and renewable energy equipment for industrial applications.</p>
+                                <div class="industry-slide flex-none w-[85%] sm:w-[48%] md:w-[48%] lg:w-[32%] xl:w-[24%] px-2 md:px-3">
+                                    <div class="group flex flex-col items-center gap-4 md:gap-6 rounded-xl border border-[#dbe0e6] bg-white p-5 md:p-8 text-center hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-amber-50">
+                                        <div class="w-14 h-14 md:w-20 md:h-20 flex items-center justify-center bg-amber-100 rounded-xl group-hover:bg-amber-200 group-hover:scale-110 transition-all duration-300 text-2xl md:text-4xl">⛽</div>
+                                        <h3 class="text-[#111418] font-bold text-lg md:text-xl group-hover:text-amber-600 transition-colors duration-300">Energy & Oil</h3>
+                                        <p class="text-[#60758a] text-xs md:text-sm font-normal leading-relaxed group-hover:text-gray-700 transition-colors duration-300 line-clamp-3">Energy solutions, oil and gas products, and renewable energy equipment for industrial applications.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Navigation for fallback content -->
-                        <button class="industry-prev absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="industry-prev absolute left-1 md:left-0 top-1/2 transform -translate-y-1/2 md:-translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>
                             </svg>
                         </button>
-                        <button class="industry-next absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="industry-next absolute right-1 md:right-0 top-1/2 transform -translate-y-1/2 md:translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M96,216a12,12,0,0,1-8.49-20.49L159,128,87.51,60.49a12,12,0,0,1,17-17l80,80a12,12,0,0,1,0,17l-80,80A12,12,0,0,1,96,216Z"/>
                             </svg>
                         </button>
                         
-                        <div class="flex justify-center mt-8 space-x-2">
-                            <button class="industry-dot w-3 h-3 rounded-full bg-blue-500 scale-110" data-slide="0"></button>
-                            <button class="industry-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-400 transition-all duration-300 transform hover:scale-125" data-slide="4"></button>
+                        <div class="flex justify-center mt-6 md:mt-8 space-x-2">
+                            <button class="industry-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-blue-500 scale-110" data-slide="0"></button>
+                            <button class="industry-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-gray-300 hover:bg-blue-400 transition-all duration-300 transform hover:scale-125" data-slide="4"></button>
                         </div>
                     {% endif %}
                 </div>
@@ -357,38 +357,38 @@
         </div>
     </div>
     <!-- Testimonials -->
-    <div class="relative bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-20 overflow-hidden">
+    <div class="relative bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-12 md:py-20 overflow-hidden">
         <!-- Background elements -->
-        <div class="absolute inset-0">
-            <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full mix-blend-multiply filter blur-2xl -translate-x-48 -translate-y-48"></div>
-            <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-indigo-200/30 to-pink-200/30 rounded-full mix-blend-multiply filter blur-2xl translate-x-48 translate-y-48"></div>
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-0 left-0 w-48 md:w-96 h-48 md:h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full mix-blend-multiply filter blur-2xl -translate-x-24 md:-translate-x-48 -translate-y-24 md:-translate-y-48"></div>
+            <div class="absolute bottom-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-gradient-to-tl from-indigo-200/30 to-pink-200/30 rounded-full mix-blend-multiply filter blur-2xl translate-x-24 md:translate-x-48 translate-y-24 md:translate-y-48"></div>
         </div>
         
         <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
-            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                <div class="text-center mb-12 fade-in-section" data-delay="0">
-                    <h2 class="text-[#111418] text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-4">What Our Clients Say</h2>
-                    <p class="text-[#60758a] text-lg font-normal leading-relaxed">Hear from businesses that have transformed their trading experience</p>
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1 overflow-hidden">
+                <div class="text-center mb-8 md:mb-12 fade-in-section px-2" data-delay="0">
+                    <h2 class="text-[#111418] text-2xl md:text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-3 md:mb-4">What Our Clients Say</h2>
+                    <p class="text-[#60758a] text-base md:text-lg font-normal leading-relaxed">Hear from businesses that have transformed their trading experience</p>
                 </div>
                 
                 <!-- Testimonials Carousel Container -->
-                <div class="relative fade-in-section" data-delay="200">
+                <div class="relative fade-in-section px-2 md:px-0" data-delay="200">
                     {% if testimonials %}
-                        <div class="testimonial-carousel-container overflow-hidden">
+                        <div class="testimonial-carousel-container overflow-hidden rounded-xl">
                             <div class="testimonial-carousel-track flex transition-transform duration-500 ease-in-out">
                                 {% for testimonial in testimonials %}
-                                <div class="testimonial-slide flex-none w-full md:w-1/2 lg:w-1/3 px-4">
-                                    <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-white">
-                                        <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">
+                                <div class="testimonial-slide flex-none w-[90%] sm:w-[85%] md:w-[48%] lg:w-[32%] px-2 md:px-3">
+                                    <div class="group flex flex-col gap-3 md:gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-4 md:p-6 shadow-sm hover:shadow-xl h-full transition-all duration-500 transform hover:-translate-y-2 hover:bg-white">
+                                        <div class="flex text-yellow-400 mb-1 md:mb-2 group-hover:scale-110 transition-transform duration-300 text-sm md:text-base">
                                             {{ testimonial.get_star_display }}
                                         </div>
-                                        <p class="text-[#111418] text-base font-normal leading-relaxed flex-grow group-hover:text-gray-800 transition-colors duration-300">
+                                        <p class="text-[#111418] text-sm md:text-base font-normal leading-relaxed flex-grow group-hover:text-gray-800 transition-colors duration-300 line-clamp-4">
                                             "{{ testimonial.testimonial_text }}"
                                         </p>
-                                        <div class="border-t pt-4 mt-auto group-hover:border-blue-200 transition-colors duration-300">
-                                            <p class="text-[#111418] text-sm font-semibold group-hover:text-blue-800 transition-colors duration-300">{{ testimonial.client_name }}</p>
-                                            <p class="text-[#60758a] text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.client_title }}</p>
-                                            <p class="text-[#60758a] text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.company_name }}</p>
+                                        <div class="border-t pt-3 md:pt-4 mt-auto group-hover:border-blue-200 transition-colors duration-300">
+                                            <p class="text-[#111418] text-xs md:text-sm font-semibold group-hover:text-blue-800 transition-colors duration-300">{{ testimonial.client_name }}</p>
+                                            <p class="text-[#60758a] text-xs md:text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.client_title }}</p>
+                                            <p class="text-[#60758a] text-xs md:text-sm group-hover:text-blue-600 transition-colors duration-300">{{ testimonial.company_name }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -398,13 +398,13 @@
                         
                         <!-- Enhanced Navigation Buttons -->
                         {% if testimonials|length > 3 %}
-                        <button class="testimonial-prev absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="testimonial-prev absolute left-1 md:left-0 top-1/2 transform -translate-y-1/2 md:-translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/>
                             </svg>
                         </button>
-                        <button class="testimonial-next absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
+                        <button class="testimonial-next absolute right-1 md:right-0 top-1/2 transform -translate-y-1/2 md:translate-x-4 bg-white/95 backdrop-blur-sm rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:bg-white hover:scale-110 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256" class="md:w-5 md:h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300">
                                 <path d="M96,216a12,12,0,0,1-8.49-20.49L159,128,87.51,60.49a12,12,0,0,1,17-17l80,80a12,12,0,0,1,0,17l-80,80A12,12,0,0,1,96,216Z"/>
                             </svg>
                         </button>
@@ -424,29 +424,29 @@
                         
                     {% else %}
                         <!-- Enhanced Fallback content -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
-                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
-                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                            <div class="group flex flex-col gap-3 md:gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-4 md:p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+                                <div class="flex text-yellow-400 mb-1 md:mb-2 group-hover:scale-110 transition-transform duration-300 text-sm md:text-base">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-sm md:text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                                     "MWPUAE Platform has revolutionized our sourcing process. We've found reliable suppliers and expanded our network significantly."
                                 </p>
-                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Sarah Chen, CEO of TechCorp Industries</p>
+                                <p class="text-[#60758a] text-xs md:text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Sarah Chen, CEO of TechCorp Industries</p>
                             </div>
                             
-                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
-                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
-                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                            <div class="group flex flex-col gap-3 md:gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-4 md:p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+                                <div class="flex text-yellow-400 mb-1 md:mb-2 group-hover:scale-110 transition-transform duration-300 text-sm md:text-base">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-sm md:text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                                     "The platform's industry focus and secure payment system have made trading much more efficient and trustworthy."
                                 </p>
-                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- David Lee, Procurement Manager at Global Materials</p>
+                                <p class="text-[#60758a] text-xs md:text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- David Lee, Procurement Manager at Global Materials</p>
                             </div>
                             
-                            <div class="group flex flex-col gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
-                                <div class="flex text-yellow-400 mb-2 group-hover:scale-110 transition-transform duration-300">⭐⭐⭐⭐⭐</div>
-                                <p class="text-[#111418] text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                            <div class="group flex flex-col gap-3 md:gap-4 rounded-xl bg-white/80 backdrop-blur-sm p-4 md:p-6 shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1">
+                                <div class="flex text-yellow-400 mb-1 md:mb-2 group-hover:scale-110 transition-transform duration-300 text-sm md:text-base">⭐⭐⭐⭐⭐</div>
+                                <p class="text-[#111418] text-sm md:text-base font-normal leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                                     "We appreciate the transparent pricing and the ability to connect with verified businesses in our industry."
                                 </p>
-                                <p class="text-[#60758a] text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Emily Wong, Founder of WoodCraft Solutions</p>
+                                <p class="text-[#60758a] text-xs md:text-sm font-medium group-hover:text-blue-600 transition-colors duration-300">- Emily Wong, Founder of WoodCraft Solutions</p>
                             </div>
                         </div>
                     {% endif %}
@@ -456,27 +456,27 @@
     </div>
 
     <!-- Enhanced CTA Section -->
-    <div class="relative py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
+    <div class="relative py-12 md:py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
         <!-- Animated background -->
-        <div class="absolute inset-0">
+        <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient-x"></div>
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow animation-delay-2000"></div>
+            <div class="absolute top-1/4 left-1/4 w-48 md:w-96 h-48 md:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-48 md:w-96 h-48 md:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-float-slow animation-delay-2000"></div>
         </div>
         
         <div class="relative px-4 lg:px-10 flex flex-1 justify-center">
             <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-                <div class="text-center fade-in-section" data-delay="0">
-                    <h2 class="text-white text-3xl lg:text-4xl font-black leading-tight mb-4 animate-text-glow">Ready to Start Trading?</h2>
-                    <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">Join thousands of companies already using MWPUAE Platform to streamline their B2B trading operations.</p>
+                <div class="text-center fade-in-section px-2" data-delay="0">
+                    <h2 class="text-white text-2xl md:text-3xl lg:text-4xl font-black leading-tight mb-3 md:mb-4 animate-text-glow">Ready to Start Trading?</h2>
+                    <p class="text-white/90 text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">Join thousands of companies already using MWPUAE Platform to streamline their B2B trading operations.</p>
                     {% if user.is_authenticated %}
                         <a href="{% url 'dashboard:home' %}" 
-                           class="group inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-blue-600 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                           class="group inline-flex min-w-[140px] md:min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 md:h-12 px-6 md:px-8 bg-white text-blue-600 text-sm md:text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
                             <span class="group-hover:animate-pulse">Go to Dashboard</span>
                         </a>
                     {% else %}
                         <a href="{% url 'accounts:register' %}" 
-                           class="group inline-flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-white text-blue-600 text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
+                           class="group inline-flex min-w-[140px] md:min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 md:h-12 px-6 md:px-8 bg-white text-blue-600 text-sm md:text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1">
                             <span class="group-hover:animate-pulse">Start Your Membership Today</span>
                         </a>
                     {% endif %}
@@ -599,6 +599,21 @@
 .hero-text-content.opacity-100 { 
     opacity: 1; 
     pointer-events: auto; 
+}
+
+/* Line clamp utilities for text truncation */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 </style>
